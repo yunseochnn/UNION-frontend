@@ -3,7 +3,7 @@ import { IoIosArrowBack } from 'react-icons/io';
 
 const Header = () => {
   return (
-    <div className="flex items-center justify-between w-full h-[60px]  px-[30px] mt-3">
+    <div className="flex items-center justify-between w-full h-[60px]  px-[30px]">
       <div className="cursor-pointer font-black">
         <IoIosArrowBack size={32} />
       </div>
