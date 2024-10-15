@@ -4,7 +4,7 @@ import Slide from './Slide';
 
 const Content = () => {
   return (
-    <div className="flex flex-col  px-[30px]">
+    <div className="flex flex-col">
       <div className="flex items-center mt-[20px] gap-3">
         <div className="h-10 w-10 bg-gray-300 rounded-full"></div>
         <div>

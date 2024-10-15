@@ -7,7 +7,7 @@ const Header = () => {
       <div className="cursor-pointer font-black">
         <IoIosArrowBack size={32} />
       </div>
-      <div className="font-semibold text-lg">{`게시글`}</div>
+      <div className="font-semibold text-lg">{`찐 감자`}</div>
       <div className="flex gap-[20px]">
         <div className="cursor-pointer">
           <FaEllipsisVertical size={20} />
