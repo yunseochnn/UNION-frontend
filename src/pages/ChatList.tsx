@@ -4,7 +4,7 @@ import List from '../components/ChatList/List';
 
 export default function ChatList() {
   return (
-    <div className="h-screen w-screen flex flex-col px-[30px] py-[20px]">
+    <div className="h-full w-full flex flex-col px-[30px] py-[20px]">
       <Header />
       <List />
       <Footer />

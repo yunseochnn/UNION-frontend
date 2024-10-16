@@ -1,8 +1,8 @@
 /* src/styles.css */
-.hide-scrollbar::-webkit-scrollbar {
-  display: none; /* 크롬, 엣지, 사파리에서 스크롤바 숨기기 */
+.hidden-scrollbar::-webkit-scrollbar {
+  display: none !important; /* 크롬, 엣지, 사파리에서 스크롤바 숨기기 */
 }
 
-.hide-scrollbar {
-  scrollbar-width: none; /* 파이어폭스에서 스크롤바 숨기기 */
+.hidden-scrollbar {
+  scrollbar-width: none !important; /* 파이어폭스에서 스크롤바 숨기기 */
 }

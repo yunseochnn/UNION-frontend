@@ -11,7 +11,7 @@ const Footer = () => {
         <input
           className="bg-gray-100 w-[310px] h-10 rounded-full py-2 px-4 outline-none"
           type="text"
-          placeholder="댓글을 입력해주세요"
+          placeholder="메시지 보내기"
         />
       </div>
       <div>
