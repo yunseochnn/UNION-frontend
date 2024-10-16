@@ -2,6 +2,10 @@
   background-color: #ff4a4d;
 }
 
+.react-datepicker__input-container input {
+  caret-color: transparent !important; /* 텍스트 입력 커서를 투명하게 */
+}
+
 .react-datepicker-time__input {
   outline: none;
 }
