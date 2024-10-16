@@ -1,3 +1,14 @@
+import Content from '../components/MeetWrite/Content';
+import Footer from '../components/MeetWrite/Footer';
+import Header from '../components/MeetWrite/Header';
+import '../style.css';
+
 export default function MeetWrite() {
-  return <div></div>;
+  return (
+    <div className="w-screen h-screen overflow-hidden hidden-scrollbar flex flex-col px-[30px] py-3">
+      <Header />
+      <Content />
+      <Footer />
+    </div>
+  );
 }

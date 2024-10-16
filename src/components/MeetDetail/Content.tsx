@@ -64,7 +64,7 @@ const Content = () => {
   }, []);
 
   return (
-    <div className="flex flex-col flex-1 overflow-y-auto hide-scrollbar">
+    <div className="flex flex-col flex-1 overflow-y-auto hidden-scrollbar">
       <div>
         <div
           className="rounded-full h-[30px] w-[74px] flex items-center justify-center gap-2 text-sm font-bold"

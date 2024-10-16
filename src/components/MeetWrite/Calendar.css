@@ -1,0 +1,39 @@
+.react-datepicker__day--selected {
+  background-color: #ff4a4d;
+}
+
+.react-datepicker-time__input {
+  outline: none;
+}
+
+.react-datepicker-time__input {
+  outline: none;
+}
+
+.react-datepicker__day--selected:not([aria-disabled='true']):hover {
+  background-color: #ff4a4d;
+}
+
+.react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box
+  ul.react-datepicker__time-list
+  li.react-datepicker__time-list-item--selected {
+  background-color: #ff4a4d;
+  color: white;
+  font-weight: bold;
+}
+
+.react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box
+  ul.react-datepicker__time-list
+  li.react-datepicker__time-list-item--selected:hover {
+  background-color: #ff4a4d;
+  color: white;
+  font-weight: bold;
+}
+
+.react-datepicker {
+  transform: translate(50px, 0); /* x축으로 50px 이동 */
+}

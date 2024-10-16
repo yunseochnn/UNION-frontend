@@ -9,7 +9,7 @@ export default function BoardDetail() {
     <div className="h-screen w-screen flex flex-col py-3 px-[30px]">
       <Header />
 
-      <div className="flex flex-col overflow-y-auto flex-1 hide-scrollbar relative">
+      <div className="flex flex-col overflow-y-auto flex-1 hidden-scrollbar relative">
         <Content />
         <Comment />
       </div>
