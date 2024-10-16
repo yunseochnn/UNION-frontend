@@ -8,7 +8,9 @@ createRoot(document.getElementById('root')!).render(
   <RecoilRoot>
     <BrowserRouter>
       {' '}
-      <App />
+      <div className="center-content">
+        <App />
+      </div>
     </BrowserRouter>
   </RecoilRoot>,
 );
