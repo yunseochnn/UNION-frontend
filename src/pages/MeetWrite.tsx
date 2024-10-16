@@ -5,7 +5,7 @@ import '../style.css';
 
 export default function MeetWrite() {
   return (
-    <div className="w-screen h-screen overflow-hidden hidden-scrollbar flex flex-col px-[30px] py-3">
+    <div className="w-full h-full overflow-hidden hidden-scrollbar flex flex-col px-[30px] py-3">
       <Header />
       <Content />
       <Footer />

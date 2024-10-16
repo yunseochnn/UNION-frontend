@@ -4,7 +4,7 @@ import Header from '../components/BoardWrite/Header';
 
 export default function BoardWrite() {
   return (
-    <div className="flex flex-col w-screen h-screen px-[30px] py-3">
+    <div className="flex flex-col w-full h-full px-[30px] py-3">
       <Header />
       <Content />
       <Footer />

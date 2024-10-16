@@ -1,16 +1,33 @@
-import { GoHeart } from 'react-icons/go';
+import { useState } from 'react';
+import { IoIosHeart, IoIosHeartEmpty } from 'react-icons/io';
 
 const Footer = () => {
+  const [like, setLike] = useState(false);
+  const [participation, setParticipation] = useState(false);
+
+  const onClickLikeHandler = () => {
+    setLike(!like);
+  };
+
+  const onClickParticipationHandler = () => {
+    setParticipation(true);
+  };
+
   return (
     <div className="h-[70px] border-t border-gray-150 flex items-center gap-5 mt-4">
-      <div className="ml-4">
-        <GoHeart size={22} style={{ strokeWidth: 0.5 }} />
+      <div className="ml-4" onClick={onClickLikeHandler}>
+        {like ? (
+          <IoIosHeart size={24} style={{ color: '#ff4a4d' }} />
+        ) : (
+          <IoIosHeartEmpty size={24} style={{ strokeWidth: 7 }} />
+        )}
       </div>
       <div
         className="w-[305px] h-[53px] rounded-md flex items-center justify-center text-xl text-white font-semibold"
-        style={{ backgroundColor: '#ff4a4d' }}
+        style={{ backgroundColor: `${participation ? 'gray' : '#ff4a4d'}` }}
+        onClick={onClickParticipationHandler}
       >
-        참여하기
+        {participation ? '참여완료' : '참여하기'}
       </div>
     </div>
   );
