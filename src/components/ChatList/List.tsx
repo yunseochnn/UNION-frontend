@@ -1,24 +1,14 @@
-import { useState } from 'react';
-import '../../style.css';
-
 const List = () => {
-  const [isGroup, setIsGroup] = useState(false);
-
   return (
-    <div className="flex flex-col flex-1 overflow-y-auto hidden-scrollbar mt-5">
-      <div className="flex gap-3 font-semibold">
-        <span
-          className={`cursor-pointer ${isGroup ? 'text-gray-400' : 'text-black'}`}
-          onClick={() => setIsGroup(!isGroup)}
-        >
-          개인
-        </span>
-        <span
-          className={`cursor-pointer ${isGroup ? 'text-black' : 'text-gray-400'}`}
-          onClick={() => setIsGroup(!isGroup)}
-        >
-          모임
-        </span>
+    <div className="w-full h-16 flex items-center mt-6 gap-4">
+      <div className="w-14 h-14 rounded-full bg-gray-300"></div>
+
+      <div className="flex flex-col">
+        <div className="flex gap-3 items-center">
+          <div className="text-base font-bold">찐 감자</div>
+          <div className="text-sm text-gray-400 font-semibold">오후 4:20</div>
+        </div>
+        <div className="text-sm text-gray-400 font-semibold">채팅 내용이 들어갑니다. 채팅 내용이에요. 대충...</div>
       </div>
     </div>
   );

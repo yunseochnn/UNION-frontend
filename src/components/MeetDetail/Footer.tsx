@@ -14,7 +14,7 @@ const Footer = () => {
   };
 
   return (
-    <div className="h-[70px] border-t border-gray-150 flex items-center gap-5 mt-4">
+    <div className="h-[70px] border-t border-gray-150 flex items-center gap-5 mt-4 cursor-pointer">
       <div className="ml-4" onClick={onClickLikeHandler}>
         {like ? (
           <IoIosHeart size={24} style={{ color: '#ff4a4d' }} />
@@ -23,7 +23,7 @@ const Footer = () => {
         )}
       </div>
       <div
-        className="w-[305px] h-[53px] rounded-md flex items-center justify-center text-xl text-white font-semibold"
+        className="w-[305px] h-[53px] rounded-md flex items-center justify-center text-xl text-white font-semibold cursor-pointer"
         style={{ backgroundColor: `${participation ? 'gray' : '#ff4a4d'}` }}
         onClick={onClickParticipationHandler}
       >
