@@ -1,3 +1,9 @@
+import Auth from '../components/SocialLogin/Auth';
+
 export default function SocialLogin() {
-  return <div></div>;
+  return (
+    <div>
+      <Auth />
+    </div>
+  );
 }
