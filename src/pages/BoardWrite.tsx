@@ -10,7 +10,7 @@ export default function BoardWrite() {
   const [success, setSuccess] = useState(false);
   console.log(items);
   return (
-    <div className="flex flex-col w-full h-full px-[30px] py-3 relative">
+    <div className="flex flex-col w-full h-full px-[30px] pt-3 relative">
       {open && <Vote items={items} setItems={setItems} setOpen={setOpen} />}
       <Header success={success} />
       <Content items={items} />

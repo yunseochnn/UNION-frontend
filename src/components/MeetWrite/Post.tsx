@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { IoSearch } from 'react-icons/io5';
 import { IAddress } from '../../pages/MeetWrite';
+import Pin from '/images/Pin.png';
 
 interface Prop {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,6 +30,29 @@ const Post = ({ setOpen, setAddress }: Prop) => {
   const [keyword, setKeyword] = useState('');
   const [markers, setMarkers] = useState<CustomMarker[]>([]);
   const [change, setChange] = useState('');
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setChange(e.target.value);
+  };
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setKeyword(change);
+  };
+
+  //useCallback 해야하는 이유...
+  const onClick = useCallback(
+    (marker: CustomMarker) => {
+      setAddress({
+        name: marker.content,
+        address: marker.roadAddressName,
+        positionX: marker.positionX,
+        positionY: marker.positionY,
+      });
+      setOpen(false);
+    },
+    [setAddress, setOpen],
+  );
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -73,9 +97,14 @@ const Post = ({ setOpen, setAddress }: Prop) => {
           //LatLngBounds 객체에 좌표 추가
           const bounds = new kakao.maps.LatLngBounds();
           const newMarkers = [];
+
+          const imageSize = new kakao.maps.Size(15, 20);
+          const markerImage = new kakao.maps.MarkerImage(Pin, imageSize);
+
           for (let i = 0; i < data.length; i++) {
             const marker = new kakao.maps.Marker({
               position: new kakao.maps.LatLng(data[i].y, data[i].x),
+              image: markerImage,
               title: data[i].place_name,
             });
             marker.content = data[i].place_name;
@@ -105,38 +134,56 @@ const Post = ({ setOpen, setAddress }: Prop) => {
     //새 마커 생성
     markers.forEach((marker: CustomMarker) => {
       marker.setMap(map);
-      const iwContent = `<div style="padding:5px; height: 80px; display: flex; flex-direction: column; justify-content: space-between;">${marker.content}<br><div><a href="https://map.kakao.com/link/map/${marker.content},${marker.positionY},${marker.positionX}" style="color:blue" target="_blank">큰지도보기</a> <a href="https://map.kakao.com/link/to/${marker.content},${marker.positionY},${marker.positionX}" style="color:blue" target="_blank">길찾기</a></div></div>`;
+      const iwContent = document.createElement('div');
+      iwContent.innerHTML = `
+      <div>
+        <div style="background-color: white; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff4a4d; position: relative"> 
+            <div style="display: flex; gap: 10px">
+                <div style="font-weight: 400;">${marker.content}</div>
+                <div style="font-weight: 500;" class="close">X</div>
+            </div>
 
-      const infowindow = new kakao.maps.InfoWindow({
+              <div style="color:#ff4a4d; cursor: pointer; font-weight: 600;" class="select">장소 선택</div>
+          </div>
+
+          <div style="
+          position: absolute;
+          bottom: -10px;
+          left: 50%;
+          transform: translateX(-50%);
+          width:0;
+          height:0;
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+          border-top: 10px solid #ff4a4d;
+          "></div>
+        <div>
+        `;
+
+      const overlay = new kakao.maps.CustomOverlay({
         content: iwContent,
-        removable: true,
+        position: marker.getPosition(),
+        yAnchor: 1.5,
       });
 
       kakao.maps.event.addListener(marker, 'click', function () {
-        infowindow.open(map, marker);
+        map.setCenter(marker.getPosition());
+        overlay.setMap(map);
       });
-      marker.infowindow = infowindow;
+
+      const closeBtn = iwContent.querySelector('.close');
+      closeBtn?.addEventListener('click', () => {
+        overlay.setMap(null);
+      });
+
+      const selectBtn = iwContent.querySelector('.select');
+      selectBtn?.addEventListener('click', () => {
+        onClick(marker);
+      });
+
+      marker.infowindow = overlay;
     });
-  }, [map, markers]);
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setChange(e.target.value);
-  };
-
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setKeyword(change);
-  };
-
-  const onClick = (marker: CustomMarker) => {
-    setAddress({
-      name: marker.content,
-      address: marker.roadAddressName,
-      positionX: marker.positionX,
-      positionY: marker.positionY,
-    });
-    setOpen(false);
-  };
+  }, [map, markers, onClick]);
 
   console.log(map);
   console.log(markers);
@@ -144,17 +191,18 @@ const Post = ({ setOpen, setAddress }: Prop) => {
 
   return (
     <div className="absolute inset-0 bg-white  z-20 flex flex-col pt-3">
-      <div className="flex items-center w-full h-[60px] gap-32">
-        <div className="cursor-pointer font-black ml-7" onClick={() => setOpen(false)}>
+      <div className="flex items-center justify-between w-full h-[60px] px-[30px]">
+        <div className="cursor-pointer font-black" onClick={() => setOpen(false)}>
           <IoIosArrowBack size={32} />
         </div>
         <div className="font-semibold text-lg">{`장소 검색`}</div>
+        <div className="w-8 h-8"></div>
       </div>
 
       <div id="map" className="w-full h-[400px] mt-2 relative"></div>
 
-      <div className="px-[10px]">
-        <div className="flex flex-col flex-1 items-center px-5">
+      <div className="px-[10px] pb-5">
+        <div className="flex flex-col flex-1 items-center px-5 min-h-[350px]">
           <div className="shadow-md w-full h-11 mt-5 rounded-sm flex items-center px-3">
             <div>
               <IoSearch size={25} />
@@ -170,10 +218,14 @@ const Post = ({ setOpen, setAddress }: Prop) => {
             </form>
           </div>
 
-          <div className="w-full h-[330px] overflow-y-auto mt-4 flex flex-col gap-2">
+          <div className="w-full max-h-[330px] overflow-y-auto flex flex-col mt-5 gap-2">
             {markers.map((marker, index) => {
               return (
-                <div key={index} className="flex flex-col border-b border-gray-300" onClick={() => onClick(marker)}>
+                <div
+                  key={index}
+                  className="flex flex-col border-b border-gray-300 cursor-pointer"
+                  onClick={() => onClick(marker)}
+                >
                   <div className="font-semibold">{marker.content}</div>
                   <div className="text-sm text-gray-400">{marker.roadAddressName}</div>
                   <div className="text-xs mt-2" style={{ color: '#ff4a4d' }}>
