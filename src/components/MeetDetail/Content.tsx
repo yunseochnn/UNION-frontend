@@ -3,8 +3,13 @@ import { HiOutlineUserGroup } from 'react-icons/hi2';
 import '../../style.css';
 import Slide from '../../common/Slide';
 import Map from '../../common/Map';
+import { IoIosArrowForward } from 'react-icons/io';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Content = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
+
   return (
     <div className="flex flex-col flex-1 overflow-y-auto hidden-scrollbar">
       <div>
@@ -56,7 +61,7 @@ const Content = () => {
 
       <div className="mt-4 flex flex-col">
         <div className="h-48 w-[368px] border border-gray-200 rounded-md">
-          <Map x={37.5361699} y={126.8277859} name={'장소이름'} />
+          <Map x={126.8277859} y={37.5361699} name={'장소이름'} />
         </div>
       </div>
 
@@ -64,11 +69,15 @@ const Content = () => {
         <div className="font-semibold text-gray-500 text-sm">관심 0 · 조회 29</div>
       </div>
 
-      <div className="mt-5 border-t border-gray-150 pt-6 mb-2">
+      <div className="mt-5 border-t border-gray-150 pt-6 mb-2 flex justify-between items-center">
         <div className="font-bold text-xl">
           <span>{`참여 중인 이웃 `}</span>
           <span style={{ color: '#FF4A4D' }}>1</span>
           <span>/4</span>
+        </div>
+
+        <div onClick={() => navigate(`/Meet/Participants/${id}`)} className="cursor-pointer">
+          <IoIosArrowForward size={24} />
         </div>
       </div>
     </div>
