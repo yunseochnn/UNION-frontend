@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Comment from '../components/BoardDetail/Comment';
+import CommentList from '../components/BoardDetail/CommentList';
 import Content from '../components/BoardDetail/Content';
 import Footer from '../components/BoardDetail/Footer';
 import Header from '../components/BoardDetail/Header';
@@ -15,7 +15,7 @@ export default function BoardDetail() {
 
       <div className="flex flex-col overflow-y-auto flex-1 hidden-scrollbar relative">
         <Content />
-        <Comment />
+        <CommentList />
       </div>
 
       <Footer />

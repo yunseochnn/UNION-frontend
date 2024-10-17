@@ -1,6 +1,6 @@
+import { BiMessage } from 'react-icons/bi';
 import { FaRegEyeSlash } from 'react-icons/fa6';
-import { MdOutlineNoMeetingRoom } from 'react-icons/md';
-import { RiAlarmWarningLine } from 'react-icons/ri';
+import { LiaUserSlashSolid } from 'react-icons/lia';
 
 interface Prop {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,21 +13,21 @@ const More = ({ setModal }: Prop) => {
         <div className="bg-white h-[168px] rounded-lg px-3 flex flex-col font-semibold">
           <div className="flex flex-1 border-b border-gray-200 items-center gap-2">
             <span>
-              <FaRegEyeSlash />
+              <BiMessage />
             </span>
-            <span> 이 글 숨기기</span>
+            <span>메시지 보내기</span>
           </div>
           <div className="flex flex-1 border-b border-gray-200 items-center gap-2">
             <span>
-              <MdOutlineNoMeetingRoom />
+              <FaRegEyeSlash />
             </span>
-            <span>모임 나가기</span>
+            <span>게시글 숨기기</span>
           </div>
-          <div className="flex flex-1 border-b border-gray-200 items-center text-red-600 gap-2">
+          <div className="flex flex-1 border-b border-gray-200 items-center gap-2">
             <span>
-              <RiAlarmWarningLine />
+              <LiaUserSlashSolid />
             </span>
-            <span>신고하기</span>
+            <span>유저 차단하기</span>
           </div>
         </div>
 
