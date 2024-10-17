@@ -1,8 +1,10 @@
-import { useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 
-const Header = () => {
-  const [success, setSuccess] = useState(false);
+interface Prop {
+  success: boolean;
+}
+
+const Header = ({ success }: Prop) => {
   return (
     <div className="flex items-center justify-between w-full h-[60px] border-b border-gray-200 ">
       <div className="cursor-pointer font-black">

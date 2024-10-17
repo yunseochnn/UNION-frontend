@@ -8,6 +8,7 @@ import More from '../components/BoardDetail/More';
 
 export default function BoardDetail() {
   const [Modal, setModal] = useState(false);
+
   return (
     <div className="h-full w-full flex flex-col py-3 px-[30px] relative">
       {Modal && <More setModal={setModal} />}
