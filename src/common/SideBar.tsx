@@ -26,7 +26,7 @@ const SideBar = () => {
         <div className="text-xs">모임</div>
       </div>
 
-      <div className="flex flex-col justify-center items-center" onClick={() => navigate('/Chat')}>
+      <div className="flex flex-col justify-center items-center ml-1" onClick={() => navigate('/Chat')}>
         <div>{pathname.includes('Chat') ? <IoChatbubbles size={20} /> : <IoChatbubblesOutline size={20} />}</div>
         <div className="text-xs">채팅</div>
       </div>

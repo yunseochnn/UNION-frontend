@@ -153,34 +153,36 @@ const Post = ({ setOpen, setAddress }: Prop) => {
 
       <div id="map" className="w-full h-[400px] mt-2 relative"></div>
 
-      <div className="flex flex-col flex-1 items-center px-5">
-        <div className="shadow-md w-full h-11 mt-5 rounded-sm flex items-center px-3">
-          <div>
-            <IoSearch size={25} />
+      <div className="px-[10px]">
+        <div className="flex flex-col flex-1 items-center px-5">
+          <div className="shadow-md w-full h-11 mt-5 rounded-sm flex items-center px-3">
+            <div>
+              <IoSearch size={25} />
+            </div>
+            <form className=" ml-4 flex-1" onSubmit={onSubmit}>
+              <input
+                className="w-full h-7 outline-none"
+                placeholder="장소를 입력해주세요"
+                value={change}
+                onChange={onChange}
+              />
+              <button type="submit"></button>
+            </form>
           </div>
-          <form className=" ml-4 flex-1" onSubmit={onSubmit}>
-            <input
-              className="w-full h-7 outline-none"
-              placeholder="장소를 입력해주세요"
-              value={change}
-              onChange={onChange}
-            />
-            <button type="submit"></button>
-          </form>
-        </div>
 
-        <div className="w-full h-[330px] px-[30px] overflow-y-auto mt-4 flex flex-col gap-2">
-          {markers.map((marker, index) => {
-            return (
-              <div key={index} className="flex flex-col border-b border-gray-300" onClick={() => onClick(marker)}>
-                <div className="font-semibold">{marker.content}</div>
-                <div className="text-sm text-gray-400">{marker.roadAddressName}</div>
-                <div className="text-xs mt-2" style={{ color: '#ff4a4d' }}>
-                  {marker.phone}
+          <div className="w-full h-[330px] overflow-y-auto mt-4 flex flex-col gap-2">
+            {markers.map((marker, index) => {
+              return (
+                <div key={index} className="flex flex-col border-b border-gray-300" onClick={() => onClick(marker)}>
+                  <div className="font-semibold">{marker.content}</div>
+                  <div className="text-sm text-gray-400">{marker.roadAddressName}</div>
+                  <div className="text-xs mt-2" style={{ color: '#ff4a4d' }}>
+                    {marker.phone}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
