@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { IoSearch } from 'react-icons/io5';
 import { IAddress } from '../../pages/MeetWrite';
-import Pin from '/images/Pin.png';
+import Pin from '/Pin.png';
 
 interface Prop {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
