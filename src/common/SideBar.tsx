@@ -1,4 +1,4 @@
-import { FaRegUser } from 'react-icons/fa6';
+import { FaRegUser, FaUser } from 'react-icons/fa6';
 import { HiOutlinePencilSquare, HiPencilSquare } from 'react-icons/hi2';
 import { IoChatbubbles, IoChatbubblesOutline, IoHome, IoHomeOutline } from 'react-icons/io5';
 import { RiMapPinFill, RiMapPinLine } from 'react-icons/ri';
@@ -26,14 +26,14 @@ const SideBar = () => {
         <div className="text-xs">모임</div>
       </div>
 
-      <div className="flex flex-col justify-center items-center" onClick={() => navigate('/Chat')}>
+      <div className="flex flex-col justify-center items-center ml-1" onClick={() => navigate('/Chat')}>
         <div>{pathname.includes('Chat') ? <IoChatbubbles size={20} /> : <IoChatbubblesOutline size={20} />}</div>
         <div className="text-xs">채팅</div>
       </div>
 
       <div className="flex flex-col justify-center items-center" onClick={() => navigate('/MyPage')}>
         <div>
-          <FaRegUser size={20} />
+          <div>{pathname.includes('Mypage') ? <FaUser size={20} /> : <FaRegUser size={20} />}</div>
         </div>
         <div className="text-xs">마이페이지</div>
       </div>
