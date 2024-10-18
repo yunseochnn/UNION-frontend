@@ -1,9 +1,11 @@
-import { useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 
-const Header = () => {
-  const [success, setSuccess] = useState(false);
+interface Prop {
+  success: boolean;
+}
+
+const Header = ({ success }: Prop) => {
   const navigate = useNavigate();
   return (
     <div className="flex items-center justify-between w-full h-[60px] border-b border-gray-200 ">

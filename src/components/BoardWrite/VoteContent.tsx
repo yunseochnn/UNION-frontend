@@ -3,15 +3,16 @@ import { MdHowToVote } from 'react-icons/md';
 
 interface Prop {
   items: string[];
+  voteTitle: string;
 }
 
-const VoteContent = ({ items }: Prop) => {
+const VoteContent = ({ items, voteTitle }: Prop) => {
   return (
     <div className="w-full h-auto border border-gray-300 rounded-md p-4 mb-2">
       <div>
         <div className="flex gap-1">
           <MdHowToVote />
-          <span className="text-sm">투표</span>
+          <span className="text-sm">{voteTitle}</span>
         </div>
       </div>
 

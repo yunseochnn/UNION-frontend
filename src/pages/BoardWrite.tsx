@@ -9,12 +9,15 @@ export default function BoardWrite() {
   const [items, setItems] = useState<string[]>(['', '']);
   const [success, setSuccess] = useState(false);
   const [images, setImages] = useState<string[]>([]);
+  const [voteTitle, setVoteTitle] = useState('');
   console.log(items);
   return (
     <div className="flex flex-col w-full h-full px-[30px] pt-3 relative">
-      {open && <Vote items={items} setItems={setItems} setOpen={setOpen} />}
+      {open && (
+        <Vote items={items} setItems={setItems} setOpen={setOpen} voteTitle={voteTitle} setVoteTitle={setVoteTitle} />
+      )}
       <Header success={success} />
-      <Content items={items} images={images} setImages={setImages} />
+      <Content items={items} images={images} setImages={setImages} setSuccess={setSuccess} voteTitle={voteTitle} />
       <Footer setOpen={setOpen} setImages={setImages} images={images} />
     </div>
   );

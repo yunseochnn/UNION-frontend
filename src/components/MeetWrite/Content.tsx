@@ -5,13 +5,14 @@ import People from './People';
 import { IoPeople } from 'react-icons/io5';
 import { IAddress } from '../../pages/MeetWrite';
 import Map from '../../common/Map';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Prop {
   address: IAddress | null;
+  setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Content = ({ address }: Prop) => {
+const Content = ({ address, setSuccess }: Prop) => {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
 
@@ -22,6 +23,12 @@ const Content = ({ address }: Prop) => {
   const onTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
+
+  useEffect(() => {
+    if (text !== '' && title !== '') {
+      setSuccess(true);
+    }
+  }, [setSuccess, text, title]);
 
   return (
     <div className="flex flex-col flex-1 overflow-y-auto hidden-scrollbar mt-4">

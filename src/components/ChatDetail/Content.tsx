@@ -1,7 +1,14 @@
+import { useParams, useSearchParams } from 'react-router-dom';
 import Policy from '../../common/Policy';
 import '../../style.css';
 
 const Content = () => {
+  const [searchParams] = useSearchParams();
+  const option = searchParams.get('option');
+  const { id } = useParams();
+  console.log(id);
+  console.log(option);
+
   return (
     <div className="flex flex-col flex-1 overflow-y-auto hidden-scrollbar mt-3">
       <div>

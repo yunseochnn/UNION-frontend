@@ -6,10 +6,13 @@ interface Prop {
   items: string[];
   setItems: React.Dispatch<React.SetStateAction<string[]>>;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  voteTitle: string;
+  setVoteTitle: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Vote = ({ items, setItems, setOpen }: Prop) => {
+const Vote = ({ items, setItems, setOpen, voteTitle, setVoteTitle }: Prop) => {
   const [success, setSuccess] = useState(false);
+
   const addItem = () => {
     setItems([...items, '']);
   };
@@ -23,6 +26,10 @@ const Vote = ({ items, setItems, setOpen }: Prop) => {
     const updataItems = [...items];
     updataItems[index] = value;
     setItems(updataItems);
+  };
+
+  const onChangTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setVoteTitle(e.target.value);
   };
 
   const onClickConfirm = () => {
@@ -41,10 +48,12 @@ const Vote = ({ items, setItems, setOpen }: Prop) => {
   };
 
   useEffect(() => {
-    if (items[0] !== '' && items[1] !== '') {
+    if (items[0] !== '' && items[1] !== '' && voteTitle !== '') {
       setSuccess(true);
+    } else {
+      setSuccess(false);
     }
-  }, [items, setSuccess]);
+  }, [items, setSuccess, voteTitle]);
 
   return (
     //inset-0을 넣어줘야 위를 덮음
@@ -62,6 +71,15 @@ const Vote = ({ items, setItems, setOpen }: Prop) => {
             완료
           </div>
         </div>
+      </div>
+
+      <div className="mt-6">
+        <input
+          value={voteTitle}
+          className=" w-full h-10 text-lg border-b border-gray-300 pb-2 outline-none"
+          placeholder="투표 주제를 입력해주세요."
+          onChange={onChangTitle}
+        />
       </div>
 
       <div className="flex flex-col gap-5 mt-6">
