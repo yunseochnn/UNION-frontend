@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const Header = () => {
   const navigate = useNavigate();
   return (
-    <div className="flex items-center justify-between w-full h-[60px] px-[30px]">
+    <div className="flex items-center justify-between w-full h-[60px] px-[30px] border-b border-gray-300">
       <div className="cursor-pointer font-black" onClick={() => navigate('/Meet')}>
         <IoIosArrowBack size={32} />
       </div>

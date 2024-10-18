@@ -30,14 +30,14 @@ const Content = () => {
 
   if (!geolocation.latitude || !geolocation.longitude) {
     return (
-      <div className="py-3 h-full w-full flex justify-center items-center">
+      <div className="h-full w-full flex justify-center items-center">
         <EmptyMap />
       </div>
     );
   }
 
   return (
-    <div className="py-3 h-full w-full">
+    <div className="h-full w-full">
       <div id="map" className="h-full"></div>
     </div>
   );
