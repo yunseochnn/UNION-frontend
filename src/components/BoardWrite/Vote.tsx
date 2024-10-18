@@ -18,7 +18,7 @@ const Vote = ({ items, setItems, setOpen, voteTitle, setVoteTitle }: Prop) => {
   };
 
   const removeItem = (id: number) => {
-    const newItem = items.filter((item, index) => index !== id);
+    const newItem = items.filter((_, index) => index !== id);
     setItems(newItem);
   };
 

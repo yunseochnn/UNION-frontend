@@ -12,7 +12,7 @@ const ShowImages = ({ images, setImages }: Prop) => {
   };
 
   return (
-    <div className="flex gap-3 mb-3 overflow-x-auto hidden-scrollbar">
+    <div className="flex gap-3 mb-3 overflow-x-auto hidden-scrollbar flex-shrink-0">
       {images &&
         images.map((image, index) => (
           <div

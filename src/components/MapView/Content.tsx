@@ -12,6 +12,7 @@ const Content = () => {
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
   const geolocation = useGeolocation();
 
+  console.log(map);
   //지도 불러오기
   useEffect(() => {
     if (!geolocation.latitude || !geolocation.longitude) return;
@@ -24,6 +25,10 @@ const Content = () => {
         level: 5,
       };
       const mapInstance = new kakao.maps.Map(container, options);
+
+      // 드래그 가능 여부를 명시적으로 설정
+      mapInstance.setDraggable(true);
+
       setMap(mapInstance);
     });
   }, [geolocation.latitude, geolocation.longitude]);

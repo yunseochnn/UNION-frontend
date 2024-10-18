@@ -71,7 +71,7 @@ const Content = ({ address, setSuccess, images, setImages }: Prop) => {
       <ShowImages images={images} setImages={setImages} />
 
       {address && (
-        <div className="mt-4 flex flex-col">
+        <div className="flex flex-col">
           <div className="h-48 w-[368px] border border-gray-200 rounded-md">
             <Map y={address?.positionY} x={address?.positionX} name={address?.name} />
           </div>
