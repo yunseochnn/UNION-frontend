@@ -2,8 +2,8 @@ import Policy from '../../common/Policy';
 import '../../style.css';
 import VoteContent from './VoteContent';
 import '../../style.css';
-import { IoIosCloseCircle } from 'react-icons/io';
 import { useEffect, useState } from 'react';
+import ShowImages from '../../common/showImages';
 
 interface Prop {
   items: string[];
@@ -16,11 +16,6 @@ interface Prop {
 const Content = ({ items, images, setImages, setSuccess, voteTitle }: Prop) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-
-  const onClickCloseImage = (id: number) => {
-    const newImages = images.filter((image, index) => index !== id);
-    setImages(newImages);
-  };
 
   const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -58,22 +53,7 @@ const Content = ({ items, images, setImages, setSuccess, voteTitle }: Prop) => {
         onChange={onChangeContent}
       />
 
-      <div className="flex gap-3 mb-3 overflow-x-auto hidden-scrollbar">
-        {images &&
-          images.map((image, index) => (
-            <div
-              key={index}
-              className="h-24 w-24 flex flex-shrink-0 justify-center items-center rounded-md overflow-hidden"
-            >
-              <div className="relative">
-                <img src={image} className="object-full" />
-                <div className="absolute top-1 right-1" onClick={() => onClickCloseImage(index)}>
-                  <IoIosCloseCircle />
-                </div>
-              </div>
-            </div>
-          ))}
-      </div>
+      <ShowImages images={images} setImages={setImages} />
 
       {items[0] !== '' && <VoteContent items={items} voteTitle={voteTitle} />}
     </div>

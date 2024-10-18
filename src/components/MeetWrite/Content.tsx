@@ -6,13 +6,16 @@ import { IoPeople } from 'react-icons/io5';
 import { IAddress } from '../../pages/MeetWrite';
 import Map from '../../common/Map';
 import { useEffect, useState } from 'react';
+import ShowImages from '../../common/showImages';
 
 interface Prop {
   address: IAddress | null;
   setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+  images: string[];
+  setImages: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const Content = ({ address, setSuccess }: Prop) => {
+const Content = ({ address, setSuccess, images, setImages }: Prop) => {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
 
@@ -64,6 +67,8 @@ const Content = ({ address, setSuccess }: Prop) => {
         className="mt-4 w-full flex flex-1 text-base resize-none placeholder-gray-400 outline-none hidden-scrollbar min-h-52"
         placeholder="주변 학생들과 나누고 싶은 내용을 입력해주세요"
       />
+
+      <ShowImages images={images} setImages={setImages} />
 
       {address && (
         <div className="mt-4 flex flex-col">
