@@ -19,6 +19,7 @@ import Board from './pages/Board';
 import BoardList from './pages/BoardList';
 import BoardDetail from './pages/BoardDetail';
 import BoardWrite from './pages/BoardWrite';
+import MeetParticipants from './pages/MeetParticipants';
 import UserInfo from './pages/UserInfo';
 import BlockedUser from './pages/BlockedUser';
 
@@ -36,6 +37,7 @@ function App() {
         <Route path="/Meet" element={<Meet />} />
         <Route path="/Meet/:id" element={<MeetDetail />} />
         <Route path="/Meet/Write" element={<MeetWrite />} />
+        <Route path="/Meet/Participants/:id" element={<MeetParticipants />} />
         <Route path="/Chat" element={<ChatList />} />
         <Route path="/Chat/:id" element={<ChatDetail />} />
         <Route path="/Map" element={<MapView />} />
