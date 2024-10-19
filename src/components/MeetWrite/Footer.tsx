@@ -8,6 +8,7 @@ interface Prop {
 }
 
 const Footer = ({ setOpen, images, setImages }: Prop) => {
+  console.log(images);
   return (
     <div className="border-t border-gray-200 h-14">
       <div className="flex gap-7 mt-4 text-gray-400">

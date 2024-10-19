@@ -26,7 +26,7 @@ const Content = () => {
       };
       const mapInstance = new kakao.maps.Map(container, options);
 
-      // 드래그 가능 여부를 명시적으로 설정
+      // 드래그 가능 여부를 명시적으로 설정(안해주면 모바일에서 지도뷰가 안움직임)
       mapInstance.setDraggable(true);
 
       setMap(mapInstance);

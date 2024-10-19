@@ -30,6 +30,8 @@ const Content = ({ address, setSuccess, images, setImages }: Prop) => {
   useEffect(() => {
     if (text !== '' && title !== '') {
       setSuccess(true);
+    } else {
+      setSuccess(false);
     }
   }, [setSuccess, text, title]);
 
