@@ -3,9 +3,11 @@ import SocialButton from '../components/SocialLogin/SocialButton';
 
 export default function SocialLogin() {
   return (
-    <div className="flex flex-col items-center justify-center mt-[150px]">
-      <Logo />
-      <div className="mt-[178px] space-y-3">
+    <div className="h-full w-full flex flex-col items-center justify-between px-[30px]">
+      <div className="mt-[150px]">
+        <Logo />
+      </div>
+      <div className="space-y-3 flex flex-col items-center mb-[48px]">
         <SocialButton
           platform="Google"
           bgColor="bg-customWhite"

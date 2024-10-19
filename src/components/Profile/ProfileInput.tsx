@@ -1,10 +1,10 @@
 export default function ProfileInput() {
   return (
-    <div className="mt-[60px]">
-      <div className="flex justify-center">
+    <div>
+      <div className="flex justify-center mt-[30px]">
         <button className="mt-[37px] w-[98px] h-[98px] bg-[#D9D9D9] rounded-full flex items-center justify-center"></button>
       </div>
-      <label htmlFor="nickname" className="text-[16px] text-left block font-semibold mt-7">
+      <label htmlFor="nickname" className="text-[16px] text-left block font-semibold mt-8">
         닉네임
       </label>
       <div className="">
@@ -25,11 +25,6 @@ export default function ProfileInput() {
           placeholder="자기 소개가 들어갑니다"
           className="border-b-[1.4px] border-[#C1C7CD] text-[14px] text-[#697077] bg-[#F2F4F8] placeholder-[#697077] focus:outline-none p-2 w-full mt-3 h-[93px] rounded-md"
         />
-      </div>
-      <div className="text-center mt-[250px] ">
-        <button className="text-[23px] font-semibold w-full bg-mainColor h-[63px] text-white p-2 rounded-md">
-          다음
-        </button>
       </div>
     </div>
   );

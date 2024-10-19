@@ -1,0 +1,72 @@
+body {
+  box-sizing: border-box;
+}
+.react-select__control {
+  width: 80px !important;
+  height: 25px !important;
+  border: none !important;
+  border-radius: 20px !important;
+  display: flex !important;
+  text-align: center !important;
+  cursor: pointer !important;
+}
+
+.react-select__control input {
+  caret-color: transparent !important; /* 텍스트 입력 커서를 투명하게 */
+}
+
+.react-select__control--is-focused {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: black !important;
+  cursor: pointer !important;
+}
+
+.react-select__single-value {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+}
+
+.react-select__input-container {
+  height: 20px !important;
+  width: 30px !important;
+}
+
+.react-select__value-container {
+  padding: 0 !important;
+  width: auto !important; /* 컨테이너 너비 자동 설정 */
+  min-width: 0 !important; /* 최소 너비 제거 */
+  height: 30px !important; /* 컨테이너 높이 설정 */
+  align-items: center !important; /* 텍스트 가운데 정렬 */
+}
+
+.react-select__menu {
+  background-color: #ffffff !important;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+}
+
+.react-select__option {
+  background-color: transparent !important;
+  color: black !important;
+}
+
+.react-select__option--is-selected {
+  background-color: #ff4a4d !important;
+  color: white !important;
+}
+
+.react-select__placeholder {
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+.react-select__indicator {
+  padding: 4px !important;
+}
+
+.react-select__indicator-separator {
+  display: none;
+}
