@@ -16,7 +16,7 @@ import ChatDetail from './pages/ChatDetail';
 import MapView from './pages/MapView';
 import Notification from './pages/Notification';
 import Board from './pages/Board';
-import BoardList from './pages/BoardList';
+import BoardList from './pages/Board/type';
 import BoardDetail from './pages/BoardDetail';
 import BoardWrite from './pages/BoardWrite';
 import MeetParticipants from './pages/MeetParticipants';
