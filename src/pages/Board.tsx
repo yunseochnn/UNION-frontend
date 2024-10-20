@@ -22,7 +22,7 @@ const Board: React.FC = () => {
       hasArrow: true,
       subCategories: ['인문사회', '자연과학', '공학', '예체능', '의학'],
     },
-    { id: 'job', name: '장터 게시판', hasArrow: true },
+    { id: 'market', name: '장터 게시판', hasArrow: true },
     { id: 'info', name: '정보 게시판', hasArrow: true },
     { id: 'employment', name: '쭉 생각해보자.. 게시판', hasArrow: true },
   ];
