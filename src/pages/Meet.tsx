@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { FiPlus } from 'react-icons/fi';
-import { FaHeart, FaUser } from 'react-icons/fa';  // FaRegHeart 제거
 import { useNavigate } from 'react-router-dom';
 import SideBar from '../common/SideBar';
 import MeetHeader from '../components/Meet/MeetHeader';
+import FloatingActionButton from '../common/FloatingActionButton';  // 추가된 컴포넌트
+import { FaUser, FaHeart } from 'react-icons/fa';  // FaUser, FaHeart 임포트
+
 
 const Meet: React.FC = () => {
   const [sortBy, setSortBy] = useState('가까운 거리 순');
@@ -19,6 +20,10 @@ const Meet: React.FC = () => {
 
   const handleMeetingClick = (id: number) => {
     navigate(`/Meet/${id}`);
+  };
+
+  const handlePlusClick = () => {
+    navigate('/Meet/new');  // 플러스 버튼 클릭 시 새로운 모임 생성 페이지로 이동
   };
 
   return (
@@ -48,7 +53,7 @@ const Meet: React.FC = () => {
               </div>
               <div className="w-16 h-16 rounded-md overflow-hidden">
                 <img 
-                  src={meeting.imageUrl} //이미지 주소 추가
+                  //src={meeting.imageUrl} 
                   alt={meeting.title}
                   className="w-full h-full object-cover"
                 />
@@ -58,11 +63,8 @@ const Meet: React.FC = () => {
         ))}
       </main>
 
-      <div className="absolute bottom-20 right-4 z-10">
-        <button className="bg-red-500 text-white rounded-full p-4 shadow-lg">
-          <FiPlus size={24} />
-        </button>
-      </div>
+      {/* 플로팅 액션 버튼 */}
+      <FloatingActionButton onClick={handlePlusClick} />
 
       <footer className="mt-auto border-t">
         <div className="flex justify-center">
