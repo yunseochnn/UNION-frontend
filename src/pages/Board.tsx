@@ -3,10 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FiSearch, FiBell, FiChevronDown, FiChevronRight } from 'react-icons/fi';
 import SideBar from '../common/SideBar';
 
-interface Department {
- key: string;
- value: string;
-}
+
 
 const Board: React.FC = () => {
  const navigate = useNavigate();
