@@ -22,7 +22,10 @@ const Lists = () => {
         </span>
       </div>
 
-      <div>
+      <div className="mt-3">
+        <List filter={filter} />
+        <List filter={filter} />
+        <List filter={filter} />
         <List filter={filter} />
       </div>
     </div>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiSearch, FiBell } from 'react-icons/fi';
 import SideBar from '../common/SideBar';
+import '../style.css';
 
 interface Post {
   id: number;
@@ -128,7 +129,7 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="center-content flex flex-col bg-white">
+    <div className="center-content flex flex-col bg-white py-3">
       <header className="flex justify-between items-center p-4">
         <img src="/Logo.svg" alt="UNION" className="h-8" />
         <div className="flex space-x-4">
@@ -162,14 +163,12 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      <main className="flex-1 overflow-y-auto px-6">
+      <main className="flex-1 overflow-y-auto hidden-scrollbar px-[33px]">
         {activeTab === 'posts' ? posts.map(renderItem) : meetings.map(renderItem)}
       </main>
 
-      <footer className="mt-auto border-t">
-        <div className="flex justify-center">
-          <SideBar />
-        </div>
+      <footer className="h-14 px-[33px]">
+        <SideBar />
       </footer>
     </div>
   );

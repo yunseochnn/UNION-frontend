@@ -21,13 +21,13 @@ interface BoardPost {
 const BOARD_TITLES = {
   free: '자유게시판',
   market: '장터게시판',
-  info: '정보게시판'
+  info: '정보게시판',
 } as const;
 
 const BoardList: React.FC = () => {
   const navigate = useNavigate();
   const { type } = useParams<{ type: keyof typeof BOARD_TITLES }>();
-  
+
   const posts: BoardPost[] = [
     {
       id: 1,
@@ -35,22 +35,22 @@ const BoardList: React.FC = () => {
       content: '간단하게 오늘의 내용이 포시됩니다. 아주 간..',
       author: {
         name: '닉네임',
-        affiliation: '대학교명'
+        affiliation: '대학교명',
       },
       likes: 155,
       comments: 3,
-      thumbnail: 'path/to/image'
+      thumbnail: 'path/to/image',
     },
     // ... 더 많은 게시글 추가
   ];
 
   return (
-    <div className="center-content flex flex-col bg-white">
+    <div className="center-content flex flex-col bg-white relative">
       <Header title={BOARD_TITLES[type!]} />
 
-      <main className="flex-1 overflow-y-auto">
-        {posts.map((post) => (
-          <div key={post.id} className="p-4 border-b">
+      <main className="flex-1 overflow-y-auto px-[33px]">
+        {posts.map(post => (
+          <div key={post.id} className="py-4 border-b">
             <div className="flex items-start gap-3">
               <div className="flex-1">
                 <div className="flex items-center gap-1 text-sm text-gray-500">
@@ -71,21 +71,19 @@ const BoardList: React.FC = () => {
                   </span>
                 </div>
               </div>
-              {post.thumbnail && (
-                <div className="w-20 h-20 bg-gray-200 rounded-md" />
-              )}
+              {post.thumbnail && <div className="w-20 h-20 bg-gray-200 rounded-md" />}
             </div>
           </div>
         ))}
       </main>
 
       {/* FloatingActionButton을 오른쪽 하단에 고정 */}
-      <FloatingActionButton onClick={() => navigate(`/Board/${type}/write`)} />
+      <div className="right-8 bottom-24 absolute">
+        <FloatingActionButton onClick={() => navigate(`/Board/${type}/write`)} />
+      </div>
 
-      <footer className="mt-auto border-t">
-        <div className="flex justify-center">
-          <SideBar />
-        </div>
+      <footer className="h-14 px-[33px] mb-3">
+        <SideBar />
       </footer>
     </div>
   );

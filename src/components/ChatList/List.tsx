@@ -10,8 +10,9 @@ const List = ({ filter }: Prop) => {
   const onClickList = () => {
     navigate(`/chat/1?option=${filter}`);
   };
+
   return (
-    <div className="w-full h-16 flex items-center mt-6 gap-4 cursor-pointer" onClick={onClickList}>
+    <div className="w-full h-16 flex items-center mt-2 gap-4 cursor-pointer" onClick={onClickList}>
       <div className="w-14 h-14 rounded-full bg-gray-300"></div>
 
       <div className="flex flex-col">
