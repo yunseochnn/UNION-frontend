@@ -17,9 +17,9 @@ const ShowImages = ({ images, setImages }: Prop) => {
         images.map((image, index) => (
           <div
             key={index}
-            className="h-24 w-24 flex flex-shrink-0 justify-center items-center rounded-md overflow-hidden"
+            className="h-24 w-24 flex flex-shrink-0 justify-center items-center rounded-md overflow-hidden relative"
           >
-            <div className="relative">
+            <div>
               <img src={image} className="object-full" />
               <div className="absolute top-1 right-1" onClick={() => onClickCloseImage(index)}>
                 <IoIosCloseCircle />

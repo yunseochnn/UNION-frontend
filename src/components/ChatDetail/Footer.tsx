@@ -7,9 +7,9 @@ const Footer = () => {
       <div>
         <FaPlus size={20} />
       </div>
-      <div>
+      <div className="w-[80%]">
         <input
-          className="bg-gray-100 w-[310px] h-10 rounded-full py-2 px-4 outline-none"
+          className="bg-gray-100 w-full h-10 rounded-full py-2 px-4 outline-none"
           type="text"
           placeholder="메시지 보내기"
         />

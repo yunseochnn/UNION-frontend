@@ -28,6 +28,8 @@ const Content = ({ items, images, setImages, setSuccess, voteTitle }: Prop) => {
   useEffect(() => {
     if (content !== '' && title !== '') {
       setSuccess(true);
+    } else {
+      setSuccess(false);
     }
   }, [content, setSuccess, title]);
 
