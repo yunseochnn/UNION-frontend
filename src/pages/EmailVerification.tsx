@@ -3,11 +3,10 @@ import Button from '../components/EmailVerification/Button';
 
 import Title from '../components/EmailVerification/Title';
 import VerificationInput from '../components/EmailVerification/VerificationInput';
-
 export default function EmailVerification() {
   return (
     <div className="h-full w-full flex flex-col relative">
-      <Header title="" />
+      <Header title="" navigateTo="/SocialLogin" />
       <div className="px-[36px] flex-grow">
         <Title />
         <VerificationInput />

@@ -6,7 +6,7 @@ import { IoPeople } from 'react-icons/io5';
 import { IAddress } from '../../pages/MeetWrite';
 import Map from '../../common/Map';
 import { useEffect, useState } from 'react';
-import ShowImages from '../../common/showImages';
+import ShowImages from '../../common/ShowImages';
 
 interface Prop {
   address: IAddress | null;
