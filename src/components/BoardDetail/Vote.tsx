@@ -1,19 +1,38 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaCheckCircle } from 'react-icons/fa';
 import { FaCheck, FaRegCircle } from 'react-icons/fa6';
 import { MdHowToVote } from 'react-icons/md';
 
+const data = [
+  { content: '엽떡', value: 2 },
+  { content: '우아아아아아아이', value: 1 },
+  { content: '치킨', value: 1 },
+];
+
 const Vote = () => {
   const [select, setSelect] = useState(-1);
-  const data = [
-    { content: '엽떡', value: 2 },
-    { content: '우아아아아아아이', value: 1 },
-    { content: '치킨', value: 1 },
-  ];
-
-  const sum = 4;
-
+  const [best, setBest] = useState<number[]>([]);
+  const [sum, setSum] = useState(0);
   const [vote, setVote] = useState(false);
+
+  useEffect(() => {
+    let totalSum = 0;
+    let highstValue = 0; // 가장 높은 값을 추적할 변수
+    let newBest: number[] = []; // 새로운 best 값을 저장할 임시 배열
+    for (let i = 0; i < data.length; i++) {
+      totalSum += data[i].value;
+
+      if (data[i].value > highstValue) {
+        highstValue = data[i].value;
+        newBest = [i];
+      } else if (data[i].value === highstValue) {
+        newBest.push(i);
+      }
+    }
+
+    setSum(totalSum);
+    setBest(newBest);
+  }, []);
 
   const onClickItem = (index: number) => {
     setSelect(index);
@@ -37,7 +56,9 @@ const Vote = () => {
             {data.map((item, index) => (
               <div className="h-10 bg-gray-100 rounded-md mt-2 flex items-center" key={index}>
                 <div
-                  className={` h-full bg-gray-300 flex items-center  pl-3 rounded-l-md whitespace-nowrap`}
+                  className={` h-full ${
+                    best.includes(index) ? 'bg-red-300' : 'bg-gray-300'
+                  } flex items-center  pl-3 rounded-l-md whitespace-nowrap`}
                   style={{ width: `${(item.value / sum) * 100}%` }}
                 >
                   {select === index && <FaCheck size={14} className="mr-1 flex-shrink-0" />}
