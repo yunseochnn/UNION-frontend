@@ -16,10 +16,12 @@ import ChatDetail from './pages/ChatDetail';
 import MapView from './pages/MapView';
 import Notification from './pages/Notification';
 import Board from './pages/Board';
-import BoardList from './pages/BoardList';
+import BoardList from './pages/Board/type';
 import BoardDetail from './pages/BoardDetail';
 import BoardWrite from './pages/BoardWrite';
 import MeetParticipants from './pages/MeetParticipants';
+import UserInfo from './pages/UserInfo';
+import BlockedUser from './pages/BlockedUser';
 
 function App() {
   return (
@@ -44,6 +46,8 @@ function App() {
         <Route path="/Board/:type" element={<BoardList />} />
         <Route path="/Board/:type/:id" element={<BoardDetail />} />
         <Route path="/Board/Write" element={<BoardWrite />} />
+        <Route path="/UserInfo" element={<UserInfo />} />
+        <Route path="/BlockedUser" element={<BlockedUser />} />
       </Routes>
     </RecoilRoot>
   );
