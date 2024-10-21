@@ -66,7 +66,7 @@ const Board: React.FC = () => {
          className="p-4 border-b cursor-pointer flex justify-between items-center"
          onClick={() => navigate('/board/job')}
        >
-         <span>정터 게시판</span>
+         <span>장터 게시판</span>
          <FiChevronRight />
        </div>
 
@@ -82,7 +82,7 @@ const Board: React.FC = () => {
          className="p-4 border-b cursor-pointer flex justify-between items-center"
          onClick={() => navigate('/board/employment')}
        >
-         <span>똑 생각해보자.. 게시판</span>
+         <span>추후 생각</span>
          <FiChevronRight />
        </div>
      </div>
