@@ -10,7 +10,7 @@ export default function Mypage() {
   return (
     <div className="h-full w-full flex flex-col">
       <Title />
-      <div className="flex flex-col flex-grow px-[36px]">
+      <div className="flex flex-col flex-grow px-[33px]">
         <User
           name="찐 감자"
           university="구름대학교"
@@ -22,7 +22,7 @@ export default function Mypage() {
         <MypageMenuList />
         <MyCalendar />
         <LogoutBtn />
-        <div className="py-[20px]">
+        <div className="py-3">
           <Footer />
         </div>
       </div>
