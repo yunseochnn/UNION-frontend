@@ -21,13 +21,16 @@ export default function User({ name, university, bio, buttonLabel, buttonWidth, 
             <div className="font-semibold text-sm text-gray-400">{bio}</div>
           </div>
         </div>
-        <div
+        <button
           className="h-7 rounded-full text-white flex items-center justify-center font-semibold text-sm cursor-pointer"
           style={{ width: buttonWidth, backgroundColor: '#ff4a4d' }}
-          onClick={onButtonClick}
+          onClick={event => {
+            event.stopPropagation();
+            onButtonClick();
+          }}
         >
           {buttonLabel}
-        </div>
+        </button>
       </div>
     </div>
   );
