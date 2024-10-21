@@ -5,7 +5,7 @@ const items = ['내가 작성한 게시글', '내가 작성한 모임글', '내�
 export default function MypageMenuList() {
   const navigate = useNavigate();
   return (
-    <div className="mt-6 space-y-2 font-semibold">
+    <div className="mt-5 font-semibold">
       {items.map((item, index) => (
         <button
           key={index}

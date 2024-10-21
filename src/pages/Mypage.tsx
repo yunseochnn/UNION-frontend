@@ -11,8 +11,13 @@ export default function Mypage() {
   const navigate = useNavigate();
   return (
     <div className="h-full w-full flex flex-col">
-      <Title />
-      <div className="flex flex-col flex-grow px-[36px]">
+      {/* Title 부분을 sticky로 설정 */}
+      <div className="sticky top-0 z-10 bg-white">
+        <Title />
+      </div>
+
+      {/* 나머지 내용에 대해 스크롤 가능하도록 설정 */}
+      <div className="flex flex-col flex-grow overflow-y-auto px-[36px]">
         <User
           name="찐 감자"
           university="구름대학교"
@@ -24,9 +29,11 @@ export default function Mypage() {
         <MypageMenuList />
         <MyCalendar />
         <LogoutBtn />
-        <div className="py-[20px]">
-          <Footer />
-        </div>
+      </div>
+
+      {/* Footer 부분을 sticky로 설정 */}
+      <div className="sticky bottom-0 z-10 bg-white py-[20px]">
+        <Footer />
       </div>
     </div>
   );

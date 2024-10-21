@@ -7,7 +7,7 @@ export default function VerificationInput() {
   const [filteredUniversities, setFilteredUniversities] = useState<string[]>([]);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isCodeRequested, setIsCodeRequested] = useState(false);
-  const [hasFetched, setHasFetched] = useState(false); // JSON 파일 불러옴
+  const [hasFetched, setHasFetched] = useState(false); // 학교정보 JSON 파일 불러옴
   const dropdownRef = useRef<HTMLUListElement>(null);
 
   const fetchUniversities = async () => {
@@ -44,7 +44,7 @@ export default function VerificationInput() {
 
   const startTimer = () => {
     setIsCodeRequested(true);
-    setTimeLeft(180);
+    setTimeLeft(300);
   };
 
   useEffect(() => {

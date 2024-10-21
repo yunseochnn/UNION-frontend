@@ -31,7 +31,7 @@ function App() {
         <Route path="/SocialLogin" element={<SocialLogin />} />
         <Route path="/EmailVerification" element={<EmailVerification />} />
         <Route path="/Profile" element={<Profile />} />
-        <Route path="/Search" element={<Search />} />
+        <Route path="/Search:type" element={<Search />} />
         <Route path="/Mypage" element={<Mypage />} />
         <Route path="/EditProfile" element={<EditProfile />} />
         <Route path="/Meet" element={<Meet />} />

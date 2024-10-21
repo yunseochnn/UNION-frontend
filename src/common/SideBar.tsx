@@ -9,7 +9,7 @@ const SideBar = () => {
   const pathname = window.location.pathname;
   return (
     <div className="flex gap-12">
-      <div className="flex flex-col justify-center items-center" onClick={() => navigate('/Home')}>
+      <div className="flex flex-col justify-center items-center" onClick={() => navigate('/')}>
         {' '}
         <div>{pathname === '/' ? <IoHome size={20} /> : <IoHomeOutline size={20} />}</div>
         <div className="text-xs">홈</div>
