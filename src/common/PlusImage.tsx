@@ -1,12 +1,7 @@
 import { useState } from 'react';
 import { TbPhoto } from 'react-icons/tb';
 
-interface Prop {
-  images: string[];
-  setImages: React.Dispatch<React.SetStateAction<string[]>>;
-}
-
-const PlusImage = ({ images, setImages }: Prop) => {
+const PlusImage = () => {
   const [selectedFile, setSelectedFile] = useState<File[]>([]);
   const onImageInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
