@@ -89,10 +89,9 @@ export default function MyCalendar() {
           value={selectedDate}
           tileContent={tileContent}
           tileClassName={tileClassName}
-          formatDay={(locale, date) => date.getDate().toString()}
+          formatDay={(_, date) => date.getDate().toString()}
           onActiveStartDateChange={handleActiveStartDateChange}
           locale="ko"
-          formatShortWeekday={(locale, date) => ['일', '월', '화', '수', '목', '금', '토'][date.getDay()]}
         />
       </div>
 

@@ -6,7 +6,7 @@ import SocialLogin from './pages/SocialLogin';
 import EmailVerification from './pages/EmailVerification';
 import Profile from './pages/Profile';
 import Search from './pages/Search';
-import Mypage from './pages/Mypage';
+import MyPage from './pages/MyPage';
 import EditProfile from './pages/EditProfile';
 import Meet from './pages/Meet';
 import MeetDetail from './pages/MeetDetail';
@@ -22,6 +22,9 @@ import BoardWrite from './pages/BoardWrite';
 import MeetParticipants from './pages/MeetParticipants';
 import UserInfo from './pages/UserInfo';
 import BlockedUser from './pages/BlockedUser';
+import MyPosts from './pages/MyPagePost/MyPosts';
+import MyMeetings from './pages/MyPagePost/MyMeetings';
+import MyComments from './pages/MyPagePost/MyComments';
 
 function App() {
   return (
@@ -32,7 +35,7 @@ function App() {
         <Route path="/EmailVerification" element={<EmailVerification />} />
         <Route path="/Profile" element={<Profile />} />
         <Route path="/Search:type" element={<Search />} />
-        <Route path="/Mypage" element={<Mypage />} />
+        <Route path="/Mypage" element={<MyPage />} />
         <Route path="/EditProfile" element={<EditProfile />} />
         <Route path="/Meet" element={<Meet />} />
         <Route path="/Meet/:id" element={<MeetDetail />} />
@@ -48,6 +51,9 @@ function App() {
         <Route path="/Board/Write" element={<BoardWrite />} />
         <Route path="/UserInfo" element={<UserInfo />} />
         <Route path="/BlockedUser" element={<BlockedUser />} />
+        <Route path="/MyPosts" element={<MyPosts />} />
+        <Route path="/MyMeetings" element={<MyMeetings />} />
+        <Route path="/MyComments" element={<MyComments />} />
       </Routes>
     </RecoilRoot>
   );
