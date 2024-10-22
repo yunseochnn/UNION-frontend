@@ -16,17 +16,29 @@ export default function BlockedUser() {
   };
 
   return (
-    <div className="h-full w-full flex flex-col">
-      <Header title="차단 유저 목록" navigateTo="/Mypage" />
-      <div className="py-3 px-[30px]" onClick={handleUserClick}>
-        <User
-          name="찐 감자"
-          university="구름대학교"
-          bio="한 줄 자기 소개가 들어갑니다!"
-          buttonLabel={isBlocked ? '차단 하기' : '차단 해제'}
-          buttonWidth="84px"
-          onButtonClick={handleBlockToggle}
-        />
+    <div className="h-screen flex flex-col">
+      <div className="sticky top-0 z-10 ">
+        <Header title="차단 유저 목록" navigateTo="/Mypage" />
+      </div>
+      <div className="flex-grow overflow-y-auto hidden-scrollbar">
+        <div className="py-3 px-[30px]" onClick={handleUserClick}>
+          <User
+            name="찐 감자"
+            university="구름대학교"
+            bio="한 줄 자기 소개가 들어갑니다!"
+            buttonLabel={isBlocked ? '차단 하기' : '차단 해제'}
+            buttonWidth="84px"
+            onButtonClick={handleBlockToggle}
+          />
+          <User
+            name="찐 감자"
+            university="구름대학교"
+            bio="한 줄 자기 소개가 들어갑니다!"
+            buttonLabel={isBlocked ? '차단 하기' : '차단 해제'}
+            buttonWidth="84px"
+            onButtonClick={handleBlockToggle}
+          />
+        </div>
       </div>
     </div>
   );
