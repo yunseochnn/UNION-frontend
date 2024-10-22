@@ -6,7 +6,8 @@ import { IoPeople } from 'react-icons/io5';
 import { IAddress } from '../../pages/MeetWrite';
 import Map from '../../common/Map';
 import { useEffect, useState } from 'react';
-import ShowImages from '../../common/showImages';
+import ShowImages from '../../common/ShowImages';
+import { FaCalendar } from 'react-icons/fa';
 
 interface Prop {
   address: IAddress | null;
@@ -39,7 +40,8 @@ const Content = ({ address, setSuccess, images, setImages }: Prop) => {
     <div className="flex flex-col flex-1 overflow-y-auto hidden-scrollbar mt-4">
       <div className="font-bold ml-2">시간 인원 설정</div>
       <div className="flex mb-3 justify-between items-center">
-        <div>
+        <div className="flex items-center gap-2 mt-1">
+          <FaCalendar />
           <Calendar />
         </div>
         <div className="flex items-center">
