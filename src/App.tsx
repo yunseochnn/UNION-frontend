@@ -6,7 +6,7 @@ import SocialLogin from './pages/SocialLogin';
 import EmailVerification from './pages/EmailVerification';
 import Profile from './pages/Profile';
 import Search from './pages/Search';
-import MyPage from './pages/MyPage';
+import Mypage from './pages/Mypage';
 import EditProfile from './pages/EditProfile';
 import Meet from './pages/Meet';
 import MeetDetail from './pages/MeetDetail';
@@ -35,7 +35,7 @@ function App() {
         <Route path="/EmailVerification" element={<EmailVerification />} />
         <Route path="/Profile" element={<Profile />} />
         <Route path="/Search:type" element={<Search />} />
-        <Route path="/Mypage" element={<MyPage />} />
+        <Route path="/Mypage" element={<Mypage />} />
         <Route path="/EditProfile" element={<EditProfile />} />
         <Route path="/Meet" element={<Meet />} />
         <Route path="/Meet/:id" element={<MeetDetail />} />

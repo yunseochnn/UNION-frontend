@@ -2,6 +2,7 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 import { HiOutlineChatBubbleOvalLeft } from 'react-icons/hi2';
 import Slide from '../../common/Slide';
 import { useState } from 'react';
+import Vote from './Vote';
 
 const Content = () => {
   const [like, setLike] = useState(false);
@@ -29,6 +30,10 @@ const Content = () => {
 
       <div className="mt-4 cursor-pointer">
         <Slide />
+      </div>
+
+      <div className="mt-4">
+        <Vote />
       </div>
 
       <div className="flex gap-3 my-3">
