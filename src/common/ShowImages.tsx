@@ -7,7 +7,7 @@ interface Prop {
 
 const ShowImages = ({ images, setImages }: Prop) => {
   const onClickCloseImage = (id: number) => {
-    const newImages = images.filter((image, index) => index !== id);
+    const newImages = images.filter((_, index) => index !== id);
     setImages(newImages);
   };
 
