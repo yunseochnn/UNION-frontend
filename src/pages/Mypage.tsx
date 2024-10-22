@@ -5,8 +5,10 @@ import Title from '../components/Mypage/Title';
 import 'react-calendar/dist/Calendar.css';
 import Footer from '../components/Profile/Footer';
 import User from '../common/User';
+import { useNavigate } from 'react-router-dom';
 
 export default function Mypage() {
+  const navigate = useNavigate();
   return (
     <div className="h-full w-full flex flex-col">
       <Title />
@@ -17,7 +19,7 @@ export default function Mypage() {
           bio="한 줄 자기 소개가 들어갑니다!"
           buttonLabel="내 정보 수정"
           buttonWidth="100px"
-          onButtonClick={() => console.log('내 정보 수정 클릭됨')}
+          onButtonClick={() => navigate('/EditProfile')}
         />
         <MypageMenuList />
         <MyCalendar />

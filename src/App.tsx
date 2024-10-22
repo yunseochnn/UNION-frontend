@@ -22,6 +22,9 @@ import BoardWrite from './pages/BoardWrite';
 import MeetParticipants from './pages/MeetParticipants';
 import UserInfo from './pages/UserInfo';
 import BlockedUser from './pages/BlockedUser';
+import MyPosts from './pages/MyPagePost/MyPosts';
+import MyMeetings from './pages/MyPagePost/MyMeetings';
+import MyComments from './pages/MyPagePost/MyComments';
 
 function App() {
   return (
@@ -31,7 +34,7 @@ function App() {
         <Route path="/SocialLogin" element={<SocialLogin />} />
         <Route path="/EmailVerification" element={<EmailVerification />} />
         <Route path="/Profile" element={<Profile />} />
-        <Route path="/Search" element={<Search />} />
+        <Route path="/Search:type" element={<Search />} />
         <Route path="/Mypage" element={<Mypage />} />
         <Route path="/EditProfile" element={<EditProfile />} />
         <Route path="/Meet" element={<Meet />} />
@@ -48,6 +51,9 @@ function App() {
         <Route path="/Board/Write" element={<BoardWrite />} />
         <Route path="/UserInfo" element={<UserInfo />} />
         <Route path="/BlockedUser" element={<BlockedUser />} />
+        <Route path="/MyPosts" element={<MyPosts />} />
+        <Route path="/MyMeetings" element={<MyMeetings />} />
+        <Route path="/MyComments" element={<MyComments />} />
       </Routes>
     </RecoilRoot>
   );
