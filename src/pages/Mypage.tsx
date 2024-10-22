@@ -11,8 +11,11 @@ export default function Mypage() {
   const navigate = useNavigate();
   return (
     <div className="h-full w-full flex flex-col">
-      <Title />
-      <div className="flex flex-col flex-grow px-[33px]">
+      <div className="sticky top-0 z-10 bg-white">
+        <Title />
+      </div>
+
+      <div className="flex flex-col flex-grow overflow-y-auto px-[33px] hidden-scrollbar">
         <User
           name="찐 감자"
           university="구름대학교"
@@ -24,7 +27,7 @@ export default function Mypage() {
         <MypageMenuList />
         <MyCalendar />
         <LogoutBtn />
-        <div className="py-3">
+        <div className="sticky bottom-0 z-10 bg-white py-3">
           <Footer />
         </div>
       </div>
