@@ -9,7 +9,7 @@ import UserBlock from '../common/UserBlock';
 
 export default function BoardDetail() {
   const [Modal, setModal] = useState(false);
-  const [userBlock, setUserBlock] = useState(true);
+  const [userBlock, setUserBlock] = useState(false);
 
   return (
     <div className="h-full w-full flex flex-col py-3 px-[30px] relative">
