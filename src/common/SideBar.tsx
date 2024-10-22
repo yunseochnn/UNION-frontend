@@ -11,7 +11,7 @@ const SideBar = () => {
   return (
     <div className="border-t">
       <div className="flex justify-between w-full mt-2">
-        <div className="flex flex-col justify-center items-center cursor-pointer" onClick={() => navigate('/')}>
+        <div className="flex flex-col justify-center items-center cursor-pointer" onClick={() => navigate('/Home')}>
           {' '}
           <div>
             {pathname === '/' ? <IoHome size={20} style={{ strokeWidth: '2' }} /> : <IoHomeOutline size={20} />}
