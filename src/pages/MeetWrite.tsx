@@ -22,7 +22,7 @@ export default function MeetWrite() {
       {open && <Post setOpen={setOpen} setAddress={setAddress} />}
       <Header success={success} />
       <Content address={address} setSuccess={setSuccess} images={images} setImages={setImages} />
-      <Footer setOpen={setOpen} images={images} setImages={setImages} />
+      <Footer setOpen={setOpen} />
     </div>
   );
 }
