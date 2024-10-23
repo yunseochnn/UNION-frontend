@@ -53,7 +53,7 @@ const Map = ({ x, y, name }: Prop) => {
 
   return (
     <>
-      <div id="map" className="w-[368px] h-[130px]"></div>
+      <div id="map" className="w-full h-[130px]"></div>
       <div className="ml-5 mt-3">
         <div className="font-semibold text-sm">{name}</div>
         <div className="font-medium text-xs text-gray-400">{address}</div>

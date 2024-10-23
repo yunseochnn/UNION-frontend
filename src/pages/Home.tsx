@@ -129,7 +129,7 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="center-content flex flex-col bg-white py-3">
+    <div className="center-content flex flex-col bg-white pt-1">
       <header className="flex justify-between items-center p-4">
         <img src="/Logo.svg" alt="UNION" className="h-8" />
         <div className="flex space-x-4">
@@ -163,12 +163,14 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      <main className="flex-1 overflow-y-auto hidden-scrollbar px-[33px]">
+      <main className="flex-1 overflow-y-auto hidden-scrollbar px-[20px]">
         {activeTab === 'posts' ? posts.map(renderItem) : meetings.map(renderItem)}
       </main>
 
-      <footer className="h-14 px-[33px]">
-        <SideBar />
+      <footer className="h-14 w-full flex justify-center">
+        <div className="w-[90%]">
+          <SideBar />
+        </div>
       </footer>
     </div>
   );
