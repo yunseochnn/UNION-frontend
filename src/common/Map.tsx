@@ -49,7 +49,7 @@ const Map = ({ x, y, name }: Prop) => {
     } else {
       console.error('Kakao Maps API 로드 실패');
     }
-  }, []);
+  }, [x, y]);
 
   return (
     <>
