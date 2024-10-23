@@ -18,7 +18,7 @@ export default function MeetWrite() {
   const [success, setSuccess] = useState(false);
   const [images, setImages] = useState<string[]>([]);
   return (
-    <div className="w-full h-full overflow-hidden hidden-scrollbar flex flex-col px-[30px] pt-3 relative">
+    <div className="w-full h-full overflow-hidden hidden-scrollbar flex flex-col pt-3 relative items-center">
       {open && <Post setOpen={setOpen} setAddress={setAddress} />}
       <Header success={success} />
       <Content address={address} setSuccess={setSuccess} images={images} setImages={setImages} />

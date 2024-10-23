@@ -1,8 +1,12 @@
 body {
   box-sizing: border-box;
 }
+
+.react-select {
+  width: 30%;
+}
 .react-select__control {
-  width: 80px !important;
+  width: 100% !important;
   height: 25px !important;
   border: none !important;
   border-radius: 20px !important;

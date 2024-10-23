@@ -37,7 +37,7 @@ const Content = ({ address, setSuccess, images, setImages }: Prop) => {
   }, [setSuccess, text, title]);
 
   return (
-    <div className="flex flex-col flex-1 overflow-y-auto hidden-scrollbar mt-4">
+    <div className="flex flex-col flex-1 overflow-y-auto hidden-scrollbar mt-4 w-[90%]">
       <div className="font-bold ml-2">시간 인원 설정</div>
       <div className="flex mb-3 justify-between items-center">
         <div className="flex items-center gap-2 mt-1">
@@ -46,7 +46,7 @@ const Content = ({ address, setSuccess, images, setImages }: Prop) => {
         </div>
         <div className="flex items-center">
           <div>
-            <IoPeople size={20} />
+            <IoPeople size={18} />
           </div>
           <People />
         </div>

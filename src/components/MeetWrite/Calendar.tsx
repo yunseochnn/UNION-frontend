@@ -20,7 +20,7 @@ const Calendar = () => {
       selected={selectedDate}
       onChange={date => setSelectedDate(date)}
       showTimeSelect
-      className="outline-none w-48"
+      className="outline-none w-30 text-sm font-semibold"
     />
   );
 };

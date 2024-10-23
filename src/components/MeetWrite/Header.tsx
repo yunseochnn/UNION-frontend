@@ -8,7 +8,7 @@ interface Prop {
 const Header = ({ success }: Prop) => {
   const navigate = useNavigate();
   return (
-    <div className="flex items-center justify-between w-full h-[60px] border-b border-gray-200 ">
+    <div className="flex items-center justify-between w-[90%] h-[60px] border-b border-gray-200 ">
       <div className="cursor-pointer font-black" onClick={() => navigate('/Meet')}>
         <IoIosArrowBack size={32} />
       </div>
