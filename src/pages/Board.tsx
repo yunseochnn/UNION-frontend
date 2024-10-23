@@ -16,7 +16,7 @@ const Board: React.FC = () => {
   };
 
   return (
-    <div className="center-content flex flex-col bg-white">
+    <div className="center-content flex flex-col bg-white ">
       <header className="flex justify-between items-center p-4">
         <h1 className="text-xl font-semibold">게시판</h1>
         <div className="flex space-x-4">
@@ -85,8 +85,10 @@ const Board: React.FC = () => {
         </div>
       </div>
 
-      <footer className="h-14 px-[33px] mb-3">
-        <SideBar />
+      <footer className="h-14 w-full flex justify-center">
+        <div className="w-[90%]">
+          <SideBar />
+        </div>
       </footer>
     </div>
   );
