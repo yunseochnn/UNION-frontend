@@ -25,13 +25,15 @@ import BlockedUser from './pages/BlockedUser';
 import MyPosts from './pages/MyPagePost/MyPosts';
 import MyMeetings from './pages/MyPagePost/MyMeetings';
 import MyComments from './pages/MyPagePost/MyComments';
+import LoginCallback from './pages/LoginCallback';
 
 function App() {
   return (
     <RecoilRoot>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/SocialLogin" element={<SocialLogin />} />
+        <Route path="/" element={<SocialLogin />} />
+        <Route path="/Home" element={<Home />} />
+        <Route path="/LoginCallback" element={<LoginCallback />} />
         <Route path="/EmailVerification" element={<EmailVerification />} />
         <Route path="/Profile" element={<Profile />} />
         <Route path="/Search:type" element={<Search />} />
