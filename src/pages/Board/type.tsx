@@ -48,7 +48,7 @@ const BoardList: React.FC = () => {
     <div className="center-content flex flex-col bg-white relative">
       <Header title={BOARD_TITLES[type!]} />
 
-      <main className="flex-1 overflow-y-auto px-[33px]">
+      <main className="flex-1 overflow-y-auto px-[20px]">
         {posts.map(post => (
           <div key={post.id} className="py-4 border-b">
             <div className="flex items-start gap-3">
@@ -82,8 +82,10 @@ const BoardList: React.FC = () => {
         <FloatingActionButton onClick={() => navigate(`/Board/${type}/write`)} />
       </div>
 
-      <footer className="h-14 px-[33px] mb-3">
-        <SideBar />
+      <footer className="h-14 flex justify-center">
+        <div className="w-[90%]">
+          <SideBar />
+        </div>
       </footer>
     </div>
   );

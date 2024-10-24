@@ -18,7 +18,7 @@ export default function BoardWrite() {
       )}
       <Header success={success} />
       <Content items={items} images={images} setImages={setImages} setSuccess={setSuccess} voteTitle={voteTitle} />
-      <Footer setOpen={setOpen} setImages={setImages} images={images} />
+      <Footer setOpen={setOpen} />
     </div>
   );
 }

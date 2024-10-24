@@ -3,7 +3,7 @@ import '../../style.css';
 import VoteContent from './VoteContent';
 import '../../style.css';
 import { useEffect, useState } from 'react';
-import ShowImages from '../../common/showImages';
+import ShowImages from '../../common/ShowImages';
 
 interface Prop {
   items: string[];

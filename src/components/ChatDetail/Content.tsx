@@ -10,7 +10,7 @@ const Content = () => {
   console.log(option);
 
   return (
-    <div className="flex flex-col flex-1 overflow-y-auto hidden-scrollbar mt-3">
+    <div className="flex flex-col flex-1 overflow-y-auto hidden-scrollbar mt-3 w-[85%]">
       <div>
         <Policy />
       </div>

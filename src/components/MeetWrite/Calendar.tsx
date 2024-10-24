@@ -15,7 +15,6 @@ const Calendar = () => {
   console.log(selectedDate);
   return (
     <DatePicker
-      showIcon
       locale={ko}
       dateFormat="MM월 dd일 aa hh:mm"
       selected={selectedDate}

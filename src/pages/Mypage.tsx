@@ -27,9 +27,9 @@ export default function Mypage() {
         <MypageMenuList />
         <MyCalendar />
         <LogoutBtn />
-        <div className="sticky bottom-0 z-10 bg-white py-3">
-          <Footer />
-        </div>
+      </div>
+      <div className="h-14 w-full flex justify-center">
+        <Footer />
       </div>
     </div>
   );

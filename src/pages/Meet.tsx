@@ -112,7 +112,7 @@ const Meet: React.FC = () => {
     <div className="relative center-content flex flex-col bg-white">
       <MeetHeader sortBy={sortBy} setSortBy={setSortBy} />
 
-      <main className="flex-1 overflow-y-auto relative flex flex-col px-[33px]">
+      <main className="flex-1 overflow-y-auto relative flex flex-col px-[20px]">
         {meetings.map(meeting => (
           <div key={meeting.id} className="border-b py-4 cursor-pointer" onClick={() => handleMeetingClick(meeting.id)}>
             <div className="flex justify-between items-start">
@@ -146,8 +146,10 @@ const Meet: React.FC = () => {
         <FloatingActionButton onClick={handlePlusClick} />
       </div>
 
-      <footer className="h-14 px-[33px] mb-3">
-        <SideBar />
+      <footer className="h-14 w-full flex justify-center">
+        <div className="w-[90%]">
+          <SideBar />
+        </div>
       </footer>
     </div>
   );

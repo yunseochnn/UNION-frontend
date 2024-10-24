@@ -1,5 +1,4 @@
 import Comment from './Comment';
-import EmptyComment from './EmptyComment';
 
 const CommentList = () => {
   return (
