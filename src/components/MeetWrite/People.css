@@ -52,6 +52,14 @@ body {
   text-align: center !important;
 }
 
+.react-select__menu-list {
+  scrollbar-width: none;
+}
+
+.react-select__menu-list::-webkit-scrollbar {
+  display: none;
+}
+
 .react-select__option {
   background-color: transparent !important;
   color: black !important;

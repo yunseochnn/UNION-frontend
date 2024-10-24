@@ -9,7 +9,9 @@ const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
   // 날짜 형식 변환
-  const formattedDate = selectedDate ? format(selectedDate, 'yyyy년 MM월 dd일 hh:mm', { locale: ko }) : '';
+  const isoDate = selectedDate?.toISOString();
+  console.log(isoDate);
+  const formattedDate = isoDate ? format(isoDate, 'yyyy년 MM월 dd일 a hh:mm', { locale: ko }) : '';
   console.log(formattedDate);
 
   console.log(selectedDate);
