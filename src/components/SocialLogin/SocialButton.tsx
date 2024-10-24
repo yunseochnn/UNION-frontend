@@ -1,6 +1,4 @@
-const NAVER_CLIENT_ID = import.meta.env.VITE_NAVER_CLIENT_ID || '';
-const NAVER_REDIRECT_URI = import.meta.env.VITE_NAVER_REDIRECT_URI || '';
-const STATE = Math.random().toString(36).substring(2);
+const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
 interface SocialButtonProps {
   platform: string;
@@ -11,6 +9,7 @@ interface SocialButtonProps {
   fontSize?: string;
   iconMarginLeft?: string;
 }
+
 export default function SocialButton({
   platform,
   bgColor,
@@ -22,14 +21,14 @@ export default function SocialButton({
 }: SocialButtonProps) {
   const handleButtonClick = () => {
     if (platform === 'Naver') {
-      const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${NAVER_REDIRECT_URI}&state=${STATE}`;
-      window.location.href = NAVER_AUTH_URL;
+      window.location.href = `${VITE_API_BASE_URL}/oauth2/authorization/naver`;
     } else if (platform === 'Google') {
-      // 구글 로그인 URL 처리
+      window.location.href = `${VITE_API_BASE_URL}/oauth2/authorization/google`;
     } else if (platform === 'Kakao') {
-      // 카카오 로그인 URL 처리
+      window.location.href = `${VITE_API_BASE_URL}/oauth2/authorization/kakao`;
     }
   };
+
   return (
     <button
       onClick={handleButtonClick}

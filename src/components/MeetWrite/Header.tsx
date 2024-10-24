@@ -9,7 +9,7 @@ const Header = ({ success }: Prop) => {
   const navigate = useNavigate();
   return (
     <div className="flex items-center justify-between w-full h-[60px] border-b border-gray-200 ">
-      <div className="cursor-pointer font-black" onClick={() => navigate('/Meet')}>
+      <div className="cursor-pointer font-black" onClick={() => navigate('/meet')}>
         <IoIosArrowBack size={32} />
       </div>
       <div className="font-semibold text-lg">{`모임 글쓰기`}</div>

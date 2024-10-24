@@ -1,16 +1,16 @@
 .react-calendar__month-view__weekdays__weekday {
-  text-decoration: none; /* 혹시 있을 수 있는 밑줄 제거 */
-  letter-spacing: normal; /* 글자 간격을 기본값으로 설정 */
-  border: none; /* 불필요한 테두리 제거 */
+  text-decoration: none;
+  letter-spacing: normal;
+  border: none;
 }
 
 .react-calendar__month-view__weekdays__weekday abbr {
-  text-decoration: none; /* 요일의 약어에 밑줄 제거 */
-  letter-spacing: normal; /* 약어의 글자 간격을 기본값으로 설정 */
-  border: none; /* 불필요한 테두리 제거 */
+  text-decoration: none;
+  letter-spacing: normal;
+  border: none;
 }
 .react-calendar__tile {
-  aspect-ratio: 1; /* 너비와 높이를 동일하게 맞춰줍니다 */
+  aspect-ratio: 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,22 +18,20 @@
   box-sizing: border-box;
 }
 
-/* 선택된 날짜의 스타일을 연한 회색으로 변경 */
 .react-calendar__tile--active {
-  background-color: #f0f0f0 !important; /* 연한 회색 배경 */
-  color: black; /* 텍스트 색상을 검은색으로 */
-  border: 1px solid #c9c9c9; /* 선택된 날짜에 테두리 추가 */
+  background-color: #f0f0f0 !important;
+  color: black;
+  border: 1px solid #c9c9c9;
 }
 
-/* 선택된 날짜에 hover 시 스타일 */
 .react-calendar__tile--active:hover {
-  background-color: #e0e0e0 !important; /* hover 시 약간 더 진한 회색 */
+  background-color: #e0e0e0 !important;
 }
 
 .react-calendar {
-  border: 1px solid #c9c9c9; /* Border 색상 설정 */
+  border: 1px solid #c9c9c9;
   border-radius: 8px;
-  padding: 10px; /* 패딩을 추가해 조금 여유를 줍니다 */
+  padding: 10px;
 }
 
 .react-calendar__month-view__days__day {
@@ -42,7 +40,7 @@
 
 .react-calendar__tile--now {
   position: relative;
-  background-color: transparent !important; /* 배경색 제거 */
+  background-color: transparent !important;
 }
 
 .react-calendar__tile--now::before {
@@ -50,16 +48,16 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 1.8em; /* 글자 크기와 비슷한 크기로 조정 */
+  width: 1.8em;
   height: 1.8em;
-  background-color: red; /* 빨간색 원 */
+  background-color: red;
   border-radius: 50%;
-  transform: translate(-50%, -50%); /* 가운데 정렬 */
+  transform: translate(-50%, -50%);
 }
 
 .react-calendar__tile--now > abbr {
-  color: white !important; /* 현재 날짜의 글씨 색 */
-  position: relative; /* 원 위에 글씨가 표시되도록 설정 */
+  color: white !important;
+  position: relative;
   z-index: 1;
 }
 

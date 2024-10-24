@@ -97,9 +97,9 @@ const Home: React.FC = () => {
   const renderItem = (item: Post | Meeting) => {
     const handleItemClick = () => {
       if (activeTab === 'posts') {
-        navigate(`/BoardDetail/${item.id}`);
+        navigate(`/boarddetail/${item.id}`);
       } else {
-        navigate(`/MeetDetail/${item.id}`);
+        navigate(`/meetdetail/${item.id}`);
       }
     };
 

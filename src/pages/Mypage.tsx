@@ -22,7 +22,7 @@ export default function Mypage() {
           bio="한 줄 자기 소개가 들어갑니다!"
           buttonLabel="내 정보 수정"
           buttonWidth="100px"
-          onButtonClick={() => navigate('/EditProfile')}
+          onButtonClick={() => navigate('/editprofile')}
         />
         <MypageMenuList />
         <MyCalendar />
