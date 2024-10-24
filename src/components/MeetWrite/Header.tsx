@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 
 interface Prop {
   success: boolean;
+  setClick: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Header = ({ success }: Prop) => {
+const Header = ({ success, setClick }: Prop) => {
   const navigate = useNavigate();
   return (
     <div className="flex items-center justify-between w-[90%] h-[60px] border-b border-gray-200 ">
@@ -14,7 +15,12 @@ const Header = ({ success }: Prop) => {
       </div>
       <div className="font-semibold text-lg">{`모임 글쓰기`}</div>
       <div className="flex gap-[20px]">
-        <div className={`cursor-pointer font-semibold text-lg ${success ? 'text-black' : 'text-gray-300'}`}>완료</div>
+        <div
+          className={`cursor-pointer font-semibold text-lg ${success ? 'text-black' : 'text-gray-300'}`}
+          onClick={() => setClick(true)}
+        >
+          완료
+        </div>
       </div>
     </div>
   );

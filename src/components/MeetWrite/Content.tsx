@@ -3,9 +3,9 @@ import Calendar from './Calendar';
 import '../../style.css';
 import People from './People';
 import { IoPeople } from 'react-icons/io5';
-import { IAddress } from '../../pages/MeetWrite';
+import { IAddress, OptionType } from '../../pages/MeetWrite';
 import Map from '../../common/Map';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import ShowImages from '../../common/ShowImages';
 import { FaCalendar } from 'react-icons/fa';
 
@@ -14,12 +14,30 @@ interface Prop {
   setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   images: string[];
   setImages: React.Dispatch<React.SetStateAction<string[]>>;
+  title: string;
+  setTitle: React.Dispatch<React.SetStateAction<string>>;
+  text: string;
+  setText: React.Dispatch<React.SetStateAction<string>>;
+  selectedDate: Date | null;
+  setSelectedDate: React.Dispatch<React.SetStateAction<Date | null>>;
+  maxMember: OptionType | null;
+  setMaxMember: React.Dispatch<React.SetStateAction<OptionType | null>>;
 }
 
-const Content = ({ address, setSuccess, images, setImages }: Prop) => {
-  const [title, setTitle] = useState('');
-  const [text, setText] = useState('');
-
+const Content = ({
+  address,
+  setSuccess,
+  images,
+  setImages,
+  title,
+  setTitle,
+  text,
+  setText,
+  selectedDate,
+  setSelectedDate,
+  maxMember,
+  setMaxMember,
+}: Prop) => {
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
@@ -42,13 +60,13 @@ const Content = ({ address, setSuccess, images, setImages }: Prop) => {
       <div className="flex mb-3 justify-between items-center">
         <div className="flex items-center gap-2 mt-1">
           <FaCalendar />
-          <Calendar />
+          <Calendar selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
         </div>
         <div className="flex items-center">
           <div>
             <IoPeople size={18} />
           </div>
-          <People />
+          <People maxMember={maxMember} setMaxMember={setMaxMember} />
         </div>
       </div>
 

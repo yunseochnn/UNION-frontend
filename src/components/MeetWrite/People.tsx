@@ -1,16 +1,12 @@
-import { useState } from 'react';
 import './People.css';
 import Select from 'react-select';
-
-interface OptionType {
-  value: number;
-  label: number;
+import { OptionType } from '../../pages/MeetWrite';
+interface Prop {
+  maxMember: OptionType | null;
+  setMaxMember: React.Dispatch<React.SetStateAction<OptionType | null>>;
 }
 
-const People = () => {
-  const [selectOption, setSelectOption] = useState<OptionType | null>({ value: 2, label: 2 });
-  console.log(selectOption);
-
+const People = ({ maxMember, setMaxMember }: Prop) => {
   const options = [
     { value: 2, label: 2 },
     { value: 3, label: 3 },
@@ -24,7 +20,7 @@ const People = () => {
   ];
   return (
     <div>
-      <Select defaultValue={selectOption} options={options} onChange={setSelectOption} classNamePrefix="react-select" />
+      <Select defaultValue={maxMember} options={options} onChange={setMaxMember} classNamePrefix="react-select" />
     </div>
   );
 };

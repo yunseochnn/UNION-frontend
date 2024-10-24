@@ -87,7 +87,6 @@ const Post = ({ setOpen, setAddress }: Prop) => {
     }
 
     const ps = new kakao.maps.services.Places();
-    console.log(keyword);
 
     if (keyword !== '') {
       ps.keywordSearch(keyword, (data: any, status: any) => {
