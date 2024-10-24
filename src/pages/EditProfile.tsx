@@ -6,7 +6,7 @@ import Header from '../common/Header';
 export default function EditProfile() {
   return (
     <div className="h-full w-full flex flex-col">
-      <Header title="마이페이지" navigateTo="/Mypage" />
+      <Header title="프로필 수정" navigateTo="/Mypage" />
       <div className="px-[31px]">
         <div className="flex justify-center">
           <ProfileImg />

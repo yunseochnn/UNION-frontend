@@ -10,7 +10,7 @@ interface UserProps {
 export default function User({ name, university, bio, buttonLabel, buttonWidth, onButtonClick }: UserProps) {
   return (
     <div>
-      <div className="h-16 w-full flex justify-between items-center mt-2">
+      <div className="h-16 w-full flex justify-between items-center mt-2 cursor-pointer">
         <div className="flex items-center">
           <div className="h-14 w-14 rounded-full bg-gray-300"></div>
           <div className="ml-4">
