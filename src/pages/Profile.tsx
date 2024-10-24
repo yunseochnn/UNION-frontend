@@ -6,7 +6,7 @@ import Title from '../components/Profile/Title';
 export default function Profile() {
   return (
     <div className="h-full w-full flex flex-col relative">
-      <Header title="" navigateTo="/EmailVerification" />
+      <Header title="" navigateTo="/emailverification" />
       <div className="px-[36px] flex-grow">
         <Title />
         <ProfileInput />

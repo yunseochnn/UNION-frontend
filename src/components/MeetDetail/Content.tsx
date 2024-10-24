@@ -76,7 +76,7 @@ const Content = () => {
           <span>/4</span>
         </div>
 
-        <div onClick={() => navigate(`/Meet/Participants/${id}`)} className="cursor-pointer">
+        <div onClick={() => navigate(`/meet/participants/${id}`)} className="cursor-pointer">
           <IoIosArrowForward size={24} />
         </div>
       </div>

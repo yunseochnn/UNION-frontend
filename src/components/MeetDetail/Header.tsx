@@ -11,7 +11,7 @@ const Header = ({ setModal }: Props) => {
   const navigate = useNavigate();
   return (
     <div className="flex items-center justify-between w-full h-[60px]">
-      <div className="cursor-pointer font-black" onClick={() => navigate('/Meet')}>
+      <div className="cursor-pointer font-black" onClick={() => navigate('/meet')}>
         <IoIosArrowBack size={32} />
       </div>
       <div className="font-semibold text-lg">{`델링델링(3D모델러 모임)`}</div>
