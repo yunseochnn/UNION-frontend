@@ -3,11 +3,10 @@ import { TbPhoto } from 'react-icons/tb';
 import apiClient from '../api/apiClient';
 
 interface Prop {
-  images: string[];
   setImages: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const PlusImage = ({ images, setImages }: Prop) => {
+const PlusImage = ({ setImages }: Prop) => {
   const [selectedFile, setSelectedFile] = useState<File[]>([]);
   const onImageInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -29,6 +28,7 @@ const PlusImage = ({ images, setImages }: Prop) => {
       );
 
       console.log(response);
+      setImages(response.data);
     } catch (error) {
       console.log(error);
     }

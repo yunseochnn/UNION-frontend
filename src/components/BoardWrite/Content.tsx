@@ -2,7 +2,7 @@ import Policy from '../../common/Policy';
 import '../../style.css';
 import VoteContent from './VoteContent';
 import '../../style.css';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import ShowImages from '../../common/ShowImages';
 
 interface Prop {
@@ -11,12 +11,13 @@ interface Prop {
   setImages: React.Dispatch<React.SetStateAction<string[]>>;
   setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   voteTitle: string;
+  title: string;
+  setTitle: React.Dispatch<React.SetStateAction<string>>;
+  content: string;
+  setContent: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Content = ({ items, images, setImages, setSuccess, voteTitle }: Prop) => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-
+const Content = ({ items, images, setImages, setSuccess, voteTitle, title, setTitle, content, setContent }: Prop) => {
   const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };

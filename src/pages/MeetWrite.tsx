@@ -31,25 +31,27 @@ export default function MeetWrite() {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [click, setClick] = useState(false);
-  const [id, setId] = useState(0);
   const navigate = useNavigate();
 
   console.log(address);
 
-  const onSaveImage = useCallback(async () => {
-    try {
-      const response = await SaveImageRequest(id, 'GATHERING', images);
-      if (!response) {
-        alert('네트워크 이상입니다!');
-        return;
+  const onSaveImage = useCallback(
+    async (id: number) => {
+      try {
+        const response = await SaveImageRequest(id, 'GATHERING', images);
+        if (!response) {
+          alert('네트워크 이상입니다!');
+          return;
+        }
+        console.log(response);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.response);
+        }
       }
-      console.log(response);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(error.response);
-      }
-    }
-  }, [id, images]);
+    },
+    [images],
+  );
 
   const onCreateMeet = useCallback(async () => {
     try {
@@ -72,19 +74,19 @@ export default function MeetWrite() {
         return;
       }
       console.log(response);
-      const { id } = response;
+      const { id } = response.data;
 
       if (images.length > 0) {
-        await onSaveImage();
+        await onSaveImage(id);
       }
 
-      // navigate(`/Meet/${id}`);
+      navigate(`/meet/${id}`);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.response);
       }
     }
-  }, [address, images.length, maxMember?.value, onSaveImage, selectedDate, text, title]);
+  }, [address, images.length, maxMember?.value, navigate, onSaveImage, selectedDate, text, title]);
 
   useEffect(() => {
     if (click) {
@@ -110,7 +112,7 @@ export default function MeetWrite() {
         maxMember={maxMember}
         setMaxMember={setMaxMember}
       />
-      <Footer setOpen={setOpen} images={images} setImages={setImages} />
+      <Footer setOpen={setOpen} setImages={setImages} />
     </div>
   );
 }

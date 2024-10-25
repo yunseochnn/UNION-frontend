@@ -50,7 +50,7 @@ function App() {
         <Route path="/Board" element={<Board />} />
         <Route path="/Board/:type" element={<BoardList />} />
         <Route path="/Board/:type/:id" element={<BoardDetail />} />
-        <Route path="/Board/Write" element={<BoardWrite />} />
+        <Route path="/Board/Write/:type" element={<BoardWrite />} />
         <Route path="/UserInfo" element={<UserInfo />} />
         <Route path="/BlockedUser" element={<BlockedUser />} />
         <Route path="/MyPosts" element={<MyPosts />} />

@@ -8,6 +8,12 @@ interface Prop {
 
 const Header = ({ success, setClick }: Prop) => {
   const navigate = useNavigate();
+
+  const onClick = () => {
+    if (success) {
+      setClick(true);
+    }
+  };
   return (
     <div className="flex items-center justify-between w-[90%] h-[60px] border-b border-gray-200 ">
       <div className="cursor-pointer font-black" onClick={() => navigate('/Meet')}>
@@ -17,7 +23,7 @@ const Header = ({ success, setClick }: Prop) => {
       <div className="flex gap-[20px]">
         <div
           className={`cursor-pointer font-semibold text-lg ${success ? 'text-black' : 'text-gray-300'}`}
-          onClick={() => setClick(true)}
+          onClick={onClick}
         >
           완료
         </div>
