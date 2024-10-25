@@ -25,37 +25,35 @@ import BlockedUser from './pages/BlockedUser';
 import MyPosts from './pages/MyPagePost/MyPosts';
 import MyMeetings from './pages/MyPagePost/MyMeetings';
 import MyComments from './pages/MyPagePost/MyComments';
-import LoginCallback from './pages/LoginCallback';
 
 function App() {
   return (
     <RecoilRoot>
       <Routes>
         <Route path="/" element={<SocialLogin />} />
-        <Route path="/Home" element={<Home />} />
-        <Route path="/LoginCallback" element={<LoginCallback />} />
-        <Route path="/EmailVerification" element={<EmailVerification />} />
-        <Route path="/Profile" element={<Profile />} />
-        <Route path="/Search:type" element={<Search />} />
-        <Route path="/Mypage" element={<Mypage />} />
-        <Route path="/EditProfile" element={<EditProfile />} />
-        <Route path="/Meet" element={<Meet />} />
-        <Route path="/Meet/:id" element={<MeetDetail />} />
-        <Route path="/Meet/Write" element={<MeetWrite />} />
-        <Route path="/Meet/Participants/:id" element={<MeetParticipants />} />
-        <Route path="/Chat" element={<ChatList />} />
-        <Route path="/Chat/:id" element={<ChatDetail />} />
-        <Route path="/Map" element={<MapView />} />
-        <Route path="/Notification" element={<Notification />} />
-        <Route path="/Board" element={<Board />} />
-        <Route path="/Board/:type" element={<BoardList />} />
-        <Route path="/Board/:type/:id" element={<BoardDetail />} />
-        <Route path="/Board/Write/:type" element={<BoardWrite />} />
-        <Route path="/UserInfo" element={<UserInfo />} />
-        <Route path="/BlockedUser" element={<BlockedUser />} />
-        <Route path="/MyPosts" element={<MyPosts />} />
-        <Route path="/MyMeetings" element={<MyMeetings />} />
-        <Route path="/MyComments" element={<MyComments />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/emailverification" element={<EmailVerification />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/search:type" element={<Search />} />
+        <Route path="/mypage" element={<Mypage />} />
+        <Route path="/editprofile" element={<EditProfile />} />
+        <Route path="/meet" element={<Meet />} />
+        <Route path="/meet/:id" element={<MeetDetail />} />
+        <Route path="/meet/write" element={<MeetWrite />} />
+        <Route path="/meet/participants/:id" element={<MeetParticipants />} />
+        <Route path="/chat" element={<ChatList />} />
+        <Route path="/chat/:id" element={<ChatDetail />} />
+        <Route path="/map" element={<MapView />} />
+        <Route path="/notification" element={<Notification />} />
+        <Route path="/board" element={<Board />} />
+        <Route path="/board/:type" element={<BoardList />} />
+        <Route path="/board/:type/:id" element={<BoardDetail />} />
+        <Route path="/board/write" element={<BoardWrite />} />
+        <Route path="/userinfo" element={<UserInfo />} />
+        <Route path="/blockeduser" element={<BlockedUser />} />
+        <Route path="/myposts" element={<MyPosts />} />
+        <Route path="/mymeetings" element={<MyMeetings />} />
+        <Route path="/mycomments" element={<MyComments />} />
       </Routes>
     </RecoilRoot>
   );

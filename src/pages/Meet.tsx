@@ -101,11 +101,11 @@ const Meet: React.FC = () => {
   ];
 
   const handleMeetingClick = (id: number) => {
-    navigate(`/Meet/${id}`);
+    navigate(`/meet/${id}`);
   };
 
   const handlePlusClick = () => {
-    navigate('/Meet/new'); // 플러스 버튼 클릭 시 새로운 모임 생성 페이지로 이동
+    navigate('/meet/new'); // 플러스 버튼 클릭 시 새로운 모임 생성 페이지로 이동
   };
 
   return (

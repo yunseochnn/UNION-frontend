@@ -1,15 +1,24 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Cropper, { Area } from 'react-easy-crop';
 import { FaCamera } from 'react-icons/fa6';
 import getCroppedImg from './cropImage';
 
-export default function ProfileImg() {
-  const [profileImage, setProfileImage] = useState<string | undefined>(undefined);
+interface ProfileImgProps {
+  profileImage: string;
+  onImageChange: (image: string) => void;
+}
+
+export default function ProfileImg({ profileImage: initialProfileImage, onImageChange }: ProfileImgProps) {
+  const [profileImage, setProfileImage] = useState<string | undefined>(initialProfileImage);
   const [croppedImage, setCroppedImage] = useState<string | undefined>(undefined);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
   const [isCropping, setIsCropping] = useState(false);
+
+  useEffect(() => {
+    setProfileImage(initialProfileImage);
+  }, [initialProfileImage]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -37,6 +46,7 @@ export default function ProfileImg() {
     if (croppedAreaPixels && profileImage) {
       const croppedImg = await getCroppedImg(profileImage, croppedAreaPixels);
       setCroppedImage(croppedImg);
+      onImageChange(croppedImg);
     }
   };
 

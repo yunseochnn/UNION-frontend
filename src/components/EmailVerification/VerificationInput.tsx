@@ -10,9 +10,7 @@ export default function VerificationInput({ onVerificationComplete }: Verificati
   const [universities, setUniversities] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredUniversities, setFilteredUniversities] = useState<string[]>([]);
-  const [isCodeRequested, setIsCodeRequested] = useState(false);
   const [isUniversityValid, setIsUniversityValid] = useState<boolean | null>(null);
-  const [timeLeft, setTimeLeft] = useState(0);
   const [isResend, setIsResend] = useState(false);
   const dropdownRef = useRef<HTMLUListElement>(null);
   const API_KEY = import.meta.env.VITE_UNIV_API_KEY;
@@ -61,8 +59,6 @@ export default function VerificationInput({ onVerificationComplete }: Verificati
       .then(data => {
         if (data.success) {
           alert('인증번호가 이메일로 전송되었습니다.');
-          setIsCodeRequested(true);
-          setTimeLeft(300);
           setIsResend(true);
         } else {
           alert('인증번호 전송에 실패했습니다.');
@@ -73,14 +69,31 @@ export default function VerificationInput({ onVerificationComplete }: Verificati
       });
   };
 
-  useEffect(() => {
-    if (timeLeft > 0 && isCodeRequested) {
-      const timerId = setInterval(() => {
-        setTimeLeft(prevTime => prevTime - 1);
-      }, 1000);
-      return () => clearInterval(timerId);
-    }
-  }, [timeLeft, isCodeRequested]);
+  // 특정 유저 인증 초기화 및 재전송
+  const handleResendVerification = () => {
+    fetch(`https://univcert.com/api/v1/clear/${email}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        key: API_KEY,
+      }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert(`${email}의 인증이 초기화되었습니다. 인증번호가 다시 전송됩니다.`);
+          handleVerificationRequest();
+        } else {
+          alert('인증 초기화에 실패했습니다.');
+        }
+      })
+      .catch(error => {
+        console.error('인증 초기화 중 오류 발생:', error);
+        alert('서버와의 통신 중 오류가 발생했습니다.');
+      });
+  };
 
   const handleVerificationSubmit = () => {
     fetch('https://univcert.com/api/v1/certifycode', {
@@ -104,7 +117,6 @@ export default function VerificationInput({ onVerificationComplete }: Verificati
       .then(data => {
         if (data.success) {
           alert('인증번호가 확인되었습니다.');
-          setTimeLeft(0);
           onVerificationComplete(email, verificationCode);
         } else {
           alert('인증번호가 올바르지 않습니다.');
@@ -113,12 +125,6 @@ export default function VerificationInput({ onVerificationComplete }: Verificati
       .catch(error => {
         alert(`인증번호 확인 중 오류가 발생했습니다: ${error.message}`);
       });
-  };
-
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}`;
   };
 
   const fetchUniversities = async () => {
@@ -133,41 +139,6 @@ export default function VerificationInput({ onVerificationComplete }: Verificati
       console.error('학교 목록을 불러오는 중 오류 발생:', error);
     }
   };
-
-  // 특정 유저 인증 초기화 및 재전송
-  const handleResendVerification = () => {
-    fetch(`https://univcert.com/api/v1/clear/${email}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        key: API_KEY,
-      }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          alert(`${email}의 인증이 초기화되었습니다. 인증번호가 다시 전송됩니다.`);
-          setTimeLeft(300);
-          handleVerificationRequest();
-        } else {
-          alert('인증 초기화에 실패했습니다.');
-        }
-      })
-      .catch(error => {
-        console.error('인증 초기화 중 오류 발생:', error);
-        alert('서버와의 통신 중 오류가 발생했습니다.');
-      });
-  };
-  useEffect(() => {
-    if (timeLeft > 0 && isCodeRequested) {
-      const timerId = setInterval(() => {
-        setTimeLeft(prevTime => prevTime - 1);
-      }, 1000);
-      return () => clearInterval(timerId);
-    }
-  }, [timeLeft, isCodeRequested]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -304,11 +275,6 @@ export default function VerificationInput({ onVerificationComplete }: Verificati
                 onChange={handleCodeChange}
                 className="font-normal text-[15px] border-b-[1.3px] border-customGray placeholder-gray-400 focus:outline-none p-2 w-full pr-16 mt-2"
               />
-              {timeLeft > 0 && (
-                <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-mainColor text-sm">
-                  {formatTime(timeLeft)}
-                </span>
-              )}
             </div>
             <button
               className="cursor-pointer text-[14px] px-3 py-2 ml-2 bg-mainColor text-white rounded-md whitespace-nowrap"
