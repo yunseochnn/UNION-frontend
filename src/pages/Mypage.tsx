@@ -3,9 +3,10 @@ import MyCalendar from '../components/Mypage/MyCalendar';
 import MypageMenuList from '../components/Mypage/MypageMenuList';
 import Title from '../components/Mypage/Title';
 import 'react-calendar/dist/Calendar.css';
-import Footer from '../components/Profile/Footer';
+
 import User from '../common/User';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Mypage/Footer';
 
 export default function Mypage() {
   const navigate = useNavigate();
