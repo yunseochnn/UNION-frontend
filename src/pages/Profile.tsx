@@ -4,10 +4,9 @@ import ProfileImg from '../common/ProfileImg';
 import ProfileInput from '../common/ProfileInput';
 import Button from '../components/Profile/Button';
 import { userState } from '../recoil/userAtoms';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useCookies } from 'react-cookie';
 
-const PHOTO_URL = '/oauth/photo';
 const SIGNUP_URL = '/user/signup';
 
 export default function Profile() {
@@ -16,16 +15,6 @@ export default function Profile() {
   const [nickname, setNickname] = useState(user.nickname || '');
   const [description, setDescription] = useState(user.description || '');
 
-  useEffect(() => {
-    if (user.oauthUserToken) {
-      fetch(`${PHOTO_URL}?oauthUserToken=${user.oauthUserToken}`)
-        .then(response => response.text())
-        .then(url => {
-          setUser(prev => ({ ...prev, profileImage: url }));
-        });
-    }
-  }, [user.oauthUserToken, setUser]);
-
   const handleImageChange = (newImage: string) => {
     setUser(prev => ({ ...prev, profileImage: newImage }));
   };
@@ -33,17 +22,19 @@ export default function Profile() {
   const handleSignup = () => {
     fetch(SIGNUP_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         oauthUserToken: user.oauthUserToken,
         nickname,
-        description,
+        description: description || '',
         profileImage: user.profileImage,
         univName: user.univName,
       }),
     })
       .then(response => {
-        if (!response.ok) throw new Error('회원가입 요청 실패');
+        if (!response.ok) throw new Error(`회원가입 요청 실패 - ${response.status}`);
         const authHeader = response.headers.get('Authorization');
         const refreshHeader = response.headers.get('Refresh-Token');
 
@@ -54,19 +45,18 @@ export default function Profile() {
         }));
       })
       .then(({ data, authHeader, refreshHeader }) => {
-        if (authHeader && refreshHeader) {
-          setCookie('Authorization', authHeader, { path: '/' });
-          setCookie('Refresh-Token', refreshHeader, { path: '/' });
-          setUser(prev => ({
-            ...prev,
-            token: data.token,
-            nickname: data.nickname,
-            description: data.description,
-            profileImage: data.profileImage,
-            univName: data.univName,
-          }));
-          console.log('회원가입 성공:', data);
-        }
+        if (authHeader) setCookie('Authorization', authHeader, { path: '/' });
+        if (refreshHeader) setCookie('Refresh-Token', refreshHeader, { path: '/' });
+
+        setUser(prev => ({
+          ...prev,
+          token: data.token,
+          nickname: data.nickname,
+          description: data.description,
+          profileImage: data.profileImage,
+          univName: data.univName,
+        }));
+        console.log('회원가입 성공:', data);
       })
       .catch(error => {
         console.error('회원가입 중 오류 발생:', error);
