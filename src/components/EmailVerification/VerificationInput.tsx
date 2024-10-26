@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 
 interface VerificationInputProps {
-  onVerificationComplete: (email: string, verificationCode: string) => void;
+  onVerificationComplete: (searchTerm: string) => void;
 }
 
 export default function VerificationInput({ onVerificationComplete }: VerificationInputProps) {
@@ -117,7 +117,7 @@ export default function VerificationInput({ onVerificationComplete }: Verificati
       .then(data => {
         if (data.success) {
           alert('인증번호가 확인되었습니다.');
-          onVerificationComplete(email, verificationCode);
+          onVerificationComplete(searchTerm);
         } else {
           alert('인증번호가 올바르지 않습니다.');
         }

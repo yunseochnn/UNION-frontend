@@ -15,8 +15,6 @@ export default function EmailVerification() {
   const location = useLocation();
   const setUser = useSetRecoilState(userState);
   const [isVerified, setIsVerified] = useState(false);
-
-  const [email, setEmail] = useState('');
   const [univName, setUnivName] = useState('');
 
   useEffect(() => {
@@ -41,18 +39,15 @@ export default function EmailVerification() {
     }
   }, [location, setUser, navigate]);
 
-  // VerificationInput에서만 로컬 상태를 업데이트
-  const handleVerificationComplete = (inputEmail: string, inputUnivName: string) => {
+  const handleVerificationComplete = (inputUnivName: string) => {
     setIsVerified(true);
-    setEmail(inputEmail);
     setUnivName(inputUnivName);
   };
 
-  // 버튼 클릭 시 전역 상태 업데이트
   const handleNextPage = () => {
     if (isVerified) {
-      setUser(prevState => ({ ...prevState, email, univName }));
-      navigate('/Profile');
+      setUser(prevState => ({ ...prevState, univName }));
+      navigate('/profile');
     }
   };
 
