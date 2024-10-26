@@ -3,30 +3,34 @@ import MyCalendar from '../components/Mypage/MyCalendar';
 import MypageMenuList from '../components/Mypage/MypageMenuList';
 import Title from '../components/Mypage/Title';
 import 'react-calendar/dist/Calendar.css';
-import Footer from '../components/Profile/Footer';
+
 import User from '../common/User';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Mypage/Footer';
 
 export default function Mypage() {
   const navigate = useNavigate();
   return (
     <div className="h-full w-full flex flex-col">
-      <Title />
-      <div className="flex flex-col flex-grow px-[33px]">
+      <div className="sticky top-0 z-10 bg-white">
+        <Title />
+      </div>
+
+      <div className="flex flex-col flex-grow overflow-y-auto px-[33px] hidden-scrollbar">
         <User
           name="찐 감자"
           university="구름대학교"
           bio="한 줄 자기 소개가 들어갑니다!"
           buttonLabel="내 정보 수정"
           buttonWidth="100px"
-          onButtonClick={() => navigate('/EditProfile')}
+          onButtonClick={() => navigate('/editprofile')}
         />
         <MypageMenuList />
         <MyCalendar />
         <LogoutBtn />
-        <div className="py-3">
-          <Footer />
-        </div>
+      </div>
+      <div className="h-14 w-full flex justify-center">
+        <Footer />
       </div>
     </div>
   );

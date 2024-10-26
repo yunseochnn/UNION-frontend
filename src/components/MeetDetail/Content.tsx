@@ -11,7 +11,7 @@ const Content = () => {
   const { id } = useParams();
 
   return (
-    <div className="flex flex-col flex-1 overflow-y-auto hidden-scrollbar">
+    <div className="flex flex-col flex-1">
       <div>
         <div
           className="rounded-full h-[30px] w-[74px] flex items-center justify-center gap-2 text-sm font-bold"
@@ -54,13 +54,13 @@ const Content = () => {
       </div>
 
       <div className="mt-4">
-        <div className="h-[396px] w-[368px] cursor-pointer">
+        <div className="h-[396px] w-full cursor-pointer">
           <Slide />
         </div>
       </div>
 
       <div className="mt-4 flex flex-col">
-        <div className="h-48 w-[368px] border border-gray-200 rounded-md">
+        <div className="h-48 w-full border border-gray-200 rounded-md">
           <Map x={126.8277859} y={37.5361699} name={'장소이름'} />
         </div>
       </div>
@@ -76,7 +76,7 @@ const Content = () => {
           <span>/4</span>
         </div>
 
-        <div onClick={() => navigate(`/Meet/Participants/${id}`)} className="cursor-pointer">
+        <div onClick={() => navigate(`/meet/participants/${id}`)} className="cursor-pointer">
           <IoIosArrowForward size={24} />
         </div>
       </div>
