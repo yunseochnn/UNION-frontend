@@ -52,7 +52,7 @@ export default function EmailVerification() {
   const handleNextPage = () => {
     if (isVerified) {
       setUser(prevState => ({ ...prevState, email, univName }));
-      navigate('/Profile');
+      navigate('/profile');
     }
   };
 

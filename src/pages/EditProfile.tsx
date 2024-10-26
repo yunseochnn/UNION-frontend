@@ -62,7 +62,7 @@ export default function EditProfile() {
 
   return (
     <div className="h-full w-full flex flex-col">
-      <Header title="프로필 수정" navigateTo="/Mypage" />
+      <Header title="프로필 수정" navigateTo="/mypage" />
       <div className="px-[36px] flex-grow">
         <ProfileImg profileImage={profileImage} onImageChange={setProfileImage} />
         <ProfileInput
