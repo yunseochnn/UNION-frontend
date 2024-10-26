@@ -7,34 +7,55 @@ import Title from '../components/EmailVerification/Title';
 import { userState } from '../recoil/userAtoms';
 import { useEffect, useState } from 'react';
 
+const PHOTO_URL = '/oauth/photo';
+
 export default function EmailVerification() {
   const navigate = useNavigate();
   const location = useLocation();
   const setUser = useSetRecoilState(userState);
   const [isVerified, setIsVerified] = useState(false);
 
-  // URL에서 oauthUserToken 추출 후 전역 상태에 저장
+  const [email, setEmail] = useState('');
+  const [univName, setUnivName] = useState('');
+
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const oauthUserToken = queryParams.get('oauthUserToken');
 
     if (oauthUserToken) {
       setUser(prevState => ({ ...prevState, oauthUserToken }));
+
+      fetch(`${PHOTO_URL}?oauthUserToken=${oauthUserToken}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('프로필 이미지를 가져오지 못했습니다.');
+          }
+          return response.text();
+        })
+        .then(url => {
+          setUser(prevState => ({ ...prevState, profileImage: url }));
+        })
+        .catch(error => {
+          console.error('Failed to fetch profile image:', error);
+          alert('프로필 이미지를 가져오지 못했습니다.');
+        });
     } else {
       alert('유효한 인증 토큰이 없습니다.');
-      navigate('/'); // 없는 경우 홈으로
+      navigate('/');
     }
   }, [location, setUser, navigate]);
 
-  // 이메일 인증 완료 시 상태 업데이트
-  const handleVerificationComplete = (email: string, univName: string) => {
+  // VerificationInput에서만 로컬 상태를 업데이트
+  const handleVerificationComplete = (inputEmail: string, inputUnivName: string) => {
     setIsVerified(true);
-    setUser(prevState => ({ ...prevState, email, univName }));
+    setEmail(inputEmail);
+    setUnivName(inputUnivName);
   };
 
-  // 인증 완료 시 프로필 페이지로
+  // 버튼 클릭 시 전역 상태 업데이트
   const handleNextPage = () => {
     if (isVerified) {
+      setUser(prevState => ({ ...prevState, email, univName }));
       navigate('/Profile');
     }
   };
