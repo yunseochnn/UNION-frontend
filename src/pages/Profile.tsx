@@ -7,13 +7,18 @@ import { userState } from '../recoil/userAtoms';
 import { useState } from 'react';
 import Cookies from 'js-cookie';
 import apiClient from '../api/apiClient';
+import { useNavigate } from 'react-router-dom';
 
 const SIGNUP_URL = '/user/signup';
 
 export default function Profile() {
+  const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
   const [nickname, setNickname] = useState(user.nickname || '');
   const [description, setDescription] = useState(user.description || '');
+
+  // 닉네임이 비어있는지 체크
+  const isNicknameEmpty = nickname.trim() === '';
 
   const handleImageChange = (newImage: string) => {
     setUser(prev => ({ ...prev, profileImage: newImage }));
@@ -45,6 +50,7 @@ export default function Profile() {
           univName: data.univName,
         }));
         console.log('회원가입 성공:', data);
+        navigate('/home');
       })
       .catch(error => {
         console.error('회원가입 중 오류 발생:', error);
@@ -65,7 +71,7 @@ export default function Profile() {
         />
       </div>
       <div className="absolute bottom-[48px] left-0 right-0 px-[30px]">
-        <Button label="회원가입" onClick={handleSignup} />
+        <Button label="회원가입" onClick={handleSignup} disabled={isNicknameEmpty} />
       </div>
     </div>
   );
