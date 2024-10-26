@@ -23,34 +23,29 @@ export default function EditProfile() {
   const handleSave = async () => {
     try {
       let profileImageUrl = profileImage;
+
+      // 프로필 이미지 업로드 로직
       if (profileImage && profileImage !== user.profileImage) {
         const formData = new FormData();
         formData.append('file', profileImage);
 
+        // 이미지 업로드 요청
         const uploadResponse = await apiClient.post('/photo/upload', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
-
         profileImageUrl = uploadResponse.data[0];
       }
 
-      // S3에 업로드된 이미지 URL을 특정 타겟에 저장
-      const targetId = 123; // 실제 targetId로 대체
-      const targetType = 'GATHERING'; // 실제 targetType으로 대체
-
-      await apiClient.post('/photo/save', {
-        targetId,
-        targetType,
-        urls: [profileImageUrl],
-      });
+      // 업데이트할 프로필 데이터 설정 (비어있는 필드는 제외)
+      const updatedProfileData: Record<string, any> = {};
+      if (nickname) updatedProfileData.nickname = nickname;
+      if (description !== undefined) updatedProfileData.description = description;
+      if (profileImageUrl) updatedProfileData.profileImage = profileImageUrl;
 
       // 프로필 정보 업데이트 요청
-      const { data: updatedUser } = await apiClient.post('/user/update-profile', {
-        nickname,
-        description,
-        profileImage: profileImageUrl,
-      });
+      const { data: updatedUser } = await apiClient.put('/user/my', updatedProfileData);
 
+      // Recoil 상태 업데이트
       setUser(prev => ({
         ...prev,
         nickname: updatedUser.nickname,
@@ -67,7 +62,7 @@ export default function EditProfile() {
 
   return (
     <div className="h-full w-full flex flex-col">
-      <Header title="프로필 수정" navigateTo="/Mypage" />
+      <Header title="프로필 수정" navigateTo="/mypage" />
       <div className="px-[36px] flex-grow">
         <ProfileImg profileImage={profileImage} onImageChange={setProfileImage} />
         <ProfileInput
