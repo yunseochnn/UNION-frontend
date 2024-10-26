@@ -89,7 +89,7 @@ const Home: React.FC = () => {
  return (
    <div className="center-content flex flex-col bg-white pt-1">
      <header className="flex justify-between items-center p-4">
-       <img src="/Logo.svg" alt="UNION" className="h-8" />
+       <img src="/public/Logo.svg" alt="UNION" className="h-8" />
        <div className="flex space-x-4">
          <FiSearch size={24} />
          <FiBell size={24} />
