@@ -3,8 +3,13 @@ import { HiOutlineChatBubbleOvalLeft } from 'react-icons/hi2';
 import Slide from '../../common/Slide';
 import { useState } from 'react';
 import Vote from './Vote';
+import { boardInfo } from '../../pages/BoardDetail';
 
-const Content = () => {
+interface Prop {
+  boardContent: boardInfo | null;
+}
+
+const Content = ({ boardContent }: Prop) => {
   const [like, setLike] = useState(false);
   const onClickLikeHandler = () => {
     setLike(!like);
@@ -15,17 +20,16 @@ const Content = () => {
         <div className="h-10 w-10 bg-gray-300 rounded-full cursor-pointer"></div>
         <div>
           <div className="font-bold text-sm">
-            유니 <span className="text-gray-400">· 구름대학교</span>
+            {boardContent?.nickname} <span className="text-gray-400">{`· ${boardContent?.univName}`}</span>
           </div>
-          <div className="font-semibold text-sm text-gray-400">09/15 22:39 조회수 233</div>
+          <div className="font-semibold text-sm text-gray-400">{`${boardContent?.createdAt} 조회수 ${boardContent?.views}`}</div>
         </div>
       </div>
 
-      <div className="mt-5 font-semibold text-xl">게시글 제목이 들어갑니다~~~</div>
+      <div className="mt-5 font-semibold text-xl">{boardContent?.title}</div>
 
       <div>
-        <div className="mt-5 text-base">{`글 내용이 들어갑니다. 고민 중인 것은 사진을 여러 장 첨부할 수 있도록 할지, 사진 위치를 글 마지막, 혹은 원하는 위치,
-        혹은 맨 앞으로 할 지 고민 중입니다. 회의를 통해 결정하는 것이 좋아보입니다.`}</div>
+        <div className="mt-5 text-base">{boardContent?.content}</div>
       </div>
 
       <div className="mt-4 cursor-pointer">

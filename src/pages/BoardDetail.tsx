@@ -13,6 +13,20 @@ import ReadBoardRequest from '../api/ReadBoardRequest';
 import { useParams } from 'react-router-dom';
 import RemoveBoard from '../components/BoardDetail/RemoveBoard';
 
+export interface boardInfo {
+  id: number;
+  title: string;
+  content: string;
+  type: string;
+  thumbnail: string | null;
+  views: number;
+  nickname: string;
+  profileImage: string | null;
+  univName: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export default function BoardDetail() {
   const [Modal, setModal] = useState(false);
   const [userBlock, setUserBlock] = useState(false);
@@ -21,25 +35,11 @@ export default function BoardDetail() {
   const { type, id } = useParams();
   const Type = type?.toUpperCase() || '';
   const BoardId = Number(id);
-
-  const data = {
-    id: 123,
-    title: '안녕하세요, 첫 게시글입니다!',
-    content: '이것은 예시로 작성된 게시글 내용입니다.',
-    type: 'FREE',
-    thumbnail:
-      'https://union-image-bucket.s3.ap-northeast-2.amazonaws.com/userToken/50fea775-346f-4a3e-af61-81bcb348606b.png',
-    views: 42,
-    nickname: '감자',
-    profileImage: 'https://union-image-bucket.s3.ap-northeast-2.amazonaws.com/userToken/profile.png',
-    univName: '감자대학교',
-    createdAt: '2024-10-24T15:30:00Z',
-    updatedAt: '2024-10-24T15:45:00Z',
-  };
+  const [boardContent, setBoardContent] = useState<boardInfo | null>(null);
 
   const updateData = {
-    title: data.title,
-    content: data.content,
+    title: boardContent?.title || '',
+    content: boardContent?.content || '',
   };
 
   const onReadBoard = useCallback(async () => {
@@ -52,6 +52,7 @@ export default function BoardDetail() {
       }
 
       const data = response.data;
+      setBoardContent(data);
       console.log(data);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -62,7 +63,7 @@ export default function BoardDetail() {
 
   useEffect(() => {
     onReadBoard();
-  }, [onReadBoard]);
+  }, [onReadBoard, modify]);
 
   return (
     <div className="h-full w-full flex flex-col items-center pt-1 pb-2 relative">
@@ -75,7 +76,7 @@ export default function BoardDetail() {
       </div>
 
       <div className="flex flex-col overflow-y-auto flex-1 hidden-scrollbar relative w-[85%]">
-        <Content />
+        <Content boardContent={boardContent} />
         <CommentList />
       </div>
 

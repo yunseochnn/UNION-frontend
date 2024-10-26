@@ -18,6 +18,11 @@ export interface Response {
   latitude?: number;
   longitude?: number;
   gatheringDateTime: string;
+  userNickname: string;
+  createdAt: string;
+  likes: number;
+  views: number;
+  owner: boolean;
 }
 
 export default function MeetDetail() {

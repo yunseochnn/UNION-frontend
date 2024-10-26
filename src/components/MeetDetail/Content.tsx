@@ -36,6 +36,7 @@ const Content = ({ gatheringData, setGatheringData }: Prop) => {
         }
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MeetId, setGatheringData]);
 
   useEffect(() => {
@@ -63,8 +64,8 @@ const Content = ({ gatheringData, setGatheringData }: Prop) => {
       <div className="flex items-center mt-[30px] gap-3">
         <div className="h-10 w-10 bg-gray-300 rounded-full cursor-pointer"></div>
         <div>
-          <div className="font-semibold text-sm">유니</div>
-          <div className="font-semibold text-sm text-gray-400">방배본동 인증 30회 · 1일전</div>
+          <div className="font-semibold text-sm">{gatheringData?.userNickname}</div>
+          <div className="font-semibold text-sm text-gray-400">{gatheringData?.createdAt}</div>
         </div>
       </div>
 
@@ -101,7 +102,7 @@ const Content = ({ gatheringData, setGatheringData }: Prop) => {
       )}
 
       <div className="flex justify-end mt-3">
-        <div className="font-semibold text-gray-500 text-sm">관심 0 · 조회 29</div>
+        <div className="font-semibold text-gray-500 text-sm">{`관심 ${gatheringData?.likes} · 조회 ${gatheringData?.views}`}</div>
       </div>
 
       <div className="mt-5 border-t border-gray-150 pt-6 mb-2 flex justify-between items-center">

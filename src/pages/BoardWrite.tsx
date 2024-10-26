@@ -24,6 +24,7 @@ export default function BoardWrite() {
 
   const onSaveImage = useCallback(
     async (id: number) => {
+      console.log(images);
       try {
         const response = await SaveImageRequest(id, 'POST', images);
         if (!response) {

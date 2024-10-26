@@ -15,17 +15,17 @@ const PlusImage = ({ setImages }: Prop) => {
     console.log(selectedFile);
 
     try {
-      const response = await apiClient.post(
-        '/photo/upload',
-        {
-          images: selectedFile,
+      const formData = new FormData();
+      filesArray.forEach(file => {
+        formData.append('images', file);
+      });
+      const response = await apiClient.post('/photo/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization:
+            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU0MSwiZXhwIjoxNzMyNDMxNTQxLCJzdWIiOiJ0b2tlbjEifQ.ObKaKc37PY7NcO6ZRjw44pSu8xlvr4Oq_TdY_ySQJB4',
         },
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        },
-      );
+      });
 
       console.log(response);
       setImages(response.data);
