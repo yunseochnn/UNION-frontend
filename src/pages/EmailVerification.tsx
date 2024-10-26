@@ -6,6 +6,7 @@ import Header from '../common/Header';
 import Title from '../components/EmailVerification/Title';
 import { userState } from '../recoil/userAtoms';
 import { useEffect, useState } from 'react';
+import apiClient from '../api/apiClient';
 
 const PHOTO_URL = '/oauth/photo';
 
@@ -25,15 +26,10 @@ export default function EmailVerification() {
     if (oauthUserToken) {
       setUser(prevState => ({ ...prevState, oauthUserToken }));
 
-      fetch(`${PHOTO_URL}?oauthUserToken=${oauthUserToken}`)
+      apiClient
+        .get(`${PHOTO_URL}?oauthUserToken=${oauthUserToken}`)
         .then(response => {
-          if (!response.ok) {
-            throw new Error('프로필 이미지를 가져오지 못했습니다.');
-          }
-          return response.text();
-        })
-        .then(url => {
-          setUser(prevState => ({ ...prevState, profileImage: url }));
+          setUser(prevState => ({ ...prevState, profileImage: response.data }));
         })
         .catch(error => {
           console.error('Failed to fetch profile image:', error);
