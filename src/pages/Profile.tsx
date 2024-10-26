@@ -6,6 +6,7 @@ import Button from '../components/Profile/Button';
 import { userState } from '../recoil/userAtoms';
 import { useState } from 'react';
 import Cookies from 'js-cookie';
+import apiClient from '../api/apiClient';
 
 const SIGNUP_URL = '/user/signup';
 
@@ -19,31 +20,19 @@ export default function Profile() {
   };
 
   const handleSignup = () => {
-    fetch(SIGNUP_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    apiClient
+      .post(SIGNUP_URL, {
         oauthUserToken: user.oauthUserToken,
         nickname,
         description: description || '',
         profileImage: user.profileImage,
         univName: user.univName,
-      }),
-    })
-      .then(response => {
-        if (!response.ok) throw new Error(`회원가입 요청 실패 - ${response.status}`);
-        const authHeader = response.headers.get('Authorization');
-        const refreshHeader = response.headers.get('Refresh-Token');
-
-        return response.json().then(data => ({
-          data,
-          authHeader,
-          refreshHeader,
-        }));
       })
-      .then(({ data, authHeader, refreshHeader }) => {
+      .then(response => {
+        const authHeader = response.headers['authorization'];
+        const refreshHeader = response.headers['refresh-token'];
+        const data = response.data;
+
         if (authHeader) Cookies.set('Authorization', authHeader, { path: '/' });
         if (refreshHeader) Cookies.set('Refresh-Token', refreshHeader, { path: '/' });
 
