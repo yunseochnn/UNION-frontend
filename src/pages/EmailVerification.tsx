@@ -15,16 +15,16 @@ export default function EmailVerification() {
   const setUser = useSetRecoilState(userState);
   const [isVerified, setIsVerified] = useState(false);
 
-  // URL에서 oauthUserToken 추출 후 전역 상태에 저장하고 프로필 이미지 가져오기
+  const [email, setEmail] = useState('');
+  const [univName, setUnivName] = useState('');
+
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const oauthUserToken = queryParams.get('oauthUserToken');
 
     if (oauthUserToken) {
-      // 전역 상태에 oauthUserToken 저장
       setUser(prevState => ({ ...prevState, oauthUserToken }));
 
-      // 프로필 이미지 GET 요청
       fetch(`${PHOTO_URL}?oauthUserToken=${oauthUserToken}`)
         .then(response => {
           if (!response.ok) {
@@ -41,17 +41,21 @@ export default function EmailVerification() {
         });
     } else {
       alert('유효한 인증 토큰이 없습니다.');
-      navigate('/'); // 없는 경우 홈으로 이동
+      navigate('/');
     }
   }, [location, setUser, navigate]);
 
-  const handleVerificationComplete = (email: string, univName: string) => {
+  // VerificationInput에서만 로컬 상태를 업데이트
+  const handleVerificationComplete = (inputEmail: string, inputUnivName: string) => {
     setIsVerified(true);
-    setUser(prevState => ({ ...prevState, email, univName }));
+    setEmail(inputEmail);
+    setUnivName(inputUnivName);
   };
 
+  // 버튼 클릭 시 전역 상태 업데이트
   const handleNextPage = () => {
     if (isVerified) {
+      setUser(prevState => ({ ...prevState, email, univName }));
       navigate('/Profile');
     }
   };
