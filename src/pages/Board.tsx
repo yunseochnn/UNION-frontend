@@ -17,9 +17,11 @@ const Board: React.FC = () => {
 
   return (
     <div className="center-content flex flex-col bg-white">
+      {/* 헤더 중앙 정렬 */}
       <header className="flex justify-between items-center p-4">
-        <h1 className="text-xl font-semibold">게시판</h1>
-        <div className="flex space-x-4">
+        <div className="flex-1"></div>
+        <h1 className="text-xl font-semibold flex-1 text-center">게시판</h1>
+        <div className="flex space-x-4 flex-1 justify-end">
           <FiSearch size={24} />
           <FiBell size={24} />
         </div>
@@ -31,7 +33,7 @@ const Board: React.FC = () => {
 
       <div className="flex flex-col flex-1 px-[15px]">
         <div
-          className="p-4 border-b cursor-pointer flex justify-between items-center"
+          className="p-4 border-b cursor-pointer flex justify-between items-center hover:bg-gray-50"
           onClick={() => navigate('/board/free')}
         >
           <span>자유 게시판</span>
@@ -39,7 +41,7 @@ const Board: React.FC = () => {
         </div>
 
         <div
-          className="p-4 border-b cursor-pointer flex justify-between items-center"
+          className="p-4 border-b cursor-pointer flex justify-between items-center hover:bg-gray-50"
           onClick={() => setIsAcademicOpen(!isAcademicOpen)}
         >
           <span>학과 게시판</span>
@@ -51,17 +53,18 @@ const Board: React.FC = () => {
             {Object.entries(departments).map(([key, value]) => (
               <div
                 key={key}
-                className="pl-8 py-3 cursor-pointer hover:bg-gray-100"
+                className="pl-8 py-3 cursor-pointer hover:bg-gray-100 flex justify-between items-center"
                 onClick={() => navigate(`/board/${key}`)}
               >
-                {value}
+                <span>{value}</span>
+                <FiChevronRight className="mr-4" />
               </div>
             ))}
           </div>
         )}
 
         <div
-          className="p-4 border-b cursor-pointer flex justify-between items-center"
+          className="p-4 border-b cursor-pointer flex justify-between items-center hover:bg-gray-50"
           onClick={() => navigate('/board/job')}
         >
           <span>장터 게시판</span>
@@ -69,7 +72,7 @@ const Board: React.FC = () => {
         </div>
 
         <div
-          className="p-4 border-b cursor-pointer flex justify-between items-center"
+          className="p-4 border-b cursor-pointer flex justify-between items-center hover:bg-gray-50"
           onClick={() => navigate('/board/info')}
         >
           <span>정보 게시판</span>
@@ -77,7 +80,7 @@ const Board: React.FC = () => {
         </div>
 
         <div
-          className="p-4 border-b cursor-pointer flex justify-between items-center"
+          className="p-4 border-b cursor-pointer flex justify-between items-center hover:bg-gray-50"
           onClick={() => navigate('/board/employment')}
         >
           <span>추후 생각</span>
@@ -85,8 +88,10 @@ const Board: React.FC = () => {
         </div>
       </div>
 
-      <footer className="h-14 px-[33px] mb-3">
-        <SideBar />
+      <footer className="h-14 w-full flex justify-center">
+        <div className="w-[90%]">
+          <SideBar />
+        </div>
       </footer>
     </div>
   );

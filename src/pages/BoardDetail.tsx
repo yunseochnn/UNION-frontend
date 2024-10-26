@@ -12,17 +12,21 @@ export default function BoardDetail() {
   const [userBlock, setUserBlock] = useState(false);
 
   return (
-    <div className="h-full w-full flex flex-col py-3 px-[30px] relative">
+    <div className="h-full w-full flex flex-col items-center pt-1 pb-2 relative">
       {Modal && <More setModal={setModal} setUserBlock={setUserBlock} />}
       {userBlock && <UserBlock setUserBlock={setUserBlock} />}
-      <Header setModal={setModal} />
+      <div className="w-[85%]">
+        <Header setModal={setModal} />
+      </div>
 
-      <div className="flex flex-col overflow-y-auto flex-1 hidden-scrollbar relative">
+      <div className="flex flex-col overflow-y-auto flex-1 hidden-scrollbar relative w-[85%]">
         <Content />
         <CommentList />
       </div>
 
-      <Footer />
+      <div className="w-[90%]">
+        <Footer />
+      </div>
     </div>
   );
 }

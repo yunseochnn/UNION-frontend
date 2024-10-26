@@ -13,7 +13,7 @@ export default function UserInfo() {
 
   return (
     <div className="h-full w-full flex flex-col relative">
-      <Header title="유저 정보" navigateTo="/Mypage" />
+      <Header title="유저 정보" navigateTo="/mypage" />
       <div className="px-[36px]">
         <User
           name="찐 감자"

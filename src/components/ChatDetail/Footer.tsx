@@ -3,7 +3,7 @@ import { LuSendHorizonal } from 'react-icons/lu';
 
 const Footer = () => {
   return (
-    <div className="h-14 flex items-center justify-between">
+    <div className="h-14 flex items-center justify-between w-[90%]">
       <div>
         <FaPlus size={20} />
       </div>

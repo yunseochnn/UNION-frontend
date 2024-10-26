@@ -6,7 +6,7 @@ const Lists = () => {
   const [filter, setFilter] = useState('individaul');
 
   return (
-    <div className="flex flex-col flex-1 overflow-y-auto hidden-scrollbar mt-5">
+    <div className="flex flex-col mt-5">
       <div className="flex gap-3 font-semibold">
         <span
           className={`cursor-pointer ${filter === 'meet' ? 'text-gray-400' : 'text-black'}`}

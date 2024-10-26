@@ -13,7 +13,7 @@ const List = ({ filter }: Prop) => {
 
   return (
     <div className="w-full h-16 flex items-center mt-2 gap-4 cursor-pointer" onClick={onClickList}>
-      <div className="w-14 h-14 rounded-full bg-gray-300"></div>
+      <div className="w-14 h-14 rounded-full bg-gray-300 flex-shrink-0"></div>
 
       <div className="flex flex-col">
         <div className="flex gap-3 items-center">

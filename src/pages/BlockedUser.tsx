@@ -12,7 +12,7 @@ export default function BlockedUser() {
     setIsBlocked(prev => !prev);
   };
   const handleUserClick = () => {
-    navigate('/UserInfo');
+    navigate('/userinfo');
   };
 
   return (
