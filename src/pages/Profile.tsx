@@ -5,13 +5,12 @@ import ProfileInput from '../common/ProfileInput';
 import Button from '../components/Profile/Button';
 import { userState } from '../recoil/userAtoms';
 import { useState } from 'react';
-import { useCookies } from 'react-cookie';
+import Cookies from 'js-cookie';
 
 const SIGNUP_URL = '/user/signup';
 
 export default function Profile() {
   const [user, setUser] = useRecoilState(userState);
-  const [, setCookie] = useCookies(['Authorization', 'Refresh-Token']);
   const [nickname, setNickname] = useState(user.nickname || '');
   const [description, setDescription] = useState(user.description || '');
 
@@ -45,8 +44,8 @@ export default function Profile() {
         }));
       })
       .then(({ data, authHeader, refreshHeader }) => {
-        if (authHeader) setCookie('Authorization', authHeader, { path: '/' });
-        if (refreshHeader) setCookie('Refresh-Token', refreshHeader, { path: '/' });
+        if (authHeader) Cookies.set('Authorization', authHeader, { path: '/' });
+        if (refreshHeader) Cookies.set('Refresh-Token', refreshHeader, { path: '/' });
 
         setUser(prev => ({
           ...prev,

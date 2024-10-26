@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import Cookies from 'js-cookie';
 import { requestNewAccessToken } from './refreshToken';
 
@@ -35,13 +35,16 @@ apiClient.interceptors.response.use(
 
         if (newAccessToken) {
           Cookies.set('Authorization', `Bearer ${newAccessToken}`, { path: '/' });
-          apiClient.defaults.headers['Authorization'] = `Bearer ${newAccessToken}`;
           originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
 
           return apiClient(originalRequest);
         }
-      } catch (error) {
-        console.error('토큰 갱신 실패:', error);
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          console.error('토큰 갱신 실패:', err.message);
+        } else {
+          console.error('토큰 갱신 중 알 수 없는 오류 발생:', err);
+        }
       }
     }
     return Promise.reject(error);
