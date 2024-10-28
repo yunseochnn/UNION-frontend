@@ -47,7 +47,6 @@ const Post = ({ setOpen, setAddress }: Prop) => {
         name: marker.content,
         address: marker.addressName,
         positionX: marker.positionX,
-        positionY: marker.positionY,
       });
       setOpen(false);
     },

@@ -103,7 +103,7 @@ const Content = ({
         <div className="flex flex-col items-center justify-center mb-2 w-full">
           <div className="h-48 w-full border border-gray-200 rounded-md  relative">
             <Map y={address?.positionY} x={address?.positionX} name={address?.name} />
-            <div className="absolute top-1 right-1 cursor-pointer z-50" onClick={onClickDeleteMap}>
+            <div className="absolute top-1 right-1 cursor-pointer z-10" onClick={onClickDeleteMap}>
               <IoIosCloseCircle size={20} />
             </div>
           </div>

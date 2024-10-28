@@ -8,6 +8,7 @@ interface Info {
   address?: string;
   latitude?: number;
   longitude?: number;
+  eupMyeonDong?: string;
 }
 
 interface Prop {
@@ -27,6 +28,7 @@ const CreateMeetRequest = async ({ info }: Prop) => {
         ...(info.address && { address: info.address }),
         ...(info.latitude && { latitude: info.latitude }),
         ...(info.longitude && { longitude: info.longitude }),
+        ...(info.eupMyeonDong && { eupMyeonDong: info.eupMyeonDong }),
         currentMember: 1,
       },
       {

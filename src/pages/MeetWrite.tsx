@@ -70,6 +70,9 @@ export default function MeetWrite() {
     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}${sign}${offsetHours}:${offsetMinutes}`;
   }
 
+  const address1 = address?.address?.split(' ');
+  const eupMyeonDong = address1 && address1[2];
+
   const onCreateMeet = useCallback(async () => {
     try {
       const response = await CreateMeetRequest({
@@ -82,6 +85,7 @@ export default function MeetWrite() {
             address: address.address,
             latitude: address.positionY,
             longitude: address.positionX,
+            eupMyeonDong: eupMyeonDong,
           }),
         },
       });
@@ -102,7 +106,7 @@ export default function MeetWrite() {
         console.log(error.response);
       }
     }
-  }, [address, images.length, maxMember?.value, navigate, onSaveImage, selectedDate, text, title]);
+  }, [address, eupMyeonDong, images.length, maxMember?.value, navigate, onSaveImage, selectedDate, text, title]);
 
   useEffect(() => {
     if (click) {
