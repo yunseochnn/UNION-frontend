@@ -14,7 +14,11 @@ const SideBar = () => {
         <div className="flex flex-col justify-center items-center cursor-pointer" onClick={() => navigate('/Home')}>
           {' '}
           <div>
-            {pathname === '/' ? <IoHome size={20} style={{ strokeWidth: '2' }} /> : <IoHomeOutline size={20} />}
+            {pathname.includes('Home') ? (
+              <IoHome size={20} style={{ strokeWidth: '2' }} />
+            ) : (
+              <IoHomeOutline size={20} />
+            )}
           </div>
           <div className="text-xs">홈</div>
         </div>
@@ -38,7 +42,7 @@ const SideBar = () => {
           <div className="text-xs">채팅</div>
         </div>
 
-        <div className="flex flex-col justify-center items-center cursor-pointers" onClick={() => navigate('/MyPage')}>
+        <div className="flex flex-col justify-center items-center cursor-pointer" onClick={() => navigate('/MyPage')}>
           <div>
             <div>{pathname.includes('MyPage') ? <FaUser size={20} /> : <FaRegUser size={20} />}</div>
           </div>

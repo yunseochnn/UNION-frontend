@@ -1,11 +1,14 @@
+import { useNavigate } from 'react-router-dom';
 import Logo from '../components/SocialLogin/Logo';
 import SocialButton from '../components/SocialLogin/SocialButton';
 
 export default function SocialLogin() {
+  const navigate = useNavigate();
   return (
     <div className="h-full w-full flex flex-col items-center justify-between px-[30px]">
       <div className="mt-[150px]">
         <Logo />
+        <button onClick={() => navigate('/Home')}>홈</button>
       </div>
       <div className="space-y-3 flex flex-col items-center mb-[48px]">
         <SocialButton

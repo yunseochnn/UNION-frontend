@@ -1,13 +1,35 @@
 import { useState } from 'react';
 import { TbPhoto } from 'react-icons/tb';
+import apiClient from '../api/apiClient';
 
-const PlusImage = () => {
+interface Prop {
+  setImages: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+const PlusImage = ({ setImages }: Prop) => {
   const [selectedFile, setSelectedFile] = useState<File[]>([]);
-  const onImageInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onImageInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     const filesArray = Array.from(e.target.files);
     setSelectedFile(filesArray);
     console.log(selectedFile);
+
+    try {
+      const formData = new FormData();
+      filesArray.forEach(file => {
+        formData.append('images', file);
+      });
+      const response = await apiClient.post('/photo/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      console.log(response);
+      setImages(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <>
