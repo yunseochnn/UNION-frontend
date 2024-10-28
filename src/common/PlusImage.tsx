@@ -22,8 +22,6 @@ const PlusImage = ({ setImages }: Prop) => {
       const response = await apiClient.post('/photo/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization:
-            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU0MSwiZXhwIjoxNzMyNDMxNTQxLCJzdWIiOiJ0b2tlbjEifQ.ObKaKc37PY7NcO6ZRjw44pSu8xlvr4Oq_TdY_ySQJB4',
         },
       });
 

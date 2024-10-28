@@ -8,9 +8,11 @@ import Map from '../../common/Map';
 import { useEffect } from 'react';
 import ShowImages from '../../common/ShowImages';
 import { FaCalendar } from 'react-icons/fa';
+import { IoIosCloseCircle } from 'react-icons/io';
 
 interface Prop {
   address: IAddress | null;
+  setAddress: React.Dispatch<React.SetStateAction<IAddress | null>>;
   setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   images: string[];
   setImages: React.Dispatch<React.SetStateAction<string[]>>;
@@ -26,6 +28,7 @@ interface Prop {
 
 const Content = ({
   address,
+  setAddress,
   setSuccess,
   images,
   setImages,
@@ -44,6 +47,10 @@ const Content = ({
 
   const onTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
+  };
+
+  const onClickDeleteMap = () => {
+    setAddress(null);
   };
 
   useEffect(() => {
@@ -94,8 +101,11 @@ const Content = ({
 
       {address && (
         <div className="flex flex-col">
-          <div className="h-48 w-[368px] border border-gray-200 rounded-md">
+          <div className="h-48 w-[368px] border border-gray-200 rounded-md  relative">
             <Map y={address?.positionY} x={address?.positionX} name={address?.name} />
+            <div className="absolute top-1 right-1 cursor-pointer z-50" onClick={onClickDeleteMap}>
+              <IoIosCloseCircle />
+            </div>
           </div>
         </div>
       )}

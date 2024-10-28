@@ -85,6 +85,7 @@ export default function BoardWrite() {
       <Header success={success} setClick={setClick} />
       <Content
         items={items}
+        setItems={setItems}
         images={images}
         setImages={setImages}
         setSuccess={setSuccess}

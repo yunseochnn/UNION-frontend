@@ -1,14 +1,19 @@
 import { FaRegCircle } from 'react-icons/fa6';
+import { IoIosCloseCircle } from 'react-icons/io';
 import { MdHowToVote } from 'react-icons/md';
 
 interface Prop {
   items: string[];
+  setItems: React.Dispatch<React.SetStateAction<string[]>>;
   voteTitle: string;
 }
 
-const VoteContent = ({ items, voteTitle }: Prop) => {
+const VoteContent = ({ items, setItems, voteTitle }: Prop) => {
+  const onClickDeleteVote = () => {
+    setItems(['', '']);
+  };
   return (
-    <div className="w-full h-auto border border-gray-300 rounded-md p-4 mb-2">
+    <div className="w-full h-auto border border-gray-300 rounded-md p-4 mb-2 relative">
       <div>
         <div className="flex gap-1">
           <MdHowToVote />
@@ -23,6 +28,9 @@ const VoteContent = ({ items, voteTitle }: Prop) => {
             <span className="ml-3">{item}</span>
           </div>
         ))}
+      </div>
+      <div className="absolute top-1 right-1 cursor-pointer" onClick={onClickDeleteVote}>
+        <IoIosCloseCircle />
       </div>
     </div>
   );

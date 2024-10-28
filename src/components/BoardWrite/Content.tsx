@@ -7,6 +7,7 @@ import ShowImages from '../../common/ShowImages';
 
 interface Prop {
   items: string[];
+  setItems: React.Dispatch<React.SetStateAction<string[]>>;
   images: string[];
   setImages: React.Dispatch<React.SetStateAction<string[]>>;
   setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,7 +18,18 @@ interface Prop {
   setContent: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Content = ({ items, images, setImages, setSuccess, voteTitle, title, setTitle, content, setContent }: Prop) => {
+const Content = ({
+  items,
+  setItems,
+  images,
+  setImages,
+  setSuccess,
+  voteTitle,
+  title,
+  setTitle,
+  content,
+  setContent,
+}: Prop) => {
   const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
@@ -58,7 +70,7 @@ const Content = ({ items, images, setImages, setSuccess, voteTitle, title, setTi
 
       <ShowImages images={images} setImages={setImages} />
 
-      {items[0] !== '' && <VoteContent items={items} voteTitle={voteTitle} />}
+      {items[0] !== '' && <VoteContent items={items} setItems={setItems} voteTitle={voteTitle} />}
     </div>
   );
 };

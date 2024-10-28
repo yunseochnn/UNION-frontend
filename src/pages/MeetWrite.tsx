@@ -116,6 +116,7 @@ export default function MeetWrite() {
       <Header success={success} setClick={setClick} />
       <Content
         address={address}
+        setAddress={setAddress}
         setSuccess={setSuccess}
         images={images}
         setImages={setImages}
