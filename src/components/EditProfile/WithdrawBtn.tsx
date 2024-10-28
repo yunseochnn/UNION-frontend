@@ -13,6 +13,7 @@ export default function WithdrawBtn() {
 
       setUser({
         oauthUserToken: '',
+        token: '',
         univName: '',
         nickname: '',
         description: '',
