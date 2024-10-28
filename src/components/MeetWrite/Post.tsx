@@ -45,7 +45,7 @@ const Post = ({ setOpen, setAddress }: Prop) => {
     (marker: CustomMarker) => {
       setAddress({
         name: marker.content,
-        address: marker.roadAddressName,
+        address: marker.addressName,
         positionX: marker.positionX,
         positionY: marker.positionY,
       });

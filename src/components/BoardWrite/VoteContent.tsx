@@ -30,7 +30,7 @@ const VoteContent = ({ items, setItems, voteTitle }: Prop) => {
         ))}
       </div>
       <div className="absolute top-1 right-1 cursor-pointer" onClick={onClickDeleteVote}>
-        <IoIosCloseCircle />
+        <IoIosCloseCircle size={20} />
       </div>
     </div>
   );
