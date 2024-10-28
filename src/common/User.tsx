@@ -2,17 +2,26 @@ interface UserProps {
   name: string;
   university: string;
   bio: string;
+  profileImage: string;
   buttonLabel: string;
   buttonWidth: string;
   onButtonClick: () => void;
 }
 
-export default function User({ name, university, bio, buttonLabel, buttonWidth, onButtonClick }: UserProps) {
+export default function User({
+  name,
+  university,
+  bio,
+  profileImage,
+  buttonLabel,
+  buttonWidth,
+  onButtonClick,
+}: UserProps) {
   return (
     <div>
       <div className="h-16 w-full flex justify-between items-center mt-2 cursor-pointer">
         <div className="flex items-center">
-          <div className="h-14 w-14 rounded-full bg-gray-300"></div>
+          <img src={profileImage} alt="프로필 이미지" className="h-14 w-14 rounded-full object-cover bg-gray-300" />
           <div className="ml-4">
             <div className="flex items-center gap-2">
               <div className="font-bold text-base">{name}</div>
