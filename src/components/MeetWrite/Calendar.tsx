@@ -27,7 +27,7 @@ const Calendar = ({ selectedDate, setSelectedDate }: Prop) => {
       value={value || '날짜 선택'}
       onClick={onClick} // DatePicker의 onClick을 그대로 전달하여 선택 창을 열리게 함
       readOnly // 모바일 키보드 방지
-      className="outline-none w-40"
+      className="outline-none w-40 font-semibold"
     />
   );
 
