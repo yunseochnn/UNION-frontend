@@ -4,7 +4,6 @@ import SideBar from '../common/SideBar';
 import MeetHeader from '../components/Meet/MeetHeader';
 import FloatingActionButton from '../common/FloatingActionButton';
 import { BsFillPeopleFill } from "react-icons/bs";
-import { IoIosHeart } from "react-icons/io";
 import { IoMdEye } from "react-icons/io"; 
 
 const Meet: React.FC = () => {
