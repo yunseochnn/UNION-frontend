@@ -34,7 +34,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/emailverification" element={<EmailVerification />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/search:type" element={<Search />} />
+        <Route path="/search/:type" element={<Search />} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/editprofile" element={<EditProfile />} />
         <Route path="/meet" element={<Meet />} />
