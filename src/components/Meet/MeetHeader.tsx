@@ -30,12 +30,12 @@ const MeetHeader: React.FC<MeetHeaderProps> = ({ sortBy, setSortBy }) => {
           {sortBy} ▼
         </button>
 
-        {/* 모집완료 버튼 추가했습니다 */}
+        {/* 모집 완료 글 보기 버튼 추가했습니다 */}
         <button className="border border-gray-300 rounded-full px-3 py-1">모집 완료 글 보기</button>
 
         <button
           className="border border-gray-300 rounded-full px-3 py-1 flex items-center"
-          onClick={() => navigate('/Map')} // 클릭 이벤트 추가
+          onClick={() => navigate('/Map')} 
         >
           <IoMap className="w-4 h-4 mr-1" />
           지도 뷰
