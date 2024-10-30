@@ -32,7 +32,6 @@ body {
   width: 100%;
   max-width: 430px;
   max-height: 932px;
-  /* height: 100vh; */
   height: calc(var(--vh, 1vh) * 100);
   padding-bottom: env(safe-area-inset-bottom);
   background-color: white;

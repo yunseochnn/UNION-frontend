@@ -20,7 +20,13 @@ const People = ({ maxMember, setMaxMember }: Prop) => {
   ];
   return (
     <div>
-      <Select defaultValue={maxMember} options={options} onChange={setMaxMember} classNamePrefix="react-select" />
+      <Select
+        defaultValue={maxMember}
+        options={options}
+        onChange={setMaxMember}
+        classNamePrefix="react-select"
+        isSearchable={false}
+      />
     </div>
   );
 };
