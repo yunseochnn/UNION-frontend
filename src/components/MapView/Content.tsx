@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import useGeolocation from 'react-hook-geolocation';
 import EmptyMap from './EmptyMap';
 
 declare global {
@@ -10,18 +9,37 @@ declare global {
 
 const Content = () => {
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
-  const geolocation = useGeolocation();
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
 
   console.log(map);
+
+  //Geolocation을 직접 가져오는 함수
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          setLatitude(position.coords.latitude);
+          setLongitude(position.coords.longitude);
+        },
+        error => {
+          console.error('위치 접근 거부', error);
+        },
+      );
+    } else {
+      console.error('Geolocation을 사용할 수 없습니다.');
+    }
+  }, []);
+
   //지도 불러오기
   useEffect(() => {
-    if (!geolocation.latitude || !geolocation.longitude) return;
+    if (!latitude || !longitude) return;
 
     const { kakao } = window;
     kakao.maps.load(() => {
       const container = document.getElementById('map');
       const options = {
-        center: new kakao.maps.LatLng(geolocation.latitude, geolocation.longitude),
+        center: new kakao.maps.LatLng(latitude, longitude),
         level: 5,
       };
       const mapInstance = new kakao.maps.Map(container, options);
@@ -31,9 +49,9 @@ const Content = () => {
 
       setMap(mapInstance);
     });
-  }, [geolocation.latitude, geolocation.longitude]);
+  }, [latitude, longitude]);
 
-  if (!geolocation.latitude || !geolocation.longitude) {
+  if (!latitude || !longitude) {
     return (
       <div className="h-full w-full flex justify-center items-center">
         <EmptyMap />

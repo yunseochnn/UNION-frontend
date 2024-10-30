@@ -26,7 +26,7 @@ export default function MeetWrite() {
   const [address, setAddress] = useState<IAddress | null>(null);
   const [success, setSuccess] = useState(false);
   const [images, setImages] = useState<string[]>([]);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [maxMember, setMaxMember] = useState<OptionType | null>({ value: 2, label: 2 });
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
