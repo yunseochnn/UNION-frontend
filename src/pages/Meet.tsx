@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SideBar from '../common/SideBar';
 import MeetHeader from '../components/Meet/MeetHeader';
-import FloatingActionButton from '../common/FloatingActionButton'; // 추가된 컴포넌트
-import { FaUser, FaHeart } from 'react-icons/fa'; // FaUser, FaHeart 임포트
+import FloatingActionButton from '../common/FloatingActionButton';
+import { BsFillPeopleFill } from "react-icons/bs";
+import { IoIosHeart } from "react-icons/io";
+import { IoMdEye } from "react-icons/io"; 
 
 const Meet: React.FC = () => {
   const [sortBy, setSortBy] = useState('가까운 거리 순');
@@ -17,7 +19,7 @@ const Meet: React.FC = () => {
       time: '오후 4:00',
       currentParticipants: 1,
       maxParticipants: 4,
-      likes: 24,
+      views: 24,
       host: '카페 창업',
       area: '서초동',
     },
@@ -28,7 +30,7 @@ const Meet: React.FC = () => {
       time: '오후 4:00',
       currentParticipants: 2,
       maxParticipants: 4,
-      likes: 30,
+      views: 30,
       host: '만남',
       area: '잠실동',
     },
@@ -39,7 +41,7 @@ const Meet: React.FC = () => {
       time: '오후 4:00',
       currentParticipants: 3,
       maxParticipants: 4,
-      likes: 15,
+      views: 15,
       host: '카페 창업',
       area: '서초동',
     },
@@ -50,7 +52,7 @@ const Meet: React.FC = () => {
       time: '오후 4:00',
       currentParticipants: 4,
       maxParticipants: 4,
-      likes: 40,
+      views: 40,
       host: '카페 창업',
       area: '서초동',
     },
@@ -61,7 +63,7 @@ const Meet: React.FC = () => {
       time: '오후 4:00',
       currentParticipants: 2,
       maxParticipants: 4,
-      likes: 18,
+      views: 18,
       host: '카페 창업',
       area: '서초동',
     },
@@ -72,7 +74,7 @@ const Meet: React.FC = () => {
       time: '오후 4:00',
       currentParticipants: 2,
       maxParticipants: 4,
-      likes: 18,
+      views: 18,
       host: '카페 창업',
       area: '서초동',
     },
@@ -83,7 +85,7 @@ const Meet: React.FC = () => {
       time: '오후 4:00',
       currentParticipants: 3,
       maxParticipants: 4,
-      likes: 15,
+      views: 15,
       host: '카페 창업',
       area: '서초동',
     },
@@ -94,7 +96,7 @@ const Meet: React.FC = () => {
       time: '오후 4:00',
       currentParticipants: 4,
       maxParticipants: 4,
-      likes: 40,
+      views: 40,
       host: '카페 창업',
       area: '서초동',
     },
@@ -111,7 +113,7 @@ const Meet: React.FC = () => {
   return (
     <div className="relative center-content flex flex-col bg-white">
       <MeetHeader sortBy={sortBy} setSortBy={setSortBy} />
-
+ 
       <main className="flex-1 overflow-y-auto relative flex flex-col px-[20px]">
         {meetings.map(meeting => (
           <div key={meeting.id} className="border-b py-4 cursor-pointer" onClick={() => handleMeetingClick(meeting.id)}>
@@ -121,17 +123,16 @@ const Meet: React.FC = () => {
                 <h2 className="font-bold text-lg">{meeting.title}</h2>
                 <div className="text-sm text-gray-600">{`${meeting.date}, ${meeting.time}`}</div>
                 <div className="mt-1 text-sm text-gray-500 flex items-center">
-                  <FaUser className="mr-1" />
+                  <BsFillPeopleFill size={12} className="mr-1" /> {/* 크기 줄였습니다 */}
                   <span>{`${meeting.currentParticipants}/${meeting.maxParticipants}`}</span>
                   <div className="flex items-center ml-2">
-                    <FaHeart className="text-red-500 mr-1" />
-                    <span>{meeting.likes}</span>
+                  <IoMdEye size={14} className="mr-1" /> {/* 하트 아이콘을 눈 아이콘으로 변경했습니다!! */}
+                  <span>{meeting.views}</span>
                   </div>
                 </div>
               </div>
               <div className="w-16 h-16 rounded-md overflow-hidden">
                 <img
-                  //src={meeting.imageUrl}
                   alt={meeting.title}
                   className="w-full h-full object-cover"
                 />
@@ -140,12 +141,11 @@ const Meet: React.FC = () => {
           </div>
         ))}
       </main>
-
-      {/* 플로팅 액션 버튼 */}
+ 
       <div className="right-8 bottom-24 absolute">
         <FloatingActionButton onClick={handlePlusClick} />
       </div>
-
+ 
       <footer className="h-14 w-full flex justify-center">
         <div className="w-[90%]">
           <SideBar />
@@ -153,6 +153,6 @@ const Meet: React.FC = () => {
       </footer>
     </div>
   );
-};
-
-export default Meet;
+ };
+ 
+ export default Meet;
