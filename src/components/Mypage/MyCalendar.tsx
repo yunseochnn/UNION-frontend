@@ -100,8 +100,8 @@ export default function MyCalendar() {
         <div className="mt-2 p-4 border-t w-full max-w-md">
           {selectedMeetings.map((meeting, index) => (
             <div key={index} className="flex justify-between items-center mb-2">
-              <span className="text-gray-700">{meeting.title}</span>
-              <span className="text-gray-500">{meeting.time}</span>
+              <span className="text-customGray1">{meeting.title}</span>
+              <span className="text-customGray2">{meeting.time}</span>
             </div>
           ))}
         </div>
@@ -109,7 +109,7 @@ export default function MyCalendar() {
 
       {selectedMeetings.length === 0 && (
         <div className="mt-2 p-4 border-t w-full max-w-md text-center mb-2">
-          <span className="text-gray-500">선택한 날짜에 모임이 없습니다.</span>
+          <span className="text-customGray2">선택한 날짜에 모임이 없습니다.</span>
         </div>
       )}
     </div>

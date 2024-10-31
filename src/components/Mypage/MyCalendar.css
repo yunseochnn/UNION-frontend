@@ -48,7 +48,7 @@
   background-color: transparent !important;
 }
 
-.react-calendar__tile--now::before {
+.react-calendar__month-view__days__day.react-calendar__tile--now::before {
   content: '';
   position: absolute;
   top: 50%;
@@ -60,7 +60,7 @@
   transform: translate(-50%, -50%);
 }
 
-.react-calendar__tile--now > abbr {
+.react-calendar__month-view__days__day.react-calendar__tile--now > abbr {
   color: white !important;
   position: relative;
   z-index: 1;

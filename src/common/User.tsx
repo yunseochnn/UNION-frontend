@@ -28,14 +28,14 @@ export default function User({
           <div className="ml-4">
             <div className="flex items-center gap-2">
               <div className="font-bold text-base">{name}</div>
-              <div className="font-semibold text-xs text-gray-400">{university}</div>
+              <div className="font-semibold text-xs text-customGray2">{university}</div>
             </div>
-            <div className="font-semibold text-sm text-gray-400">{bio}</div>
+            <div className="font-semibold text-sm text-customGray2">{bio}</div>
           </div>
         </div>
         <button
-          className="h-7 rounded-full text-white flex items-center justify-center font-semibold text-sm cursor-pointer"
-          style={{ width: buttonWidth, backgroundColor: '#ff4a4d' }}
+          className="h-7 rounded-full text-white flex items-center justify-center font-semibold text-sm cursor-pointer bg-mainColor"
+          style={{ width: buttonWidth }}
           onClick={event => {
             event.stopPropagation();
             onButtonClick(token); // token이 있을 때만 전달

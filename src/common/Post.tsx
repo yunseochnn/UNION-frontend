@@ -32,24 +32,24 @@ export default function Post({
             <div className="flex items-center text-[12px]">
               <img src={profileImage} alt="Profile" className="w-[20px] h-[20px] rounded-full mr-[5px]" />
               <div className="flex items-center">
-                <span className="text-[#4D5159]">{nickname}</span>
+                <span className="text-customGray1">{nickname}</span>
                 <span className="mx-[3px] text-customGray">·</span>
-                <span className="text-customGray truncate ">{university}</span>
+                <span className="text-customGray2 truncate ">{university}</span>
               </div>
             </div>
             <p className="mt-2 text-[16px] text-customBlack font-semibold truncate max-w-[200px] lg:max-w-[240px]">
               {title}
             </p>
 
-            <p className="text-[14px] text-customGray truncate max-w-[200px] lg:max-w-[240px]">{content}</p>
+            <p className="text-[14px] text-customGray2 truncate max-w-[200px] lg:max-w-[240px]">{content}</p>
 
             <div className="mt-1 flex space-x-2 text-customBlack text-[11px]">
               <span className="flex items-center space-x-1">
-                <LuHeart />
+                <LuHeart className="text-customGray2" />
                 <span>{likes}</span>
               </span>
               <span className="flex items-center space-x-1">
-                <BiComment />
+                <BiComment className="text-customGray2" />
                 <span>{comments}</span>
               </span>
             </div>
