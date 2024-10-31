@@ -46,7 +46,7 @@ const BoardList: React.FC = () => {
       </main>
 
       <div className="right-8 bottom-24 absolute">
-        <FloatingActionButton onClick={() => navigate(`/Board/${type}/write`)} />
+        <FloatingActionButton onClick={() => navigate(`/Board/write/${type}`)} />
       </div>
 
       <footer className="h-14 flex justify-center">
