@@ -7,7 +7,8 @@ export interface UserProps {
   buttonLabel: string;
   buttonWidth: string;
   isBlocked?: boolean;
-  onButtonClick: (token?: string) => void;
+  onClick?: () => void; // 유저 정보 클릭 이벤트
+  onButtonClick: (token?: string) => void; // 차단 버튼 클릭 이벤트
 }
 
 export default function User({
@@ -18,11 +19,12 @@ export default function User({
   profileImage,
   buttonLabel,
   buttonWidth,
+  onClick,
   onButtonClick,
 }: UserProps) {
   return (
-    <div>
-      <div className="h-16 w-full flex justify-between items-center mt-2 cursor-pointer">
+    <div onClick={onClick} className="cursor-pointer">
+      <div className="h-16 w-full flex justify-between items-center mt-2">
         <div className="flex items-center">
           <img src={profileImage} alt="프로필 이미지" className="h-14 w-14 rounded-full object-cover bg-gray-300" />
           <div className="ml-4">
@@ -38,7 +40,7 @@ export default function User({
           style={{ width: buttonWidth }}
           onClick={event => {
             event.stopPropagation();
-            onButtonClick(token); // token이 있을 때만 전달
+            if (onButtonClick) onButtonClick(token); // token이 있을 때만 전달
           }}
         >
           {buttonLabel}
