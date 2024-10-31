@@ -6,12 +6,13 @@ import 'react-calendar/dist/Calendar.css';
 
 import User from '../common/User';
 import { useNavigate } from 'react-router-dom';
-import Footer from '../components/Mypage/Footer';
+
 import { useRecoilState } from 'recoil';
 import { userState } from '../recoil/userAtoms';
 import { useEffect } from 'react';
 import apiClient from '../api/apiClient';
 import Cookies from 'js-cookie';
+import SideBar from '../common/SideBar';
 
 export default function Mypage() {
   const [user, setUser] = useRecoilState(userState);
@@ -51,7 +52,7 @@ export default function Mypage() {
         <Title />
       </div>
 
-      <div className="flex flex-col flex-grow overflow-y-auto px-[33px] hidden-scrollbar">
+      <div className="flex flex-col flex-grow overflow-y-auto px-[33px] hidden-scrollbar flex-1">
         <User
           name={user.nickname}
           university={user.univName}
@@ -65,9 +66,11 @@ export default function Mypage() {
         <MyCalendar />
         <LogoutBtn />
       </div>
-      <div className="h-14 w-full flex justify-center">
-        <Footer />
-      </div>
+      <footer className="h-14 w-full flex justify-center">
+        <div className="w-[90%]">
+          <SideBar />
+        </div>
+      </footer>
     </div>
   );
 }

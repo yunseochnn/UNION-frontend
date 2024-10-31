@@ -85,6 +85,7 @@ export default function MyCalendar() {
     <div className="w-full flex flex-col items-center mt-3">
       <div className="calendar-container">
         <Calendar
+          className="custom-calendar"
           onChange={handleDateChange}
           value={selectedDate}
           tileContent={tileContent}
