@@ -66,7 +66,10 @@ const Comment = ({ comment, setUpdateComment, setParentId, handleDeleteComment }
 
             <div className="text-[10px] text-gray-400">{comment.createdAt}</div>
 
-            <div className="text-sm font-semibold">{comment.content}</div>
+            <div className="text-sm font-semibold flex">
+              <span className="font-bold">{`@${comment.parentNickname} `}</span>
+              <span>{comment.content}</span>
+            </div>
           </div>
         </div>
 
