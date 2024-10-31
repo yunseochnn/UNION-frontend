@@ -37,8 +37,12 @@ export default function Post({
                 <span className="text-customGray truncate ">{university}</span>
               </div>
             </div>
-            <p className="mt-2 text-[16px] text-customBlack font-semibold truncate  max-w-[240px]">{title}</p>
-            <p className="text-[14px] text-customGray truncate max-w-[230px]">{content}</p>
+            <p className="mt-2 text-[16px] text-customBlack font-semibold truncate max-w-[200px] lg:max-w-[240px]">
+              {title}
+            </p>
+
+            <p className="text-[14px] text-customGray truncate max-w-[200px] lg:max-w-[240px]">{content}</p>
+
             <div className="mt-1 flex space-x-2 text-customBlack text-[11px]">
               <span className="flex items-center space-x-1">
                 <LuHeart />
