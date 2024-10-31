@@ -17,6 +17,7 @@ body {
 
 .react-select__control input {
   caret-color: transparent !important; /* 텍스트 입력 커서를 투명하게 */
+  width: 30px;
 }
 
 .react-select__control--is-focused {

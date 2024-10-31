@@ -7,9 +7,12 @@ import More from '../components/ChatDetail/More';
 export default function ChatDetail() {
   const [modal, setModal] = useState(false);
   return (
-    <div className="flex flex-col w-full h-full py-3 relative items-center">
+    <div className="flex flex-col w-full h-full pb-2 pt-1 relative items-center">
       {modal && <More setModal={setModal} />}
-      <Header setModal={setModal} />
+      <div className="w-[85%]">
+        <Header setModal={setModal} />
+      </div>
+
       <Content />
       <Footer />
     </div>

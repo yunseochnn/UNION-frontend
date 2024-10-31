@@ -6,7 +6,8 @@ import Header from '../components/MeetDetail/Header';
 import '../style.css';
 import UserMore from '../common/UserMore';
 import Update from '../components/MeetDetail/Update.tsx/Update';
-import RemoveBoard from '../components/MeetDetail/RemoveBoard';
+import RemoveMeet from '../components/MeetDetail/RemoveMeet';
+// import More from '../components/MeetDetail/More';
 
 export interface Response {
   id: number;
@@ -31,18 +32,20 @@ export default function MeetDetail() {
   const [modify, setModify] = useState(false);
   const [remove, setRemove] = useState(false);
 
-  const updateData = {
-    title: '제목',
-    content: '내용',
-  };
-
   return (
     <div className="h-full w-full flex flex-col items-center pt-1 pb-2 relative">
+      {/* {Modal &&
+        (gatheringData?.owner ? (
+          <UserMore setModal={setModal} setModify={setModify} setRemove={setRemove} />
+        ) : (
+          <More setModal={setModal} />
+        ))} */}
+
       {Modal && <UserMore setModal={setModal} setModify={setModify} setRemove={setRemove} />}
-      {modify && <Update updateData={updateData} setModify={setModify} />}
-      {remove && <RemoveBoard setRemove={setRemove} />}
+      {modify && <Update updateData={gatheringData} setModify={setModify} />}
+      {remove && <RemoveMeet setRemove={setRemove} />}
       <div className="w-[85%]">
-        <Header setModal={setModal} />
+        <Header setModal={setModal} title={gatheringData?.title} />
       </div>
 
       <div className=" overflow-y-auto hidden-scrollbar w-[85%]">

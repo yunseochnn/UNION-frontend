@@ -12,9 +12,9 @@ interface Props {
 
 const CommentList = ({ comments, parentId, setUpdateComment, setParentId, handleDeleteComment }: Props) => {
   return (
-    <div className="min-h-80 border-t border-gray-300">
-      <div className="mt-3">
-        {comments?.map(comment => (
+    <div className="min-h-80 border-t border-gray-300 pt-3">
+      {comments ? (
+        comments?.map(comment => (
           <div className={`${parentId ? 'ml-12' : ''}`}>
             <Comment
               comment={comment}
@@ -23,13 +23,12 @@ const CommentList = ({ comments, parentId, setUpdateComment, setParentId, handle
               handleDeleteComment={handleDeleteComment}
             />
           </div>
-        ))}
-        {comments?.length === 0 && (
-          <div className="h-full  flex items-center justify-center">
-            <EmptyComment />
-          </div>
-        )}
-      </div>
+        ))
+      ) : (
+        <div className="h-full flex items-center justify-center">
+          <EmptyComment />
+        </div>
+      )}
     </div>
   );
 };

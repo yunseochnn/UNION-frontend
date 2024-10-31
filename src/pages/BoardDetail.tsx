@@ -12,6 +12,8 @@ import { useParams } from 'react-router-dom';
 import RemoveBoard from '../components/BoardDetail/RemoveBoard';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import apiClient from '../api/apiClient';
+import { FaHeart, FaRegHeart } from 'react-icons/fa6';
+import { HiOutlineChatBubbleOvalLeft } from 'react-icons/hi2';
 
 export interface IFComment {
   id: number;
@@ -55,6 +57,7 @@ export default function BoardDetail() {
   const [userBlock, setUserBlock] = useState(false);
   const [modify, setModify] = useState(false);
   const [remove, setRemove] = useState(false);
+  const [like, setLike] = useState(false);
   const [parentId, setParentId] = useState<number | null>(null);
   const [updateComment, setUpdateComment] = useState<UpComment | null>(null);
   const { type, id } = useParams();
@@ -62,6 +65,10 @@ export default function BoardDetail() {
   const BoardId = Number(id);
   const queryClient = useQueryClient();
   const commentListRef = useRef<HTMLDivElement>(null);
+
+  const onClickLikeHandler = () => {
+    setLike(!like);
+  };
 
   //게시물 상세 데이터 가져오기
   const {
@@ -115,8 +122,6 @@ export default function BoardDetail() {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization:
-              'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU0MSwiZXhwIjoxNzMyNDMxNTQxLCJzdWIiOiJ0b2tlbjEifQ.ObKaKc37PY7NcO6ZRjw44pSu8xlvr4Oq_TdY_ySQJB4',
           },
         },
       ),
@@ -138,8 +143,6 @@ export default function BoardDetail() {
       apiClient.delete(`/comment/${commentId}`, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization:
-            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU0MSwiZXhwIjoxNzMyNDMxNTQxLCJzdWIiOiJ0b2tlbjEifQ.ObKaKc37PY7NcO6ZRjw44pSu8xlvr4Oq_TdY_ySQJB4',
         },
       }),
     onSuccess: () => {
@@ -196,6 +199,16 @@ export default function BoardDetail() {
 
       <div className="flex flex-col overflow-y-auto flex-1 hidden-scrollbar relative w-[85%]">
         <Content boardContent={boardInfo} />
+        <div className="flex gap-3 my-3">
+          <div className="flex items-center gap-1 font-semibold cursor-pointer" onClick={onClickLikeHandler}>
+            {like ? <FaHeart size={18} color="#ff4a4d" /> : <FaRegHeart size={18} />}{' '}
+            <span className="text-xs">155</span>
+          </div>
+          <div className="flex items-center gap-1 font-semibold">
+            <HiOutlineChatBubbleOvalLeft size={20} />
+            <span className="text-xs">3</span>
+          </div>
+        </div>
         <CommentList
           comments={boardInfo?.comments}
           parentId={parentId}

@@ -1,5 +1,5 @@
-import { FaUserGroup } from 'react-icons/fa6';
-import { IoMdHeart } from 'react-icons/io';
+import { BsFillPeopleFill } from 'react-icons/bs';
+import { IoMdEye } from 'react-icons/io';
 
 const MeetModal = () => {
   return (
@@ -22,14 +22,14 @@ const MeetModal = () => {
           <div className="flex gap-2 mt-1">
             <div className="flex gap-1 items-center text-gray-500 text-sm">
               <span>
-                <FaUserGroup />
+                <BsFillPeopleFill />
               </span>
               <span>1/4명</span>
             </div>
 
             <div className="flex gap-1 items-center text-gray-500 text-sm">
               <span>
-                <IoMdHeart />
+                <IoMdEye />
               </span>
               <span>24</span>
             </div>
