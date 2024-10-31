@@ -42,7 +42,7 @@ export default function MeetDetail() {
       {modify && <Update updateData={updateData} setModify={setModify} />}
       {remove && <RemoveBoard setRemove={setRemove} />}
       <div className="w-[85%]">
-        <Header setModal={setModal} />
+        <Header setModal={setModal} title={gatheringData?.title} />
       </div>
 
       <div className=" overflow-y-auto hidden-scrollbar w-[85%]">

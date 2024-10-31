@@ -9,7 +9,7 @@ interface Props {
 const Header = ({ setModal }: Props) => {
   const navigate = useNavigate();
   return (
-    <div className="flex items-center justify-between w-[85%] h-[60px]">
+    <div className="flex items-center justify-between w-full h-[60px]">
       <div className="cursor-pointer font-black" onClick={() => navigate('/chat')}>
         <IoIosArrowBack size={32} />
       </div>

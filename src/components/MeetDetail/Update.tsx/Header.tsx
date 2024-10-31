@@ -19,7 +19,7 @@ const Header = ({ success, setModify, setClick }: Prop) => {
       <div className="cursor-pointer font-black" onClick={onClickBack}>
         <IoIosArrowBack size={32} />
       </div>
-      <div className="font-semibold text-lg">게시글 수정하기</div>
+      <div className="font-semibold text-lg">모임 수정하기</div>
       <div className="flex gap-[20px]" onClick={onClickUpdate}>
         <div className={`cursor-pointer font-semibold text-lg ${success ? 'text-black' : 'text-gray-300'}`}>수정</div>
       </div>
