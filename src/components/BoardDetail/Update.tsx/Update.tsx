@@ -11,9 +11,10 @@ interface Prop {
     content: string;
   };
   setModify: React.Dispatch<React.SetStateAction<boolean>>;
+  onSuccessfulUpdate: () => void;
 }
 
-const Update = ({ updateData, setModify }: Prop) => {
+const Update = ({ updateData, setModify, onSuccessfulUpdate }: Prop) => {
   const [title, setTitle] = useState(updateData.title);
   const [content, setContent] = useState(updateData.content);
   const [success, setSuccess] = useState(true);
@@ -34,6 +35,7 @@ const Update = ({ updateData, setModify }: Prop) => {
       const { status } = response;
       if (status === 200) {
         console.log('수정 완료');
+        onSuccessfulUpdate(); // 수정 성공 후 리패칭
         setModify(false);
       }
     } catch (error) {
@@ -41,7 +43,7 @@ const Update = ({ updateData, setModify }: Prop) => {
         console.log(error.response);
       }
     }
-  }, [BoardId, Type, content, setModify, title]);
+  }, [BoardId, Type, content, onSuccessfulUpdate, setModify, title]);
 
   useEffect(() => {
     if (content !== '' && title !== '') {

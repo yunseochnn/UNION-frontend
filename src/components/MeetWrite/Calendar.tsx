@@ -21,6 +21,16 @@ const Calendar = ({ selectedDate, setSelectedDate }: Prop) => {
   const now = new Date();
   const add30Minutes = new Date(now.getTime() + 30 * 60000); //현재 시간 + 30분
 
+  // 커스텀 input 컴포넌트
+  const CustomInput = ({ value, onClick }: { value?: string; onClick?: () => void }) => (
+    <input
+      value={value || '날짜 선택'}
+      onClick={onClick} // DatePicker의 onClick을 그대로 전달하여 선택 창을 열리게 함
+      readOnly // 모바일 키보드 방지
+      className="outline-none w-30 text-sm font-semibold"
+    />
+  );
+
   return (
     <DatePicker
       locale={ko}
@@ -34,6 +44,7 @@ const Calendar = ({ selectedDate, setSelectedDate }: Prop) => {
       }
       maxTime={new Date(0, 0, 0, 23, 59)}
       className="outline-none w-30 text-sm font-semibold"
+      customInput={<CustomInput value={formattedDate} />}
     />
   );
 };

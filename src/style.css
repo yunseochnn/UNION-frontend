@@ -1,9 +1,10 @@
 /* src/styles.css */
 .hidden-scrollbar::-webkit-scrollbar {
   display: none !important; /* 크롬, 엣지, 사파리에서 스크롤바 숨기기 */
+  overscroll-behavior: none; /*pull-to-refresh 제스쳐 방지*/
 }
 
 .hidden-scrollbar {
   scrollbar-width: none !important; /* 파이어폭스에서 스크롤바 숨기기 */
+  overscroll-behavior: none; /*pull-to-refresh 제스쳐 방지*/
 }
-

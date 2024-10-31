@@ -4,7 +4,7 @@ interface Prop {
   x?: number;
   y?: number;
   name?: string;
-  addrress?: string;
+  address?: string;
 }
 
 const Map = ({ x, y, name }: Prop) => {
@@ -13,6 +13,7 @@ const Map = ({ x, y, name }: Prop) => {
   useEffect(() => {
     if (window.kakao && window.kakao.maps) {
       // Kakao Maps API 로드 완료 후 지도 생성
+
       window.kakao.maps.load(() => {
         const container = document.getElementById('map'); // 지도를 표시할 div
 

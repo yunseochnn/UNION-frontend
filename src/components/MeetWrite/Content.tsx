@@ -54,12 +54,12 @@ const Content = ({
   };
 
   useEffect(() => {
-    if (text !== '' && title !== '') {
+    if (text !== '' && title !== '' && selectedDate) {
       setSuccess(true);
     } else {
       setSuccess(false);
     }
-  }, [setSuccess, text, title]);
+  }, [selectedDate, setSuccess, text, title]);
 
   return (
     <div className="flex flex-col flex-1 overflow-y-auto hidden-scrollbar mt-4 w-[90%]">
@@ -70,8 +70,8 @@ const Content = ({
           <Calendar selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
         </div>
         <div className="flex items-center">
-          <div>
-            <IoPeople size={18} />
+          <div className="mr-2">
+            <IoPeople size={20} />
           </div>
           <People maxMember={maxMember} setMaxMember={setMaxMember} />
         </div>
@@ -93,7 +93,7 @@ const Content = ({
       <textarea
         value={text}
         onChange={handleInput}
-        className="mt-4 w-full flex flex-1 text-base resize-none placeholder-gray-400 outline-none hidden-scrollbar min-h-52"
+        className="mt-4 w-full flex flex-1 text-base resize-none placeholder-gray-400 outline-none hidden-scrollbar min-h-40"
         placeholder="주변 학생들과 나누고 싶은 내용을 입력해주세요"
       />
 
