@@ -75,15 +75,14 @@ export default function Update({ updateData, setModify }: Props) {
         info: {
           title: title,
           text: text,
-          maxMember: maxMember?.value ?? 0,
+          maxMember: maxMember?.value ?? 2,
           selectedDate: selectedDate ? toCustomISOString(selectedDate) : '',
-          ...(address &&
-            address.name !== updateData?.address && {
-              address: address.address,
-              latitude: address.positionY,
-              longitude: address.positionX,
-              eupMyeonDong: eupMyeonDong,
-            }),
+          ...(address?.address && {
+            address: address.address,
+            latitude: address.positionY,
+            longitude: address.positionX,
+            eupMyeonDong: eupMyeonDong,
+          }),
         },
         id: MeetId,
       });
@@ -99,7 +98,7 @@ export default function Update({ updateData, setModify }: Props) {
         console.log(error.response);
       }
     }
-  }, [MeetId, address, eupMyeonDong, maxMember?.value, selectedDate, setModify, text, title, updateData?.address]);
+  }, [MeetId, address, eupMyeonDong, maxMember?.value, selectedDate, setModify, text, title]);
 
   useEffect(() => {
     if (click) {

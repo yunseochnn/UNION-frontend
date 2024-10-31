@@ -20,11 +20,15 @@ export interface IFComment {
   content: string;
   postId: number;
   parentId: number | null;
+  parentNickname: string | null;
   createdAt: string;
-  nickname: string;
-  profileImage: string | null;
-  univName: string;
   commentLikes: number;
+  commenter: {
+    token: string;
+    nickname: string;
+    profileImage: string | null;
+    univName: string;
+  };
   children: IFComment[];
 }
 
@@ -36,20 +40,24 @@ export interface BoardInfo {
     type: string;
     thumbnail: string;
     createdAt: string;
-    nickname: string;
-    profileImage: string | null;
-    univName: string;
+    author: {
+      token: string;
+      nickname: string;
+      profileImage: string;
+      univName: string;
+    };
     views: number;
-    postLikes: number;
   };
   photos: string[];
-  comments: IFComment[];
-  commentCount: number;
 }
 
 export interface UpComment {
   content: string;
   commentId: number;
+}
+
+interface Like {
+  postLikes: number;
 }
 
 export default function BoardDetail() {
@@ -73,16 +81,60 @@ export default function BoardDetail() {
   //게시물 상세 데이터 가져오기
   const {
     data: boardInfo,
-    isLoading,
-    isError,
-    error,
+    isError: isBoardError,
+    error: boardError,
   } = useQuery<BoardInfo>({
     queryKey: ['boardDetail', BoardId],
     queryFn: async () => {
-      const response = await apiClient.get<BoardInfo>(`/board/${Type}/${BoardId}`);
+      const response = await apiClient.get<BoardInfo>(`/board/${Type}/${BoardId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization:
+            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU0MSwiZXhwIjoxNzMyNDMxNTQxLCJzdWIiOiJ0b2tlbjEifQ.ObKaKc37PY7NcO6ZRjw44pSu8xlvr4Oq_TdY_ySQJB4',
+        },
+      });
       return response.data;
     },
     retry: false,
+  });
+
+  //댓글 목록 read
+  const {
+    data: commentData,
+    isError: isCommentError,
+    error: commentError,
+  } = useQuery<IFComment[]>({
+    queryKey: ['commentDetail', BoardId],
+    queryFn: async () => {
+      const response = await apiClient.get(`/comment/${BoardId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization:
+            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU0MSwiZXhwIjoxNzMyNDMxNTQxLCJzdWIiOiJ0b2tlbjEifQ.ObKaKc37PY7NcO6ZRjw44pSu8xlvr4Oq_TdY_ySQJB4',
+        },
+      });
+      return response.data.comments;
+    },
+    retry: false,
+  });
+
+  //게시글 좋아요 데이터 읽기
+  const {
+    data: Like,
+    isError: isLikeError,
+    error: LikeError,
+  } = useQuery<Like>({
+    queryKey: ['like', BoardId],
+    queryFn: async () => {
+      const response = await apiClient.get(`/${BoardId}/likes`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization:
+            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU0MSwiZXhwIjoxNzMyNDMxNTQxLCJzdWIiOiJ0b2tlbjEifQ.ObKaKc37PY7NcO6ZRjw44pSu8xlvr4Oq_TdY_ySQJB4',
+        },
+      });
+      return response.data;
+    },
   });
 
   // 댓글 또는 대댓글 추가 mutation
@@ -101,7 +153,7 @@ export default function BoardDetail() {
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['boardDetail', BoardId],
+        queryKey: ['commentDetail', BoardId],
       }); //리패칭하여 댓글 목록 최신화
       commentListRef.current?.scrollIntoView({ behavior: 'smooth' });
     },
@@ -127,7 +179,7 @@ export default function BoardDetail() {
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['boardDetail', BoardId],
+        queryKey: ['commentDetail', BoardId],
       });
       console.log('댓글 수정 완료');
       commentListRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -147,7 +199,7 @@ export default function BoardDetail() {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['boardDetail', BoardId],
+        queryKey: ['commentDetail', BoardId],
       });
       console.log('댓글 삭제 완료');
       commentListRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -174,11 +226,14 @@ export default function BoardDetail() {
     content: boardInfo?.post.content || '',
   };
 
-  if (isLoading) {
-    console.log('로딩중');
+  if (isBoardError) {
+    console.log(`게시물 read 에러 : ${boardError}`);
   }
-  if (isError) {
-    console.log(error);
+  if (isCommentError) {
+    console.log(`댓글 read 에러 : ${commentError}`);
+  }
+  if (isLikeError) {
+    console.log(`댓글 read 에러 : ${LikeError}`);
   }
 
   return (
@@ -202,16 +257,15 @@ export default function BoardDetail() {
         <div className="flex gap-3 my-3">
           <div className="flex items-center gap-1 font-semibold cursor-pointer" onClick={onClickLikeHandler}>
             {like ? <FaHeart size={18} color="#ff4a4d" /> : <FaRegHeart size={18} />}{' '}
-            <span className="text-xs">155</span>
+            <span className="text-xs">{Like?.postLikes || 0}</span>
           </div>
           <div className="flex items-center gap-1 font-semibold">
             <HiOutlineChatBubbleOvalLeft size={20} />
-            <span className="text-xs">3</span>
+            <span className="text-xs">{commentData?.length}</span>
           </div>
         </div>
         <CommentList
-          comments={boardInfo?.comments}
-          parentId={parentId}
+          comments={commentData}
           setUpdateComment={setUpdateComment}
           setParentId={setParentId}
           handleDeleteComment={handleDeleteComment}

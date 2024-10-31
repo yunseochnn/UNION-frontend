@@ -24,7 +24,7 @@ const RemoveBoard = ({ setRemove }: Prop) => {
       const { status } = response;
       if (status === 204) {
         console.log('게시물 삭제 성공');
-        navigate(`/board/type`);
+        navigate(`/board/${Type}`);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
