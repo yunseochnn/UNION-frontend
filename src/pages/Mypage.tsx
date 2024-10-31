@@ -36,7 +36,7 @@ export default function Mypage() {
         }));
       } catch (error) {
         console.error('유저 정보 불러오기 실패:', error);
-        alert('유저 정보를 불러올 수 없습니다.');
+        console.log('유저 정보를 불러올 수 없습니다.');
       }
     };
 

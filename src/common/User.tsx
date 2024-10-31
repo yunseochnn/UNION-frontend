@@ -1,14 +1,17 @@
-interface UserProps {
+export interface UserProps {
+  token?: string;
   name: string;
   university: string;
   bio: string;
   profileImage: string;
   buttonLabel: string;
   buttonWidth: string;
-  onButtonClick: () => void;
+  isBlocked?: boolean;
+  onButtonClick: (token?: string) => void;
 }
 
 export default function User({
+  token,
   name,
   university,
   bio,
@@ -35,7 +38,7 @@ export default function User({
           style={{ width: buttonWidth, backgroundColor: '#ff4a4d' }}
           onClick={event => {
             event.stopPropagation();
-            onButtonClick();
+            onButtonClick(token); // token이 있을 때만 전달
           }}
         >
           {buttonLabel}

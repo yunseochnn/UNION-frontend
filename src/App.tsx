@@ -21,7 +21,7 @@ import BoardDetail from './pages/BoardDetail';
 import BoardWrite from './pages/BoardWrite';
 import MeetParticipants from './pages/MeetParticipants';
 import UserInfo from './pages/UserInfo';
-import BlockedUser from './pages/BlockedUser';
+import BlockedUser from './pages/BlockedUserList';
 import MyPosts from './pages/MyPagePost/MyPosts';
 import MyMeetings from './pages/MyPagePost/MyMeetings';
 import MyComments from './pages/MyPagePost/MyComments';

@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import SideBar from '../common/SideBar';
 import MeetHeader from '../components/Meet/MeetHeader';
 import FloatingActionButton from '../common/FloatingActionButton';
-import { BsFillPeopleFill } from "react-icons/bs";
-import { IoMdEye } from "react-icons/io"; 
+import { BsFillPeopleFill } from 'react-icons/bs';
+import { IoMdEye } from 'react-icons/io';
 
 const Meet: React.FC = () => {
   const [sortBy, setSortBy] = useState('가까운 거리 순');
@@ -112,7 +112,7 @@ const Meet: React.FC = () => {
   return (
     <div className="relative center-content flex flex-col bg-white">
       <MeetHeader sortBy={sortBy} setSortBy={setSortBy} />
- 
+
       <main className="flex-1 overflow-y-auto relative flex flex-col px-[20px]">
         {meetings.map(meeting => (
           <div key={meeting.id} className="border-b py-4 cursor-pointer" onClick={() => handleMeetingClick(meeting.id)}>
@@ -125,26 +125,23 @@ const Meet: React.FC = () => {
                   <BsFillPeopleFill size={12} className="mr-1" /> {/* 크기 줄였습니다 */}
                   <span>{`${meeting.currentParticipants}/${meeting.maxParticipants}`}</span>
                   <div className="flex items-center ml-2">
-                  <IoMdEye size={14} className="mr-1" /> {/* 하트 아이콘을 눈 아이콘으로 변경했습니다!! */}
-                  <span>{meeting.views}</span>
+                    <IoMdEye size={14} className="mr-1" /> {/* 하트 아이콘을 눈 아이콘으로 변경했습니다!! */}
+                    <span>{meeting.views}</span>
                   </div>
                 </div>
               </div>
               <div className="w-16 h-16 rounded-md overflow-hidden">
-                <img
-                  alt={meeting.title}
-                  className="w-full h-full object-cover"
-                />
+                <img alt={meeting.title} className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
         ))}
       </main>
- 
+
       <div className="right-8 bottom-24 absolute">
-  <FloatingActionButton onClick={() => navigate('/meet/write')} />
-</div>
- 
+        <FloatingActionButton onClick={() => navigate('/meet/write')} />
+      </div>
+
       <footer className="h-14 w-full flex justify-center">
         <div className="w-[90%]">
           <SideBar />
@@ -152,6 +149,6 @@ const Meet: React.FC = () => {
       </footer>
     </div>
   );
- };
- 
- export default Meet;
+};
+
+export default Meet;
