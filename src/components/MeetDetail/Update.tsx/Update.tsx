@@ -1,14 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import '../../../style.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import SaveImageRequest from '../../../api/SaveImageRequest';
-import CreateMeetRequest from '../../../api/CreateMeetRequest';
+import { useParams } from 'react-router-dom';
 import Post from '../../MeetWrite/Post';
 import Header from './Header';
 import Content from './Content';
 import Footer from './Footer';
 import { Response } from '../../../pages/MeetDetail';
+import UpdateMeetRequest from '../../../api/UpdateMeetRequest';
 
 export interface IAddress {
   address?: string;
@@ -29,7 +28,11 @@ export interface Props {
 
 export default function Update({ updateData, setModify }: Props) {
   const [open, setOpen] = useState(false);
-  const [address, setAddress] = useState<IAddress | null>(null);
+  const [address, setAddress] = useState<IAddress | null>(
+    updateData?.address
+      ? { positionX: updateData.longitude, positionY: updateData.latitude, name: updateData.address }
+      : null,
+  );
   const [success, setSuccess] = useState(false);
   const [images, setImages] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(
@@ -42,27 +45,9 @@ export default function Update({ updateData, setModify }: Props) {
   const [title, setTitle] = useState(updateData?.title || '');
   const [text, setText] = useState(updateData?.content || '');
   const [click, setClick] = useState(false);
-  const navigate = useNavigate();
-
+  const { id } = useParams();
+  const MeetId = Number(id);
   console.log(address);
-
-  const onSaveImage = useCallback(
-    async (id: number) => {
-      try {
-        const response = await SaveImageRequest(id, 'GATHERING', images);
-        if (!response) {
-          alert('네트워크 이상입니다!');
-          return;
-        }
-        console.log(response);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log(error.response);
-        }
-      }
-    },
-    [images],
-  );
 
   function toCustomISOString(date: Date): string {
     const year = date.getFullYear();
@@ -84,46 +69,43 @@ export default function Update({ updateData, setModify }: Props) {
   const address1 = address?.address?.split(' ');
   const eupMyeonDong = address1 && address1[2];
 
-  const onCreateMeet = useCallback(async () => {
+  const onUpdateMeet = useCallback(async () => {
     try {
-      const response = await CreateMeetRequest({
+      const response = await UpdateMeetRequest({
         info: {
           title: title,
           text: text,
           maxMember: maxMember?.value ?? 0,
           selectedDate: selectedDate ? toCustomISOString(selectedDate) : '',
-          ...(address && {
-            address: address.address,
-            latitude: address.positionY,
-            longitude: address.positionX,
-            eupMyeonDong: eupMyeonDong,
-          }),
+          ...(address &&
+            address.name !== updateData?.address && {
+              address: address.address,
+              latitude: address.positionY,
+              longitude: address.positionX,
+              eupMyeonDong: eupMyeonDong,
+            }),
         },
+        id: MeetId,
       });
 
       if (!response) {
         alert('네트워크 이상입니다!');
         return;
       }
-      const id = response.data;
 
-      if (images.length > 0) {
-        await onSaveImage(id);
-      }
-
-      navigate(`/meet/${id}`);
+      setModify(false);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.response);
       }
     }
-  }, [address, eupMyeonDong, images.length, maxMember?.value, navigate, onSaveImage, selectedDate, text, title]);
+  }, [MeetId, address, eupMyeonDong, maxMember?.value, selectedDate, setModify, text, title, updateData?.address]);
 
   useEffect(() => {
     if (click) {
-      onCreateMeet();
+      onUpdateMeet();
     }
-  }, [click, onCreateMeet]);
+  }, [click, onUpdateMeet]);
 
   return (
     <div className="absolute inset-0 bg-white z-20 flex justify-center items-center">

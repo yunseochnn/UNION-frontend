@@ -2,7 +2,6 @@ import { useState } from 'react';
 import Content from '../components/MeetDetail/Content';
 import Footer from '../components/MeetDetail/Footer';
 import Header from '../components/MeetDetail/Header';
-// import More from '../components/MeetDetail/More';
 import '../style.css';
 import UserMore from '../common/UserMore';
 import Update from '../components/MeetDetail/Update.tsx/Update';
@@ -49,7 +48,7 @@ export default function MeetDetail() {
       </div>
 
       <div className=" overflow-y-auto hidden-scrollbar w-[85%]">
-        <Content gatheringData={gatheringData} setGatheringData={setGatheringData} />
+        <Content gatheringData={gatheringData} setGatheringData={setGatheringData} modify={modify} />
       </div>
 
       <div className="w-[90%]">

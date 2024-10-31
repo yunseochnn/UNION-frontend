@@ -15,9 +15,10 @@ import { Response } from '../../pages/MeetDetail';
 interface Prop {
   gatheringData: Response | null;
   setGatheringData: React.Dispatch<React.SetStateAction<Response | null>>;
+  modify: boolean;
 }
 
-const Content = ({ gatheringData, setGatheringData }: Prop) => {
+const Content = ({ gatheringData, setGatheringData, modify }: Prop) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const MeetId = Number(id);
@@ -37,7 +38,7 @@ const Content = ({ gatheringData, setGatheringData }: Prop) => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [MeetId, setGatheringData]);
+  }, [MeetId, setGatheringData, modify]);
 
   useEffect(() => {
     onReadMeet();
