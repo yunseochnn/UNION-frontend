@@ -5,6 +5,7 @@ import apiClient from '../api/apiClient';
 import Header from '../common/Header';
 import User from '../common/User';
 import UserTabs from '../components/UserInfo/UserTabs';
+import Cookies from 'js-cookie';
 
 interface UserInfoType {
   token: string;
@@ -22,7 +23,11 @@ export default function UserInfo() {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await apiClient.get(`/user/${userToken}`);
+        const response = await apiClient.get(`/user/${userToken}`, {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('Authorization')}`,
+          },
+        });
         setUserInfo(response.data);
       } catch (error) {
         console.error('유저 정보 불러오기 실패:', error);
@@ -39,9 +44,21 @@ export default function UserInfo() {
       const updatedBlockedStatus = !userInfo.isBlocked;
       try {
         if (updatedBlockedStatus) {
-          await apiClient.post(`/user/block/${userInfo.token}`);
+          await apiClient.post(
+            `/user/block/${userInfo.token}`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${Cookies.get('Authorization')}`,
+              },
+            },
+          );
         } else {
-          await apiClient.delete(`/user/block/${userInfo.token}`);
+          await apiClient.delete(`/user/block/${userInfo.token}`, {
+            headers: {
+              Authorization: `Bearer ${Cookies.get('Authorization')}`,
+            },
+          });
         }
         setUserInfo(prev => (prev ? { ...prev, isBlocked: updatedBlockedStatus } : null));
       } catch (error) {

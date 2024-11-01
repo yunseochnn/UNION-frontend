@@ -6,13 +6,12 @@ import 'react-calendar/dist/Calendar.css';
 
 import User from '../common/User';
 import { useNavigate } from 'react-router-dom';
-
 import { useRecoilState } from 'recoil';
 import { userState } from '../recoil/userAtoms';
 import { useEffect } from 'react';
 import apiClient from '../api/apiClient';
-import Cookies from 'js-cookie';
 import SideBar from '../common/SideBar';
+import Cookies from 'js-cookie';
 
 export default function Mypage() {
   const [user, setUser] = useRecoilState(userState);
@@ -21,9 +20,9 @@ export default function Mypage() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await apiClient.get(`/user/${user.token}`, {
+        const response = await apiClient.get('/user/my', {
           headers: {
-            Authorization: `Bearer ${Cookies.get('Authorization')}`,
+            Authorization: `Bearer ${Cookies.get('Authorization') || ''}`,
           },
         });
 
@@ -37,7 +36,6 @@ export default function Mypage() {
         }));
       } catch (error) {
         console.error('유저 정보 불러오기 실패:', error);
-        console.log('유저 정보를 불러올 수 없습니다.');
       }
     };
 
@@ -46,6 +44,7 @@ export default function Mypage() {
       fetchUserData();
     }
   }, [user, setUser]);
+
   return (
     <div className="h-full w-full flex flex-col">
       <div className="sticky top-0 z-10 bg-white">

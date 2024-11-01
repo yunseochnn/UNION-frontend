@@ -6,6 +6,7 @@ import apiClient from '../api/apiClient';
 import Header from '../common/Header';
 import User from '../common/User';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 export default function BlockedUserList() {
   const [blockedUsers, setBlockedUsers] = useRecoilState(blockedUserState);
@@ -15,7 +16,11 @@ export default function BlockedUserList() {
   useEffect(() => {
     const fetchBlockedUsers = async () => {
       try {
-        const response = await apiClient.get<BlockedUser[]>('/user/block');
+        const response = await apiClient.get<BlockedUser[]>('/user/block', {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('Authorization')}`,
+          },
+        });
         setBlockedUsers(response.data);
       } catch (error) {
         console.error('차단 유저 목록 불러오기 실패:', error);
@@ -35,10 +40,22 @@ export default function BlockedUserList() {
       const isBlocked = blockedUsers.find(user => user.token === userToken)?.isBlocked;
 
       if (isBlocked) {
-        await apiClient.delete(`/user/block/${userToken}`);
+        await apiClient.delete(`/user/block/${userToken}`, {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('Authorization')}`,
+          },
+        });
         setBlockedUsers(prev => prev.map(user => (user.token === userToken ? { ...user, isBlocked: false } : user)));
       } else {
-        await apiClient.post(`/user/block/${userToken}`);
+        await apiClient.post(
+          `/user/block/${userToken}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${Cookies.get('Authorization')}`,
+            },
+          },
+        );
         setBlockedUsers(prev => prev.map(user => (user.token === userToken ? { ...user, isBlocked: true } : user)));
       }
     } catch (error) {
