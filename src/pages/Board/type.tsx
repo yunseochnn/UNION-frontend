@@ -4,7 +4,7 @@ import SideBar from '../../common/SideBar';
 import Header from '../../components/Board/Header';
 import PostList from '../../common/PostList';
 import FloatingActionButton from '../../common/FloatingActionButton';
-import { boardApi } from '../../api/boardApi';
+import { fetchBoardPosts } from '../../api/BoardListRequest'; // 수정된 부분
 
 const BOARD_TITLES = {
   free: '자유게시판',
@@ -15,15 +15,20 @@ const BOARD_TITLES = {
 const BoardList: React.FC = () => {
   const navigate = useNavigate();
   const { type } = useParams<{ type: string }>();
-  // posts의 타입을 any[]로 지정하여 타입 에러 해결
   const [posts, setPosts] = useState<any[]>([]);
+  const page = 0;
+  const size = 3;
 
   useEffect(() => {
     const fetchPosts = async () => {
       if (!type) return;
       try {
-        const response = await boardApi.getPosts(type);
-        setPosts(response.data);
+        const response = await fetchBoardPosts({
+          boardType: type,
+          page,
+          size,
+        });
+        setPosts(response.content);
       } catch (error) {
         console.error('게시글 조회 실패:', error);
       }
@@ -36,9 +41,7 @@ const BoardList: React.FC = () => {
 
   return (
     <div className="center-content flex flex-col bg-white relative">
-      <Header 
-        title={BOARD_TITLES[type as keyof typeof BOARD_TITLES]}
-      />
+      <Header title={BOARD_TITLES[type as keyof typeof BOARD_TITLES]} />
       <main className="flex-1 overflow-y-auto px-[20px]">
         <PostList posts={posts} />
       </main>
