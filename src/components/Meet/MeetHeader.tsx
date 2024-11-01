@@ -8,7 +8,6 @@ interface MeetHeaderProps {
  setSortBy: (value: 'LATEST' | 'DISTANCE' | 'GATHERING_DATE') => void;
 }
 
-// sortBy 텍스트 매핑
 const sortByText = {
  'LATEST': '최신순',
  'DISTANCE': '가까운거리순',

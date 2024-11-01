@@ -9,7 +9,7 @@ import { ReadMeetListRequest } from '../api/ReadMeetListRequest';
 import { Meeting } from '../api/ReadMeetListRequest';
 
 const Meet: React.FC = () => {
-  const [sortBy, setSortBy] = useState<'LATEST' | 'DISTANCE' | 'GATHERING_DATE'>('LATEST');
+  const [sortBy, setSortBy] = useState<'LATEST' | 'DISTANCE' | 'GATHERING_DATE'>('DISTANCE');
   const [meetings, setMeetings] = useState<Meeting[]>([]);
   const navigate = useNavigate();
 
