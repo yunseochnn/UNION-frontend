@@ -14,6 +14,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import apiClient from '../api/apiClient';
 import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 import { HiOutlineChatBubbleOvalLeft } from 'react-icons/hi2';
+import Cookies from 'js-cookie';
 
 export interface IFComment {
   id: number;
@@ -94,8 +95,7 @@ export default function BoardDetail() {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization:
-              'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU0MSwiZXhwIjoxNzMyNDMxNTQxLCJzdWIiOiJ0b2tlbjEifQ.ObKaKc37PY7NcO6ZRjw44pSu8xlvr4Oq_TdY_ySQJB4',
+            Authorization: Cookies.get('Authorization'),
           },
         },
       ),
@@ -122,6 +122,7 @@ export default function BoardDetail() {
         {
           headers: {
             'Content-Type': 'application/json',
+            Authorization: Cookies.get('Authorization'),
           },
         },
       ),
@@ -143,6 +144,7 @@ export default function BoardDetail() {
       apiClient.delete(`/comment/${commentId}`, {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: Cookies.get('Authorization'),
         },
       }),
     onSuccess: () => {
