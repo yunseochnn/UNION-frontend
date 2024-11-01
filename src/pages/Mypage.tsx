@@ -6,11 +6,11 @@ import 'react-calendar/dist/Calendar.css';
 
 import User from '../common/User';
 import { useNavigate } from 'react-router-dom';
-import Footer from '../components/Mypage/Footer';
 import { useRecoilState } from 'recoil';
 import { userState } from '../recoil/userAtoms';
 import { useEffect } from 'react';
 import apiClient from '../api/apiClient';
+import SideBar from '../common/SideBar';
 import Cookies from 'js-cookie';
 
 export default function Mypage() {
@@ -20,9 +20,9 @@ export default function Mypage() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await apiClient.get(`/user/${user.token}`, {
+        const response = await apiClient.get('/user/my', {
           headers: {
-            Authorization: `Bearer ${Cookies.get('Authorization')}`,
+            Authorization: `Bearer ${Cookies.get('Authorization') || ''}`,
           },
         });
 
@@ -36,7 +36,6 @@ export default function Mypage() {
         }));
       } catch (error) {
         console.error('유저 정보 불러오기 실패:', error);
-        console.log('유저 정보를 불러올 수 없습니다.');
       }
     };
 
@@ -45,13 +44,14 @@ export default function Mypage() {
       fetchUserData();
     }
   }, [user, setUser]);
+
   return (
     <div className="h-full w-full flex flex-col">
       <div className="sticky top-0 z-10 bg-white">
         <Title />
       </div>
 
-      <div className="flex flex-col flex-grow overflow-y-auto px-[33px] hidden-scrollbar">
+      <div className="flex flex-col flex-grow overflow-y-auto px-[33px] hidden-scrollbar flex-1">
         <User
           name={user.nickname}
           university={user.univName}
@@ -65,9 +65,11 @@ export default function Mypage() {
         <MyCalendar />
         <LogoutBtn />
       </div>
-      <div className="h-14 w-full flex justify-center">
-        <Footer />
-      </div>
+      <footer className="h-14 w-full flex justify-center">
+        <div className="w-[90%]">
+          <SideBar />
+        </div>
+      </footer>
     </div>
   );
 }

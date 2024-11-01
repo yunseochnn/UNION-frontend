@@ -7,6 +7,7 @@ import { useRecoilState } from 'recoil';
 import { useEffect, useState } from 'react';
 import { userState } from '../recoil/userAtoms';
 import apiClient from '../api/apiClient';
+import Cookies from 'js-cookie';
 
 export default function EditProfile() {
   const [user, setUser] = useRecoilState(userState);
@@ -24,28 +25,30 @@ export default function EditProfile() {
     try {
       let profileImageUrl = profileImage;
 
-      // 프로필 이미지 업로드 로직
       if (profileImage && profileImage !== user.profileImage) {
         const formData = new FormData();
         formData.append('file', profileImage);
 
-        // 이미지 업로드 요청
         const uploadResponse = await apiClient.post('/photo/upload', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
+          headers: {
+            Authorization: `Bearer ${Cookies.get('Authorization')}`,
+            'Content-Type': 'multipart/form-data',
+          },
         });
         profileImageUrl = uploadResponse.data[0];
       }
 
-      // 업데이트할 프로필 데이터 설정 (비어있는 필드는 제외)
       const updatedProfileData: Record<string, any> = {};
       if (nickname) updatedProfileData.nickname = nickname;
       if (description !== undefined) updatedProfileData.description = description;
       if (profileImageUrl) updatedProfileData.profileImage = profileImageUrl;
 
-      // 프로필 정보 업데이트 요청
-      const { data: updatedUser } = await apiClient.put('/user/my', updatedProfileData);
+      const { data: updatedUser } = await apiClient.put('/user/my', updatedProfileData, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('Authorization')}`,
+        },
+      });
 
-      // Recoil 상태 업데이트
       setUser(prev => ({
         ...prev,
         nickname: updatedUser.nickname,

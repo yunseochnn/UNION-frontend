@@ -2,6 +2,7 @@ import { useSetRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '../../api/apiClient';
 import { userState } from '../../recoil/userAtoms';
+import Cookies from 'js-cookie';
 
 export default function WithdrawBtn() {
   const setUser = useSetRecoilState(userState);
@@ -9,7 +10,11 @@ export default function WithdrawBtn() {
 
   const handleWithdraw = async () => {
     try {
-      await apiClient.delete('/user');
+      await apiClient.delete('/user', {
+        headers: {
+          Authorization: Cookies.get('Authorization') || '',
+        },
+      });
 
       setUser({
         oauthUserToken: '',
