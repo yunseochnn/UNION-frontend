@@ -15,9 +15,11 @@ import { Response } from '../../pages/MeetDetail';
 interface Prop {
   gatheringData: Response | null;
   setGatheringData: React.Dispatch<React.SetStateAction<Response | null>>;
+  modify: boolean;
+  outMeet: boolean;
 }
 
-const Content = ({ gatheringData, setGatheringData }: Prop) => {
+const Content = ({ gatheringData, setGatheringData, modify, outMeet }: Prop) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const MeetId = Number(id);
@@ -27,17 +29,15 @@ const Content = ({ gatheringData, setGatheringData }: Prop) => {
       const response = await ReadMeetRequest(MeetId);
       const data = response.data;
       setGatheringData(data);
-      console.log(data);
-      console.log(gatheringData);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
-          console.log(error.response);
+          console.log(error.response.data);
         }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [MeetId, setGatheringData]);
+  }, [MeetId, setGatheringData, modify, outMeet]);
 
   useEffect(() => {
     onReadMeet();

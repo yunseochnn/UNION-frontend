@@ -36,9 +36,9 @@ const SideBar = () => {
 
         <div
           className="flex flex-col justify-center items-center ml-1 cursor-pointer"
-          onClick={() => navigate('/chat')}
+          onClick={() => navigate('/chatList')}
         >
-          <div>{pathname.includes('chat') ? <IoChatbubbles size={20} /> : <IoChatbubblesOutline size={20} />}</div>
+          <div>{pathname.includes('chatList') ? <IoChatbubbles size={20} /> : <IoChatbubblesOutline size={20} />}</div>
           <div className="text-xs">채팅</div>
         </div>
 
