@@ -5,7 +5,7 @@ import MeetHeader from '../components/Meet/MeetHeader';
 import FloatingActionButton from '../common/FloatingActionButton';
 import { BsFillPeopleFill } from 'react-icons/bs';
 import { IoMdEye } from 'react-icons/io';
-import { ReadGatheringListRequest } from '../api/ReadGatheringListRequest';  // import 수정
+import { ReadMeetListRequest } from '../api/ReadMeetListRequest';  // import 수정
 
 interface Meeting {
   id: number;
@@ -28,7 +28,7 @@ const Meet: React.FC = () => {
     const fetchMeetings = async () => {
       try {
         // API 호출 부분 수정
-        const response = await ReadGatheringListRequest.getGatheringList();
+        const response = await ReadMeetListRequest.getMeetList();
         setMeetings(response.data);
       } catch (error) {
         console.error('모임 목록 조회 실패:', error);
