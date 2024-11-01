@@ -3,6 +3,7 @@ import '../../style.css';
 import List from './List';
 import apiClient from '../../api/apiClient';
 import { useQuery } from '@tanstack/react-query';
+import Cookies from 'js-cookie';
 
 export interface IFChat {
   senderName: string;
@@ -25,8 +26,7 @@ const Lists = () => {
     queryFn: async () => {
       const response = await apiClient.get<IFChat[]>(`/chat/${filter}`, {
         headers: {
-          Authorization:
-            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU0MSwiZXhwIjoxNzMyNDMxNTQxLCJzdWIiOiJ0b2tlbjEifQ.ObKaKc37PY7NcO6ZRjw44pSu8xlvr4Oq_TdY_ySQJB4',
+          Authorization: Cookies.get('Authorization'),
         },
       });
       return response.data;

@@ -8,6 +8,7 @@ import { useSearchParams } from 'react-router-dom';
 import apiClient from '../api/apiClient';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../recoil/userAtoms';
+import Cookies from 'js-cookie';
 
 const socketUrl = `${import.meta.env.VITE_API_BASE_URL.replace('https', 'ws')}/ws`;
 
@@ -35,7 +36,7 @@ export default function ChatDetail() {
     try {
       const response = await apiClient.get(`chat/private/${uid}`, {
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU1MywiZXhwIjoxNzMyNDMxNTUzLCJzdWIiOiJ0b2tlbjIifQ.ZaPrshyDPwJ2zmENewdFlmYpjZnmCilm5VLHOaFs3lA`,
+          Authorization: Cookies.get('Authorization'),
         },
       });
 
