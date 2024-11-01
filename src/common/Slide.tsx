@@ -10,7 +10,7 @@ const Slide = ({ images }: Props) => {
     <Swiper spaceBetween={50} slidesPerView={1}>
       {images.map((image, index) => (
         <SwiperSlide key={index}>
-          <div className="w-full h-[396px]">
+          <div className="w-full h-auto">
             <img src={image} />
           </div>
         </SwiperSlide>
