@@ -1,4 +1,5 @@
 import apiClient from './apiClient';
+import Cookies from 'js-cookie';
 
 interface Info {
   title: string;
@@ -34,6 +35,7 @@ const CreateMeetRequest = async ({ info }: Prop) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: Cookies.get('Authorization'),
         },
       },
     );

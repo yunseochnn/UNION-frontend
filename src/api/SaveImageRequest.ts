@@ -1,4 +1,5 @@
 import apiClient from './apiClient';
+import Cookies from 'js-cookie';
 
 const SaveImageRequest = async (id: number, targetType: string, urls: string[]) => {
   try {
@@ -12,6 +13,7 @@ const SaveImageRequest = async (id: number, targetType: string, urls: string[]) 
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: Cookies.get('Authorization'),
         },
       },
     );
