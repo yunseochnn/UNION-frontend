@@ -10,7 +10,7 @@ import { useRecoilValue } from 'recoil';
 import { userState } from '../recoil/userAtoms';
 import Cookies from 'js-cookie';
 
-const socketUrl = `${import.meta.env.VITE_API_BASE_URL.replace('https', 'ws')}/ws`;
+const socketUrl = `${import.meta.env.VITE_API_BASE_URL.replace('https', 'ws')}ws`;
 
 export interface IFChatInfo {
   senderName: string;
