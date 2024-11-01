@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../../style.css';
 import List from './List';
 
 const Lists = () => {
-  const [filter, setFilter] = useState('individaul');
+  const [filter, setFilter] = useState('private');
+
+  useEffect(() => {}, []);
 
   return (
     <div className="flex flex-col mt-5">

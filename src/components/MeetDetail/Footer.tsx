@@ -1,16 +1,43 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { IoIosHeart, IoIosHeartEmpty } from 'react-icons/io';
+import JoinMeetRequest from '../../api/JoinMeetRequest';
+import { useParams } from 'react-router-dom';
 
-const Footer = () => {
+interface Props {
+  fullMember: boolean;
+}
+
+const Footer = ({ fullMember }: Props) => {
   const [like, setLike] = useState(false);
   const [participation, setParticipation] = useState(false);
+  const { id } = useParams();
+  const MeetId = Number(id);
 
   const onClickLikeHandler = () => {
     setLike(!like);
   };
 
-  const onClickParticipationHandler = () => {
-    setParticipation(true);
+  const onClickParticipationHandler = async () => {
+    if (!participation && fullMember) {
+      try {
+        const response = await JoinMeetRequest(MeetId);
+
+        if (!response) {
+          alert('네트워크 이상입니다.');
+          return;
+        }
+
+        console.log('모임 참여 완료');
+        setParticipation(true);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          if (error.response) {
+            console.log(error.response.data);
+          }
+        }
+      }
+    }
   };
 
   return (
@@ -24,10 +51,10 @@ const Footer = () => {
       </div>
       <div
         className="w-[80%] h-[53px] rounded-md flex items-center justify-center text-xl text-white font-semibold cursor-pointer mr-2"
-        style={{ backgroundColor: `${participation ? 'gray' : '#ff4a4d'}` }}
+        style={{ backgroundColor: `${participation ? 'gray' : fullMember ? 'gray ' : '#ff4a4d'}` }}
         onClick={onClickParticipationHandler}
       >
-        {participation ? '참여완료' : '참여하기'}
+        {participation ? '참여완료' : fullMember ? '모집완료' : '참여하기'}
       </div>
     </div>
   );

@@ -1,14 +1,10 @@
 import apiClient from './apiClient';
 
-const SaveImageRequest = async (id: number, targetType: string, urls: string[]) => {
+const JoinMeetRequest = async (gatheringId: number) => {
   try {
     const response = await apiClient.post(
-      '/photo/save',
-      {
-        targetId: id,
-        targetType: targetType,
-        urls: urls,
-      },
+      `/gathering/${gatheringId}/participants`,
+      {},
       {
         headers: {
           'Content-Type': 'application/json',
@@ -24,4 +20,4 @@ const SaveImageRequest = async (id: number, targetType: string, urls: string[]) 
   }
 };
 
-export default SaveImageRequest;
+export default JoinMeetRequest;
