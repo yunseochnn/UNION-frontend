@@ -15,7 +15,8 @@ const BOARD_TITLES = {
 const BoardList: React.FC = () => {
   const navigate = useNavigate();
   const { type } = useParams<{ type: string }>();
-  const [posts, setPosts] = useState([]);
+  // posts의 타입을 any[]로 지정하여 타입 에러 해결
+  const [posts, setPosts] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -31,8 +32,6 @@ const BoardList: React.FC = () => {
     fetchPosts();
   }, [type]);
 
-  // `handleSearch` 함수 제거
-
   if (!type || !BOARD_TITLES[type as keyof typeof BOARD_TITLES]) return null;
 
   return (
@@ -40,15 +39,12 @@ const BoardList: React.FC = () => {
       <Header 
         title={BOARD_TITLES[type as keyof typeof BOARD_TITLES]}
       />
-
       <main className="flex-1 overflow-y-auto px-[20px]">
         <PostList posts={posts} />
       </main>
-
       <div className="right-8 bottom-24 absolute">
-        <FloatingActionButton onClick={() => navigate(`/Board/${type}/write`)} />
+        <FloatingActionButton onClick={() => navigate(`/Board/write/${type}`)} />
       </div>
-
       <footer className="h-14 flex justify-center">
         <div className="w-[90%]">
           <SideBar />
