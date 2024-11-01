@@ -1,34 +1,64 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import '../../style.css';
 import List from './List';
+import apiClient from '../../api/apiClient';
+import { useQuery } from '@tanstack/react-query';
+
+export interface IFChat {
+  senderName: string;
+  senderToken: string;
+  senderProfileImage: string;
+  content: string;
+  createdAt: string;
+}
 
 const Lists = () => {
   const [filter, setFilter] = useState('private');
 
-  useEffect(() => {}, []);
+  //개인 채팅 리스트 조회
+  const {
+    data: chatList,
+    isError: isChatError,
+    error: chatError,
+  } = useQuery<IFChat[]>({
+    queryKey: ['chatList'],
+    queryFn: async () => {
+      const response = await apiClient.get<IFChat[]>(`/chat/${filter}`, {
+        headers: {
+          Authorization:
+            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU0MSwiZXhwIjoxNzMyNDMxNTQxLCJzdWIiOiJ0b2tlbjEifQ.ObKaKc37PY7NcO6ZRjw44pSu8xlvr4Oq_TdY_ySQJB4',
+        },
+      });
+      return response.data;
+    },
+    retry: false,
+  });
+
+  if (isChatError) {
+    console.log(`채팅 목록 에러 : ${chatError}`);
+  }
 
   return (
     <div className="flex flex-col mt-5">
       <div className="flex gap-3 font-semibold">
         <span
           className={`cursor-pointer ${filter === 'meet' ? 'text-gray-400' : 'text-black'}`}
-          onClick={() => setFilter('individual')}
+          onClick={() => setFilter('private')}
         >
           개인
         </span>
         <span
           className={`cursor-pointer ${filter === 'meet' ? 'text-black' : 'text-gray-400'}`}
-          onClick={() => setFilter('meet')}
+          onClick={() => setFilter('gathering')}
         >
           모임
         </span>
       </div>
 
       <div className="mt-3">
-        <List filter={filter} />
-        <List filter={filter} />
-        <List filter={filter} />
-        <List filter={filter} />
+        {chatList?.map(chat => (
+          <List filter={filter} chat={chat} />
+        ))}
       </div>
     </div>
   );

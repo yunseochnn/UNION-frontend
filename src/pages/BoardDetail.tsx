@@ -14,6 +14,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import apiClient from '../api/apiClient';
 import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 import { HiOutlineChatBubbleOvalLeft } from 'react-icons/hi2';
+import More from '../components/BoardDetail/More';
 
 export interface IFComment {
   id: number;
@@ -33,21 +34,19 @@ export interface IFComment {
 }
 
 export interface BoardInfo {
-  post: {
-    id: number;
-    title: string;
-    content: string;
-    type: string;
-    thumbnail: string;
-    createdAt: string;
-    author: {
-      token: string;
-      nickname: string;
-      profileImage: string;
-      univName: string;
-    };
-    views: number;
+  id: number;
+  title: string;
+  content: string;
+  type: string;
+  createdAt: string;
+  views: number;
+  author: {
+    token: string;
+    nickname: string;
+    profileImage: string;
+    univName: string;
   };
+
   photos: string[];
 }
 
@@ -226,8 +225,8 @@ export default function BoardDetail() {
   };
 
   const updateData = {
-    title: boardInfo?.post.title || '',
-    content: boardInfo?.post.content || '',
+    title: boardInfo?.title || '',
+    content: boardInfo?.content || '',
   };
 
   if (isBoardError) {
@@ -243,6 +242,13 @@ export default function BoardDetail() {
   return (
     <div className="h-full w-full flex flex-col items-center pt-1 pb-2 relative">
       {Modal && <UserMore setModal={setModal} setModify={setModify} setRemove={setRemove} />}
+      {Modal && (
+        <More
+          setModal={setModal}
+          setUserBlock={setUserBlock}
+          author={{ token: boardInfo?.author.token || '', nickname: boardInfo?.author.nickname || '' }}
+        />
+      )}
       {userBlock && <UserBlock setUserBlock={setUserBlock} />}
       {modify && (
         <Update
