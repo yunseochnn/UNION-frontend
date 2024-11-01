@@ -15,6 +15,8 @@ import apiClient from '../api/apiClient';
 import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 import { HiOutlineChatBubbleOvalLeft } from 'react-icons/hi2';
 import More from '../components/BoardDetail/More';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../recoil/userAtoms';
 
 export interface IFComment {
   id: number;
@@ -72,6 +74,7 @@ export default function BoardDetail() {
   const BoardId = Number(id);
   const queryClient = useQueryClient();
   const commentListRef = useRef<HTMLDivElement>(null);
+  const myNickname = useRecoilValue(userState).nickname;
 
   const onClickLikeHandler = () => {
     setLike(!like);
@@ -241,14 +244,17 @@ export default function BoardDetail() {
 
   return (
     <div className="h-full w-full flex flex-col items-center pt-1 pb-2 relative">
-      {Modal && <UserMore setModal={setModal} setModify={setModify} setRemove={setRemove} />}
-      {Modal && (
-        <More
-          setModal={setModal}
-          setUserBlock={setUserBlock}
-          author={{ token: boardInfo?.author.token || '', nickname: boardInfo?.author.nickname || '' }}
-        />
-      )}
+      {Modal &&
+        (boardInfo?.author.nickname === myNickname ? (
+          <UserMore setModal={setModal} setModify={setModify} setRemove={setRemove} />
+        ) : (
+          <More
+            setModal={setModal}
+            setUserBlock={setUserBlock}
+            author={{ token: boardInfo?.author.token || '', nickname: boardInfo?.author.nickname || '' }}
+          />
+        ))}
+
       {userBlock && <UserBlock setUserBlock={setUserBlock} />}
       {modify && (
         <Update

@@ -33,9 +33,11 @@ const Content = ({ boardContent }: Prop) => {
         <div className="mt-5 text-base">{boardContent?.content}</div>
       </div>
 
-      <div className="mt-4 cursor-pointer">
-        <Slide />
-      </div>
+      {boardContent?.photos && boardContent?.photos.length > 0 && (
+        <div className="mt-4 cursor-pointer">
+          <Slide images={boardContent?.photos} />
+        </div>
+      )}
 
       <div className="mt-4">
         <Vote />
