@@ -5,38 +5,37 @@ import MeetHeader from '../components/Meet/MeetHeader';
 import FloatingActionButton from '../common/FloatingActionButton';
 import { BsFillPeopleFill } from 'react-icons/bs';
 import { IoMdEye } from 'react-icons/io';
-import { ReadMeetListRequest } from '../api/ReadMeetListRequest';  // import 수정
-
-interface Meeting {
-  id: number;
-  title: string;
-  date: string;
-  time: string;
-  currentParticipants: number;
-  maxParticipants: number;
-  views: number;
-  host: string;
-  area: string;
-}
+import { ReadMeetListRequest } from '../api/ReadMeetListRequest';
+import { Meeting } from '../api/ReadMeetListRequest';
 
 const Meet: React.FC = () => {
-  const [sortBy, setSortBy] = useState('가까운 거리 순');
+  const [sortBy, setSortBy] = useState<'LATEST' | 'DISTANCE' | 'GATHERING_DATE'>('LATEST');
   const [meetings, setMeetings] = useState<Meeting[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMeetings = async () => {
       try {
-        // API 호출 부분 수정
-        const response = await ReadMeetListRequest.getMeetList();
-        setMeetings(response.data);
+        if (sortBy === 'DISTANCE') {
+          navigator.geolocation.getCurrentPosition(async (position) => {
+            const response = await ReadMeetListRequest.getMeetList(
+              sortBy,
+              position.coords.latitude,
+              position.coords.longitude
+            );
+            setMeetings(response.data.content);
+          });
+        } else {
+          const response = await ReadMeetListRequest.getMeetList(sortBy);
+          setMeetings(response.data.content);
+        }
       } catch (error) {
         console.error('모임 목록 조회 실패:', error);
       }
     };
 
     fetchMeetings();
-  }, []);
+  }, [sortBy]);
 
   const handleMeetingClick = (id: number) => {
     navigate(`/meet/${id}`);
@@ -51,12 +50,14 @@ const Meet: React.FC = () => {
           <div key={meeting.id} className="border-b py-4 cursor-pointer" onClick={() => handleMeetingClick(meeting.id)}>
             <div className="flex justify-between items-start">
               <div>
-                <div className="text-xs text-gray-500">{`${meeting.host} · ${meeting.area}`}</div>
+                <div className="text-xs text-gray-500">{meeting.eupMyeonDong || '위치 미정'}</div>
                 <h2 className="font-bold text-lg">{meeting.title}</h2>
-                <div className="text-sm text-gray-600">{`${meeting.date}, ${meeting.time}`}</div>
+                <div className="text-sm text-gray-600">
+                  {new Date(meeting.gatheringDateTime).toLocaleString()}
+                </div>
                 <div className="mt-1 text-sm text-gray-500 flex items-center">
                   <BsFillPeopleFill size={12} className="mr-1" />
-                  <span>{`${meeting.currentParticipants}/${meeting.maxParticipants}`}</span>
+                  <span>{`${meeting.currentMember}/${meeting.maxMember}`}</span>
                   <div className="flex items-center ml-2">
                     <IoMdEye size={14} className="mr-1" />
                     <span>{meeting.views}</span>
