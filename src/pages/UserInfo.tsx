@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
 import { selectedUserState } from '../recoil/selectedUserState';
 import apiClient from '../api/apiClient';
 import Header from '../common/Header';
 import User from '../common/User';
 import UserTabs from '../components/UserInfo/UserTabs';
+import PostList from '../common/PostList';
 import Cookies from 'js-cookie';
 
 interface UserInfoType {
@@ -16,9 +17,23 @@ interface UserInfoType {
   isBlocked: boolean;
 }
 
+interface PostType {
+  profileImage: string;
+  nickname: string;
+  university: string;
+  title: string;
+  content: string;
+  likes: number;
+  comments: number;
+  thumbnail: string;
+}
+
 export default function UserInfo() {
   const userToken = useRecoilValue(selectedUserState);
   const [userInfo, setUserInfo] = useState<UserInfoType | null>(null);
+  const [posts, setPosts] = useState<PostType[]>([]);
+  const [postCount, setPostCount] = useState(0);
+  const [activeTab, setActiveTab] = useState('posts');
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -34,10 +49,43 @@ export default function UserInfo() {
       }
     };
 
-    if (userToken) {
-      fetchUserInfo();
+    if (userToken) fetchUserInfo();
+  }, [userToken]);
+
+  const fetchPosts = useCallback(async () => {
+    try {
+      const response = await apiClient.get(`/user/${userToken}/post`, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('Authorization')}`,
+          'Content-Type': 'application/json',
+        },
+        params: { page: 0, size: 10 },
+      });
+
+      const fetchedPosts = response.data.content.map((post: any) => ({
+        profileImage: post.author.profileImage,
+        nickname: post.author.nickname,
+        university: post.author.univName,
+        title: post.title,
+        content: post.contentPreview,
+        likes: post.postLikes,
+        comments: post.commentCount,
+        thumbnail: post.thumbnail,
+      }));
+      setPosts(fetchedPosts);
+      setPostCount(response.data.totalElements);
+    } catch (error) {
+      console.error('게시물 목록 불러오기 실패:', error);
     }
   }, [userToken]);
+
+  useEffect(() => {
+    if (activeTab === 'posts') fetchPosts();
+  }, [activeTab, fetchPosts]);
+
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+  };
 
   const handleBlockToggle = async () => {
     if (userInfo) {
@@ -83,7 +131,12 @@ export default function UserInfo() {
           onButtonClick={handleBlockToggle}
         />
       </div>
-      <UserTabs />
+      <UserTabs onTabChange={handleTabChange} postCount={postCount} />
+      <div className="mt-5 px-[36px]">
+        {activeTab === 'posts' && <PostList posts={posts} />}
+        {activeTab === 'comments' && <div>댓글 목록</div>}
+        {activeTab === 'meetings' && <div>모임글 목록</div>}
+      </div>
     </div>
   );
 }
