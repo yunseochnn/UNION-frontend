@@ -1,4 +1,3 @@
-import { useSearchParams } from 'react-router-dom';
 import Policy from '../../common/Policy';
 import '../../style.css';
 import { IFChatInfo } from '../../pages/ChatDetail';
@@ -13,8 +12,6 @@ interface Props {
 }
 
 const Content = ({ messages }: Props) => {
-  const [searchParams] = useSearchParams();
-  const option = searchParams.get('option');
   const user = useRecoilValue(userState);
   const myNickname = user.nickname;
   const messageEndRef = useRef<HTMLDivElement | null>(null);
@@ -24,8 +21,6 @@ const Content = ({ messages }: Props) => {
   }, [messages]);
 
   let lastDate = '';
-
-  console.log(option);
 
   return (
     <div className="flex flex-col flex-1 overflow-y-auto hidden-scrollbar w-[85%]">
