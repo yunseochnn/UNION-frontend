@@ -6,10 +6,8 @@ import More from '../components/ChatDetail/More';
 import { Client } from '@stomp/stompjs';
 import { useSearchParams } from 'react-router-dom';
 import apiClient from '../api/apiClient';
-import { useRecoilValue } from 'recoil';
-import { userState } from '../recoil/userAtoms';
 
-const socketUrl = `${import.meta.env.VITE_API_BASE_URL.replace('https', 'ws')}/ws`;
+const socketUrl = `${import.meta.env.VITE_API_BASE_URL.replace('https', 'wss')}ws`;
 
 export interface IFChatInfo {
   senderName: string;
@@ -23,8 +21,6 @@ export default function ChatDetail() {
   const [searchParams] = useSearchParams();
   const uid = searchParams.get('uid');
   const title = searchParams.get('title');
-  const user = useRecoilValue(userState);
-  const myNickname = user.nickname;
 
   const [modal, setModal] = useState(false);
   const [messages, setMessages] = useState<IFChatInfo[]>([]);
@@ -92,13 +88,25 @@ export default function ChatDetail() {
       const privateChatRequest = {
         receiverToken: uid,
         content: input,
-        senderNickname: myNickname,
+        senderNickname: 'user2nick',
       };
 
       client.current.publish({
         destination: '/app/private',
         body: JSON.stringify(privateChatRequest),
       });
+
+      // 메시지 상태에 새로운 메시지 추가
+      setMessages(prevMessages => [
+        ...prevMessages,
+        {
+          content: input,
+          senderName: 'user2nick',
+          senderToken: 'me', // 실제 사용자 토큰 사용
+          senderProfileImage: null, // 실제 사용자 프로필 이미지 사용 가능
+          createdAt: new Date().toISOString(),
+        },
+      ]);
 
       setInput('');
     }

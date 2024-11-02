@@ -9,7 +9,7 @@ const JoinMeetRequest = async (gatheringId: number) => {
         headers: {
           'Content-Type': 'application/json',
           Authorization:
-            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU0MSwiZXhwIjoxNzMyNDMxNTQxLCJzdWIiOiJ0b2tlbjEifQ.ObKaKc37PY7NcO6ZRjw44pSu8xlvr4Oq_TdY_ySQJB4',
+            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU2MywiZXhwIjoxNzMyNDMxNTYzLCJzdWIiOiJ0b2tlbjMifQ.8ctvdQIhSoLiN7MEjY09OrrLza936CK62q9LMjlW6-I',
         },
       },
     );

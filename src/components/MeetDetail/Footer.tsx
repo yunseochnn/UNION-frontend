@@ -19,7 +19,7 @@ const Footer = ({ fullMember }: Props) => {
   };
 
   const onClickParticipationHandler = async () => {
-    if (!participation && fullMember) {
+    if (!participation && !fullMember) {
       try {
         const response = await JoinMeetRequest(MeetId);
 

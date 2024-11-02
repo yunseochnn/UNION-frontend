@@ -1,7 +1,7 @@
 import { FaRegCalendarCheck } from 'react-icons/fa6';
 import { HiOutlineUserGroup } from 'react-icons/hi2';
 import '../../style.css';
-import Slide from '../../common/Slide';
+// import Slide from '../../common/Slide';
 import Map from '../../common/Map';
 import { IoIosArrowForward } from 'react-icons/io';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -88,9 +88,7 @@ const Content = ({ gatheringData, setGatheringData, modify, outMeet }: Prop) => 
       </div>
 
       <div className="mt-4">
-        <div className="h-[396px] w-full cursor-pointer">
-          <Slide />
-        </div>
+        <div className="h-[396px] w-full cursor-pointer">{/* <Slide /> */}</div>
       </div>
 
       {gatheringData?.address && (
