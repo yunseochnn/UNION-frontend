@@ -29,6 +29,7 @@ export default function PostList({ posts }: PostListProps) {
           likes={post.likes}
           comments={post.comments}
           thumbnail={post.thumbnail}
+          isLast={index === posts.length - 1}
         />
       ))}
     </div>

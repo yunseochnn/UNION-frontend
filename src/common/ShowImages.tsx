@@ -21,7 +21,7 @@ const ShowImages = ({ images, setImages }: Prop) => {
           >
             <div>
               <img src={image} className="object-full" />
-              <div className="absolute top-1 right-1" onClick={() => onClickCloseImage(index)}>
+              <div className="absolute top-1 right-1 cursor-pointer" onClick={() => onClickCloseImage(index)}>
                 <IoIosCloseCircle />
               </div>
             </div>

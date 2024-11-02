@@ -1,49 +1,46 @@
-import { FaHeart, FaRegHeart } from 'react-icons/fa6';
-import { HiOutlineChatBubbleOvalLeft } from 'react-icons/hi2';
 import Slide from '../../common/Slide';
-import { useState } from 'react';
 import Vote from './Vote';
+import { BoardInfo } from '../../pages/BoardDetail';
+import DefaultImage from '/default-profile-image.png';
 
-const Content = () => {
-  const [like, setLike] = useState(false);
-  const onClickLikeHandler = () => {
-    setLike(!like);
-  };
+interface Prop {
+  boardContent: BoardInfo | undefined;
+}
+
+const Content = ({ boardContent }: Prop) => {
   return (
     <div className="flex flex-col">
       <div className="flex items-center mt-[20px] gap-3">
-        <div className="h-10 w-10 bg-gray-300 rounded-full cursor-pointer"></div>
+        <div className="h-10 w-10 bg-gray-300 rounded-full cursor-pointer">
+          {boardContent?.author.profileImage ? (
+            <img src={boardContent.author.profileImage} />
+          ) : (
+            <img src={DefaultImage} />
+          )}
+        </div>
         <div>
           <div className="font-bold text-sm">
-            유니 <span className="text-gray-400">· 구름대학교</span>
+            {boardContent?.author.nickname}{' '}
+            <span className="text-gray-400">{`· ${boardContent?.author.univName}`}</span>
           </div>
-          <div className="font-semibold text-sm text-gray-400">09/15 22:39 조회수 233</div>
+          <div className="font-semibold text-sm text-gray-400">{`${boardContent?.createdAt} 조회수 ${boardContent?.views}`}</div>
         </div>
       </div>
 
-      <div className="mt-5 font-semibold text-xl">게시글 제목이 들어갑니다~~~</div>
+      <div className="mt-5 font-semibold text-xl">{boardContent?.title}</div>
 
       <div>
-        <div className="mt-5 text-base">{`글 내용이 들어갑니다. 고민 중인 것은 사진을 여러 장 첨부할 수 있도록 할지, 사진 위치를 글 마지막, 혹은 원하는 위치,
-        혹은 맨 앞으로 할 지 고민 중입니다. 회의를 통해 결정하는 것이 좋아보입니다.`}</div>
+        <div className="mt-5 text-base">{boardContent?.content}</div>
       </div>
 
-      <div className="mt-4 cursor-pointer">
-        <Slide />
-      </div>
+      {boardContent?.photos && boardContent?.photos.length > 0 && (
+        <div className="mt-4 cursor-pointer">
+          <Slide images={boardContent?.photos} />
+        </div>
+      )}
 
       <div className="mt-4">
         <Vote />
-      </div>
-
-      <div className="flex gap-3 my-3">
-        <div className="flex items-center gap-1 font-semibold cursor-pointer" onClick={onClickLikeHandler}>
-          {like ? <FaHeart size={18} color="#ff4a4d" /> : <FaRegHeart size={18} />} <span className="text-xs">155</span>
-        </div>
-        <div className="flex items-center gap-1 font-semibold">
-          <HiOutlineChatBubbleOvalLeft size={20} />
-          <span className="text-xs">3</span>
-        </div>
       </div>
     </div>
   );

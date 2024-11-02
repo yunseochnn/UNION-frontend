@@ -45,7 +45,7 @@ const Post = ({ setOpen, setAddress }: Prop) => {
     (marker: CustomMarker) => {
       setAddress({
         name: marker.content,
-        address: marker.roadAddressName,
+        address: marker.addressName,
         positionX: marker.positionX,
         positionY: marker.positionY,
       });
@@ -87,7 +87,6 @@ const Post = ({ setOpen, setAddress }: Prop) => {
     }
 
     const ps = new kakao.maps.services.Places();
-    console.log(keyword);
 
     if (keyword !== '') {
       ps.keywordSearch(keyword, (data: any, status: any) => {
@@ -199,10 +198,10 @@ const Post = ({ setOpen, setAddress }: Prop) => {
         <div className="w-8 h-8"></div>
       </div>
 
-      <div id="map" className="w-full h-[400px] mt-2 relative"></div>
+      <div id="map" className="w-full h-[50%] mt-2 relative"></div>
 
-      <div className="px-[10px] pb-5">
-        <div className="flex flex-col flex-1 items-center px-5 min-h-[350px]">
+      <div className="px-[10px] pb-5 h-[50%]">
+        <div className="flex flex-col flex-1 items-center px-5">
           <div className="shadow-md w-full h-11 mt-5 rounded-sm flex items-center px-3">
             <div>
               <IoSearch size={25} />

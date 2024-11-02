@@ -1,8 +1,12 @@
 body {
   box-sizing: border-box;
 }
+
+.react-select {
+  width: 30%;
+}
 .react-select__control {
-  width: 80px !important;
+  width: 100% !important;
   height: 25px !important;
   border: none !important;
   border-radius: 20px !important;
@@ -13,6 +17,7 @@ body {
 
 .react-select__control input {
   caret-color: transparent !important; /* 텍스트 입력 커서를 투명하게 */
+  width: 30px;
 }
 
 .react-select__control--is-focused {
@@ -46,6 +51,14 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
   font-weight: 600 !important;
   text-align: center !important;
+}
+
+.react-select__menu-list {
+  scrollbar-width: none;
+}
+
+.react-select__menu-list::-webkit-scrollbar {
+  display: none;
 }
 
 .react-select__option {
