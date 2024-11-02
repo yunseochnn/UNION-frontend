@@ -40,7 +40,7 @@ export default function UserInfo() {
       try {
         const response = await apiClient.get(`/user/${userToken}`, {
           headers: {
-            Authorization: `Bearer ${Cookies.get('Authorization')}`,
+            Authorization: Cookies.get('Authorization'),
           },
         });
         setUserInfo(response.data);
@@ -56,7 +56,7 @@ export default function UserInfo() {
     try {
       const response = await apiClient.get(`/user/${userToken}/post`, {
         headers: {
-          Authorization: `Bearer ${Cookies.get('Authorization')}`,
+          Authorization: Cookies.get('Authorization'),
           'Content-Type': 'application/json',
         },
         params: { page: 0, size: 10 },
@@ -97,14 +97,14 @@ export default function UserInfo() {
             {},
             {
               headers: {
-                Authorization: `Bearer ${Cookies.get('Authorization')}`,
+                Authorization: Cookies.get('Authorization'),
               },
             },
           );
         } else {
           await apiClient.delete(`/user/block/${userInfo.token}`, {
             headers: {
-              Authorization: `Bearer ${Cookies.get('Authorization')}`,
+              Authorization: Cookies.get('Authorization'),
             },
           });
         }

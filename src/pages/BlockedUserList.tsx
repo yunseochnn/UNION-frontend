@@ -18,7 +18,7 @@ export default function BlockedUserList() {
       try {
         const response = await apiClient.get<BlockedUser[]>('/user/block', {
           headers: {
-            Authorization: `Bearer ${Cookies.get('Authorization')}`,
+            Authorization: Cookies.get('Authorization'),
           },
         });
         setBlockedUsers(response.data);
@@ -42,7 +42,7 @@ export default function BlockedUserList() {
       if (isBlocked) {
         await apiClient.delete(`/user/block/${userToken}`, {
           headers: {
-            Authorization: `Bearer ${Cookies.get('Authorization')}`,
+            Authorization: Cookies.get('Authorization'),
           },
         });
         setBlockedUsers(prev => prev.map(user => (user.token === userToken ? { ...user, isBlocked: false } : user)));
@@ -52,7 +52,7 @@ export default function BlockedUserList() {
           {},
           {
             headers: {
-              Authorization: `Bearer ${Cookies.get('Authorization')}`,
+              Authorization: Cookies.get('Authorization'),
             },
           },
         );
