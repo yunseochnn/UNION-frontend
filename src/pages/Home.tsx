@@ -95,9 +95,11 @@ const Home: React.FC = () => {
     const refreshToken = queryParams.get('refreshToken');
 
     if (accessToken && refreshToken) {
-      Cookies.set('Authorization', accessToken, { path: '/' });
+      Cookies.set('Authorization', `Bearer ${accessToken}`, { path: '/' });
       Cookies.set('Refresh-Token', refreshToken, { path: '/' });
       setIsAuthenticated(true);
+      console.log('Access token received and stored:', accessToken);
+      console.log('Refresh token received and stored:', refreshToken);
     } else if (!Cookies.get('Authorization')) {
       navigate('/');
     } else {
