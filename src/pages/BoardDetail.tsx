@@ -105,6 +105,9 @@ export default function BoardDetail() {
     retry: false,
   });
 
+  console.log(myNickname);
+  console.log(boardInfo);
+
   //댓글 목록 read
   const {
     data: commentData,

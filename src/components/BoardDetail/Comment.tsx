@@ -36,12 +36,14 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
     setMore(false);
   };
 
-  const onUpdateComment = () => {
+  const onUpdateComment = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     setUpdateComment({ content: comment.content, commentId: comment.id });
     setMore(false);
   };
 
-  const onDeleteComment = () => {
+  const onDeleteComment = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     handleDeleteComment(comment.id);
     setMore(false);
   };
@@ -73,7 +75,7 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
             <div className="text-[10px] text-gray-400">{comment.createdAt}</div>
 
             <div className="text-sm font-semibold flex">
-              {!comment.parentNickname && <span className="font-bold mr-1">{`@${comment.parentNickname} `}</span>}
+              {comment.parentNickname && <span className="font-bold mr-1">{`@${comment.parentNickname} `}</span>}
               <span>{comment.content}</span>
             </div>
           </div>
