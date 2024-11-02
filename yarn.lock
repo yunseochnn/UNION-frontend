@@ -2047,7 +2047,7 @@ react-dom@^18.3.1:
 
 react-easy-crop@^5.1.0:
   version "5.1.0"
-  resolved "https://registry.npmjs.org/react-easy-crop/-/react-easy-crop-5.1.0.tgz"
+  resolved "https://registry.yarnpkg.com/react-easy-crop/-/react-easy-crop-5.1.0.tgz#79897cbd8fbc93f64817276a02de525582a6334b"
   integrity sha512-UsYeF/N7zoqtfOSD+2xSt1nRaoBYCI2YLkzmq+hi+aVepS4/bAMhbrLwJtDAP60jsVzWRiQCX7JG+ZtfWcHsiw==
   dependencies:
     normalize-wheel "^1.0.1"
