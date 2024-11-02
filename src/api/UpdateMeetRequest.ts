@@ -1,5 +1,4 @@
 import apiClient from './apiClient';
-import Cookies from 'js-cookie';
 
 interface Info {
   title: string;
@@ -14,13 +13,13 @@ interface Info {
 
 interface Prop {
   info: Info;
+  id: number;
 }
 
-const CreateMeetRequest = async ({ info }: Prop) => {
-  console.log(info);
+const UpdateMeetRequest = async ({ info, id }: Prop) => {
   try {
-    const response = await apiClient.post(
-      '/gathering',
+    const response = await apiClient.put(
+      `/gathering/${id}`,
       {
         title: info.title,
         content: info.text,
@@ -30,12 +29,12 @@ const CreateMeetRequest = async ({ info }: Prop) => {
         ...(info.latitude && { latitude: info.latitude }),
         ...(info.longitude && { longitude: info.longitude }),
         ...(info.eupMyeonDong && { eupMyeonDong: info.eupMyeonDong }),
-        currentMember: 1,
       },
       {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: Cookies.get('Authorization'),
+          Authorization:
+            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU0MSwiZXhwIjoxNzMyNDMxNTQxLCJzdWIiOiJ0b2tlbjEifQ.ObKaKc37PY7NcO6ZRjw44pSu8xlvr4Oq_TdY_ySQJB4',
         },
       },
     );
@@ -46,4 +45,4 @@ const CreateMeetRequest = async ({ info }: Prop) => {
   }
 };
 
-export default CreateMeetRequest;
+export default UpdateMeetRequest;

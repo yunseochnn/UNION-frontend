@@ -1,4 +1,5 @@
 import apiClient from './apiClient';
+import Cookies from 'js-cookie';
 
 interface info {
   type: string;
@@ -23,6 +24,7 @@ const CreateBoardRequest = async ({ info }: Prop) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: Cookies.get('Authorization'),
         },
       },
     );

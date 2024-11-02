@@ -1,4 +1,5 @@
 import apiClient from './apiClient';
+import Cookies from 'js-cookie';
 
 const UpdateBoardRequest = async (title: string, content: string, type: string, id: number) => {
   try {
@@ -11,6 +12,7 @@ const UpdateBoardRequest = async (title: string, content: string, type: string, 
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: Cookies.get('Authorization'),
         },
       },
     );

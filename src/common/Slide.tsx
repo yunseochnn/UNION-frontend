@@ -1,18 +1,20 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.min.css';
 
-const Slide = () => {
+interface Props {
+  images: string[];
+}
+
+const Slide = ({ images }: Props) => {
   return (
     <Swiper spaceBetween={50} slidesPerView={1}>
-      <SwiperSlide>
-        <div className="w-full h-[396px] bg-gray-300">1</div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="w-full h-[396px] bg-gray-300">2</div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="w-full h-[396px] bg-gray-300">3</div>
-      </SwiperSlide>
+      {images.map((image, index) => (
+        <SwiperSlide key={index}>
+          <div className="w-full h-auto">
+            <img src={image} />
+          </div>
+        </SwiperSlide>
+      ))}
     </Swiper>
   );
 };

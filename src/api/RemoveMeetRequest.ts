@@ -1,9 +1,9 @@
 import apiClient from './apiClient';
 import Cookies from 'js-cookie';
 
-const ReadBoardRequest = async (type: string, id: number) => {
+const RemoveMeetRequest = async (id: number) => {
   try {
-    const response = await apiClient.get(`/board/${type}/${id}`, {
+    const response = await apiClient.delete(`/gathering/${id}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: Cookies.get('Authorization'),
@@ -17,4 +17,4 @@ const ReadBoardRequest = async (type: string, id: number) => {
   }
 };
 
-export default ReadBoardRequest;
+export default RemoveMeetRequest;
