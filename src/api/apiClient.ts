@@ -19,11 +19,13 @@ apiClient.interceptors.response.use(
         const refreshToken = Cookies.get('Refresh-Token') ?? '';
         const authorizationToken = Cookies.get('Authorization') ?? '';
 
+        // 새 토큰 요청
         const newAccessToken = await requestNewAccessToken(refreshToken, authorizationToken);
 
         if (newAccessToken) {
-          Cookies.set('Authorization', `Bearer ${newAccessToken}`, { path: '/' });
-          originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+          // 새로운 액세스 토큰 저장
+          Cookies.set('Authorization', newAccessToken, { path: '/' });
+          originalRequest.headers['Authorization'] = newAccessToken;
 
           return apiClient(originalRequest);
         }
