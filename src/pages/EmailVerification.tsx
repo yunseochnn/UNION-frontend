@@ -25,7 +25,12 @@ export default function EmailVerification() {
       setUser(prevState => ({ ...prevState, oauthUserToken }));
 
       apiClient
-        .get(`${PHOTO_URL}?oauthUserToken=${oauthUserToken}`)
+        .get(`${PHOTO_URL}?oauthUserToken=${oauthUserToken}`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+
         .then(response => {
           setUser(prevState => ({ ...prevState, profileImage: response.data }));
         })

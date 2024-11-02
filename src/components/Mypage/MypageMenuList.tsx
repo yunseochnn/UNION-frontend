@@ -4,7 +4,7 @@ import { IoIosArrowForward } from 'react-icons/io';
 const items = [
   { label: '내가 작성한 게시글', path: '/myposts' },
   { label: '내가 작성한 모임글', path: '/mymeetings' },
-  { label: '내가 작성한 댓글', path: '/mycomments' },
+  { label: '내가 댓글 단 글', path: '/mycomments' },
   { label: '차단 유저', path: '/blockeduser' },
 ];
 

@@ -4,6 +4,7 @@ export const userState = atom({
   key: 'userState',
   default: {
     oauthUserToken: '',
+    token: '',
     univName: '',
     nickname: '',
     description: '',

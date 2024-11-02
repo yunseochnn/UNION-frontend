@@ -1,3 +1,4 @@
+import { HiOutlinePencilSquare } from 'react-icons/hi2';
 import Header from '../common/Header';
 import PostList from '../common/PostList';
 
@@ -24,7 +25,14 @@ export default function MyPageList({ posts, pageTitle }: MyPageListProps) {
         <Header title={pageTitle} navigateTo="/mypage" />
       </div>
       <div className="flex-grow overflow-y-auto hidden-scrollbar">
-        <PostList posts={posts} />
+        {posts.length > 0 ? (
+          <PostList posts={posts} />
+        ) : (
+          <div className="flex flex-col  items-center h-full text-customGray2 mt-[170px] text-[18px]">
+            <HiOutlinePencilSquare size={50} className="mb-1" />
+            작성한 글이 없습니다
+          </div>
+        )}
       </div>
     </div>
   );

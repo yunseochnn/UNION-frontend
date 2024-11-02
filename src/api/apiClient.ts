@@ -4,21 +4,9 @@ import { requestNewAccessToken } from './refreshToken';
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
 
-// 요청 인터셉터에서 Authorization 헤더 설정
-apiClient.interceptors.request.use(config => {
-  const token = Cookies.get('Authorization');
-  if (token) {
-    config.headers['Authorization'] = token;
-  }
-  return config;
-});
-
-// 응답 인터셉터에서 새 토큰 요청
+// 응답 인터셉터에서 새 토큰 요청 (401 에러 발생 시)
 apiClient.interceptors.response.use(
   response => response,
   async error => {

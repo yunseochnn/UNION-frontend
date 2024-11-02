@@ -1,18 +1,40 @@
 import { ko } from 'date-fns/locale';
-import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './Calendar.css';
 import { format } from 'date-fns';
+import { forwardRef } from 'react';
 
-const Calendar = () => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+interface Prop {
+  selectedDate: Date | null;
+  setSelectedDate: React.Dispatch<React.SetStateAction<Date | null>>;
+}
 
+const Calendar = ({ selectedDate, setSelectedDate }: Prop) => {
   // 날짜 형식 변환
-  const formattedDate = selectedDate ? format(selectedDate, 'yyyy년 MM월 dd일 hh:mm', { locale: ko }) : '';
+  const isoDate = selectedDate?.toISOString();
+  console.log(isoDate);
+  const formattedDate = isoDate ? format(isoDate, 'yyyy년 MM월 dd일 a hh:mm', { locale: ko }) : '';
   console.log(formattedDate);
 
   console.log(selectedDate);
+
+  const now = new Date();
+  const add30Minutes = new Date(now.getTime() + 30 * 60000); //현재 시간 + 30분
+
+  // 커스텀 input 컴포넌트
+  const CustomInput = forwardRef<HTMLInputElement, { value?: string; onClick?: () => void }>(
+    ({ value, onClick }, ref) => (
+      <input
+        ref={ref}
+        value={value || '날짜 선택'}
+        onClick={onClick} // DatePicker의 onClick을 그대로 전달하여 선택 창을 열리게 함
+        readOnly // 모바일 키보드 방지
+        className="outline-none w-40 font-semibold"
+      />
+    ),
+  );
+
   return (
     <DatePicker
       locale={ko}
@@ -20,7 +42,12 @@ const Calendar = () => {
       selected={selectedDate}
       onChange={date => setSelectedDate(date)}
       showTimeSelect
-      className="outline-none w-48"
+      minDate={now}
+      minTime={
+        selectedDate && selectedDate.toDateString() === now.toDateString() ? add30Minutes : new Date(0, 0, 0, 0, 0)
+      }
+      maxTime={new Date(0, 0, 0, 23, 59)}
+      customInput={<CustomInput value={formattedDate} />}
     />
   );
 };
