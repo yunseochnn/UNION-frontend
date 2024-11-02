@@ -41,8 +41,8 @@ function App() {
         <Route path="/meet/:id" element={<MeetDetail />} />
         <Route path="/meet/write" element={<MeetWrite />} />
         <Route path="/meet/participants/:id" element={<MeetParticipants />} />
-        <Route path="/chat" element={<ChatList />} />
-        <Route path="/chat/:id" element={<ChatDetail />} />
+        <Route path="/chatList" element={<ChatList />} />
+        <Route path="/chat/private" element={<ChatDetail />} />
         <Route path="/map" element={<MapView />} />
         <Route path="/notification" element={<Notification />} />
         <Route path="/board" element={<Board />} />
