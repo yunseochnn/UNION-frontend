@@ -21,6 +21,7 @@ const Home: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState<'posts' | 'meetings'>('posts');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const posts: Post[] = [
     {
@@ -93,61 +94,69 @@ const Home: React.FC = () => {
     const accessToken = queryParams.get('accessToken');
     const refreshToken = queryParams.get('refreshToken');
 
-    // URL에 토큰이 있을 때만 쿠키에 저장
     if (accessToken && refreshToken) {
       Cookies.set('Authorization', accessToken, { path: '/' });
       Cookies.set('Refresh-Token', refreshToken, { path: '/' });
+      setIsAuthenticated(true);
     } else if (!Cookies.get('Authorization')) {
       navigate('/');
+    } else {
+      setIsAuthenticated(true);
     }
   }, [location, navigate]);
 
   return (
     <div className="center-content flex flex-col bg-white pt-1">
-      <header className="flex justify-between items-center p-4">
-        <img src="/public/Logo.svg" alt="UNION" className="h-8" />
-        <div className="flex space-x-4">
-          <FiSearch size={24} />
-          <FiBell size={24} />
-        </div>
-      </header>
+      {isAuthenticated ? (
+        <>
+          <header className="flex justify-between items-center p-4">
+            <img src="/public/Logo.svg" alt="UNION" className="h-8" />
+            <div className="flex space-x-4">
+              <FiSearch size={24} />
+              <FiBell size={24} />
+            </div>
+          </header>
 
-      <div className="w-full aspect-video bg-gray-200 flex items-center justify-center mb-6">
-        <div className="w-20 h-20 bg-white" />
-      </div>
+          <div className="w-full aspect-video bg-gray-200 flex items-center justify-center mb-6">
+            <div className="w-20 h-20 bg-white" />
+          </div>
 
-      <div className="flex px-8">
-        <div className="flex w-full bg-gray-100 rounded-full relative">
-          <button
-            className={`flex-1 py-2 -mr-4 ${
-              activeTab === 'posts' ? 'bg-red-500 text-white rounded-full z-10' : 'text-gray-600'
-            }`}
-            onClick={() => setActiveTab('posts')}
-          >
-            인기 게시글
-          </button>
-          <button
-            className={`flex-1 py-2 -ml-4 ${
-              activeTab === 'meetings' ? 'bg-red-500 text-white rounded-full z-10' : 'text-gray-600'
-            }`}
-            onClick={() => setActiveTab('meetings')}
-          >
-            인기 모임
-          </button>
-        </div>
-      </div>
+          <div className="flex px-8">
+            <div className="flex w-full bg-gray-100 rounded-full relative">
+              <button
+                className={`flex-1 py-2 -mr-4 ${
+                  activeTab === 'posts' ? 'bg-red-500 text-white rounded-full z-10' : 'text-gray-600'
+                }`}
+                onClick={() => setActiveTab('posts')}
+              >
+                인기 게시글
+              </button>
+              <button
+                className={`flex-1 py-2 -ml-4 ${
+                  activeTab === 'meetings' ? 'bg-red-500 text-white rounded-full z-10' : 'text-gray-600'
+                }`}
+                onClick={() => setActiveTab('meetings')}
+              >
+                인기 모임
+              </button>
+            </div>
+          </div>
 
-      <main className="flex-1 overflow-y-auto hidden-scrollbar">
-        <div onClick={() => navigate(activeTab === 'posts' ? '/boarddetail' : '/meetdetail')}>
-          <PostList posts={activeTab === 'posts' ? posts : meetings} />
-        </div>
-      </main>
+          <main className="flex-1 overflow-y-auto hidden-scrollbar">
+            <div onClick={() => navigate(activeTab === 'posts' ? '/boarddetail' : '/meetdetail')}>
+              <PostList posts={activeTab === 'posts' ? posts : meetings} />
+            </div>
+          </main>
 
-      <footer className="h-14 w-full flex justify-center">
-        <div className="w-[90%]">
-          <SideBar />
-        </div>
-      </footer>
+          <footer className="h-14 w-full flex justify-center">
+            <div className="w-[90%]">
+              <SideBar />
+            </div>
+          </footer>
+        </>
+      ) : (
+        <div>Loading...</div>
+      )}
     </div>
   );
 };
