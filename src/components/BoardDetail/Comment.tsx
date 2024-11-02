@@ -1,7 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 import { MdOutlineMoreHoriz } from 'react-icons/md';
 import { IFComment, ParentInfo, UpComment } from '../../pages/BoardDetail';
+import dayjs from 'dayjs';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { selectedUserState } from '../../recoil/selectedUserState';
+import { useNavigate } from 'react-router-dom';
+import { userState } from '../../recoil/userAtoms';
 
 interface Prop {
   comment: IFComment;
@@ -14,13 +19,27 @@ interface Prop {
 const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, parent }: Prop) => {
   const [like, setLike] = useState(false);
   const [more, setMore] = useState(false);
+  const setUser = useSetRecoilState(selectedUserState);
+  const navigate = useNavigate();
   const ref = useRef<HTMLDivElement | null>(null); //요소를 참조하는 useRef
+  const commentRef = useRef<HTMLDivElement | null>(null);
+  const user = useRecoilValue(userState);
+  const myNickname = user.nickname;
 
   const handleClickOutSide = (e: MouseEvent) => {
     if (ref.current && !ref.current.contains(e.target as Node)) {
       setMore(false);
     }
   };
+
+  const handleClickCommentOutSide = useCallback(
+    (e: MouseEvent) => {
+      if (commentRef.current && !commentRef.current.contains(e.target as Node)) {
+        setParent({ id: null, nickname: null });
+      }
+    },
+    [setParent],
+  );
 
   const onClickLikeHandler = () => {
     setLike(!like);
@@ -48,6 +67,13 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
     setMore(false);
   };
 
+  const onClickCommentProfile = () => {
+    if (comment.commenter.profileImage) {
+      setUser(comment.commenter.token);
+      navigate('/userinfo');
+    }
+  };
+
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutSide);
 
@@ -57,25 +83,36 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
     };
   }, []);
 
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickCommentOutSide);
+
+    return () => document.removeEventListener('mousedown', handleClickCommentOutSide);
+  }, [handleClickCommentOutSide]);
+
   return (
     <>
       <div
-        className={`${comment.parentId ? 'w-[87%]' : 'w-full'} h-[70px] flex justify-between items-center ${
-          comment.parentId ? 'ml-12' : ''
-        } ${parent.id === comment.id ? 'bg-red-400' : ''}`}
+        className={`px-2 h-[70px] flex justify-between items-center ${comment.parentId ? 'pl-12' : ''} ${
+          parent.id === comment.id ? 'bg-red-100' : ''
+        }`}
+        ref={commentRef}
       >
         <div className="flex gap-3 items-center">
-          <div className="h-[52px] w-[52px] rounded-full bg-gray-300"></div>
+          <div className="h-12 w-12 rounded-full overflow-hidden cursor-pointer" onClick={onClickCommentProfile}>
+            <img src={comment.commenter.profileImage || ''} />
+          </div>
           <div className="flex flex-col ">
             <div className="flex gap-1 items-center">
               <div className="font-bold text-base">{comment.commenter.nickname}</div>
               <div className="text-gray-400 font-semibold text-xs">{comment.commenter.univName}</div>
             </div>
 
-            <div className="text-[10px] text-gray-400">{comment.createdAt}</div>
+            <div className="text-[10px] text-gray-400">{`${dayjs(comment.createdAt).format('MM월 DD일 H:mm')}`}</div>
 
             <div className="text-sm font-semibold flex">
-              {comment.parentNickname && <span className="font-bold mr-1">{`@${comment.parentNickname} `}</span>}
+              {comment.parentNickname && comment.parentNickname !== comment.commenter.nickname && (
+                <span className="font-bold mr-1" style={{ color: '#ff4a4d' }}>{`@${comment.parentNickname} `}</span>
+              )}
               <span>{comment.content}</span>
             </div>
           </div>
@@ -88,13 +125,17 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
                 <div className="border-b border-gray-300 px-2" onClick={onAddComment}>
                   대댓글 달기
                 </div>
-                <div className="border-b border-gray-300 px-2" onClick={onUpdateComment}>
-                  수정하기
-                </div>
-                <div className="border-b border-gray-300 px-2" onClick={onDeleteComment}>
-                  삭제하기
-                </div>
-                <div className="px-2">차단하기</div>
+                {comment.commenter.nickname === myNickname && (
+                  <>
+                    <div className="border-b border-gray-300 px-2" onClick={onUpdateComment}>
+                      수정하기
+                    </div>
+                    <div className="border-b border-gray-300 px-2" onClick={onDeleteComment}>
+                      삭제하기
+                    </div>
+                  </>
+                )}
+                {comment.commenter.nickname !== myNickname && <div className="px-2">차단하기</div>}
               </div>
             )}
             <MdOutlineMoreHoriz size={25} />

@@ -17,7 +17,6 @@ const Board: React.FC = () => {
 
   return (
     <div className="center-content flex flex-col bg-white">
-      {/* 헤더 중앙 정렬 */}
       <header className="flex justify-between items-center p-4">
         <div className="flex-1"></div>
         <h1 className="text-xl font-semibold flex-1 text-center">게시판</h1>
@@ -65,7 +64,7 @@ const Board: React.FC = () => {
 
         <div
           className="p-4 border-b cursor-pointer flex justify-between items-center hover:bg-gray-50"
-          onClick={() => navigate('/board/job')}
+          onClick={() => navigate('/board/market')}
         >
           <span>장터 게시판</span>
           <FiChevronRight />

@@ -32,7 +32,7 @@ export default function SocialButton({
   return (
     <button
       onClick={handleButtonClick}
-      className={`w-[380px] h-[63px] ${bgColor} ${textColor} rounded-md shadow-md flex items-center justify-center relative`}
+      className={`w-full h-[63px] ${bgColor} ${textColor} rounded-md shadow-md flex items-center justify-center relative`}
     >
       <img src={logo} alt={`${platform} logo`} className={`${logoSize} absolute ${iconMarginLeft}`} />
       <div className={`flex-grow text-center ${fontSize}`}>{platform}로 시작하기</div>

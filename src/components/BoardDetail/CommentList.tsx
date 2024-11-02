@@ -12,7 +12,7 @@ interface Props {
 
 const CommentList = ({ comments, setUpdateComment, setParent, handleDeleteComment, parent }: Props) => {
   return (
-    <div className="min-h-80 border-t border-gray-300 pt-3">
+    <div className="min-h-80 pt-2 w-[90%]">
       {comments ? (
         comments?.map((comment, index) => (
           <div key={index}>

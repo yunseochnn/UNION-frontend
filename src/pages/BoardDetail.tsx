@@ -100,7 +100,9 @@ export default function BoardDetail() {
       const response = await apiClient.get<BoardInfo>(`/board/${Type}/${BoardId}`, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: Cookies.get('Authorization'),
+          // Authorization: Cookies.get('Authorization'),
+          Authorization:
+            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU3NSwiZXhwIjoxNzMyNDMxNTc1LCJzdWIiOiJ0b2tlbjQifQ.lPuebk6KA5mXV3VQ_6UYD0uPpQ7rLjXaUhgzbbrTqzc',
         },
       });
       return response.data;
@@ -122,7 +124,9 @@ export default function BoardDetail() {
       const response = await apiClient.get(`/comments/${BoardId}`, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: Cookies.get('Authorization'),
+          // Authorization: Cookies.get('Authorization'),
+          Authorization:
+            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU3NSwiZXhwIjoxNzMyNDMxNTc1LCJzdWIiOiJ0b2tlbjQifQ.lPuebk6KA5mXV3VQ_6UYD0uPpQ7rLjXaUhgzbbrTqzc',
         },
       });
       return response.data.comments;
@@ -157,7 +161,9 @@ export default function BoardDetail() {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: Cookies.get('Authorization'),
+            // Authorization: Cookies.get('Authorization'),
+            Authorization:
+              'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU3NSwiZXhwIjoxNzMyNDMxNTc1LCJzdWIiOiJ0b2tlbjQifQ.lPuebk6KA5mXV3VQ_6UYD0uPpQ7rLjXaUhgzbbrTqzc',
           },
         },
       ),
@@ -186,7 +192,9 @@ export default function BoardDetail() {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: Cookies.get('Authorization'),
+            // Authorization: Cookies.get('Authorization'),
+            Authorization:
+              'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU3NSwiZXhwIjoxNzMyNDMxNTc1LCJzdWIiOiJ0b2tlbjQifQ.lPuebk6KA5mXV3VQ_6UYD0uPpQ7rLjXaUhgzbbrTqzc',
           },
         },
       ),
@@ -276,9 +284,9 @@ export default function BoardDetail() {
         <Header setModal={setModal} />
       </div>
 
-      <div className="flex flex-col overflow-y-auto flex-1 hidden-scrollbar relative w-[85%]">
+      <div className="flex flex-col overflow-y-auto flex-1 hidden-scrollbar relative w-full items-center">
         <Content boardContent={boardInfo} />
-        <div className="flex gap-3 my-3">
+        <div className="flex gap-3 my-3 w-[85%] border-b border-gray-300 pb-3">
           <div className="flex items-center gap-1 font-semibold cursor-pointer" onClick={onClickLikeHandler}>
             {like ? <FaHeart size={18} color="#ff4a4d" /> : <FaRegHeart size={18} />}{' '}
             <span className="text-xs">{Like?.postLikes || 0}</span>
@@ -301,8 +309,8 @@ export default function BoardDetail() {
         <Footer
           handleAddComment={handleAddComment}
           handleUpdateComment={handleUpdateComment}
-          parent={parent}
           updateComment={updateComment}
+          setUpdateComment={setUpdateComment}
         />
       </div>
     </div>

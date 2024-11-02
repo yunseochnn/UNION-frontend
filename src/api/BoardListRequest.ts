@@ -1,6 +1,5 @@
-// src/api/ReadBoardRequest.ts
-
-import axios from 'axios';
+import Cookies from 'js-cookie';
+import apiClient from './apiClient';
 
 interface ReadBoardRequestParams {
   boardType: string;
@@ -62,13 +61,12 @@ export const fetchBoardPosts = async ({
   page = 0,
   size = 3,
 }: ReadBoardRequestParams): Promise<BoardListResponse> => {
-  const token = localStorage.getItem('token'); // 토큰은 localStorage에서 가져온다.
   const url = `/board/${boardType}`;
 
   try {
-    const response = await axios.get<BoardListResponse>(url, {
+    const response = await apiClient.get<BoardListResponse>(url, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: Cookies.get('Authorization'),
         'Content-Type': 'application/json',
       },
       params: {
