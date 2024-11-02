@@ -28,7 +28,7 @@ export const ReadMeetListRequest = {
        size
      },
      headers: {
-       Authorization: `Bearer ${Cookies.get('Authorization')}`,
+      Authorization: Cookies.get('Authorization'),
        'Content-Type': 'application/json',
      }
    });

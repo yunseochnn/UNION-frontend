@@ -66,7 +66,7 @@ export const fetchBoardPosts = async ({
   try {
     const response = await axios.get<BoardListResponse>(url, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: token,
         'Content-Type': 'application/json',
       },
       params: {
