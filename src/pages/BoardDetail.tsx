@@ -100,9 +100,7 @@ export default function BoardDetail() {
       const response = await apiClient.get<BoardInfo>(`/board/${Type}/${BoardId}`, {
         headers: {
           'Content-Type': 'application/json',
-          // Authorization: Cookies.get('Authorization'),
-          Authorization:
-            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU3NSwiZXhwIjoxNzMyNDMxNTc1LCJzdWIiOiJ0b2tlbjQifQ.lPuebk6KA5mXV3VQ_6UYD0uPpQ7rLjXaUhgzbbrTqzc',
+          Authorization: Cookies.get('Authorization'),
         },
       });
       return response.data;
@@ -124,9 +122,7 @@ export default function BoardDetail() {
       const response = await apiClient.get(`/comments/${BoardId}`, {
         headers: {
           'Content-Type': 'application/json',
-          // Authorization: Cookies.get('Authorization'),
-          Authorization:
-            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU3NSwiZXhwIjoxNzMyNDMxNTc1LCJzdWIiOiJ0b2tlbjQifQ.lPuebk6KA5mXV3VQ_6UYD0uPpQ7rLjXaUhgzbbrTqzc',
+          Authorization: Cookies.get('Authorization'),
         },
       });
       return response.data.comments;
@@ -161,9 +157,7 @@ export default function BoardDetail() {
         {
           headers: {
             'Content-Type': 'application/json',
-            // Authorization: Cookies.get('Authorization'),
-            Authorization:
-              'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU3NSwiZXhwIjoxNzMyNDMxNTc1LCJzdWIiOiJ0b2tlbjQifQ.lPuebk6KA5mXV3VQ_6UYD0uPpQ7rLjXaUhgzbbrTqzc',
+            Authorization: Cookies.get('Authorization'),
           },
         },
       ),
@@ -192,9 +186,7 @@ export default function BoardDetail() {
         {
           headers: {
             'Content-Type': 'application/json',
-            // Authorization: Cookies.get('Authorization'),
-            Authorization:
-              'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU3NSwiZXhwIjoxNzMyNDMxNTc1LCJzdWIiOiJ0b2tlbjQifQ.lPuebk6KA5mXV3VQ_6UYD0uPpQ7rLjXaUhgzbbrTqzc',
+            Authorization: Cookies.get('Authorization'),
           },
         },
       ),
