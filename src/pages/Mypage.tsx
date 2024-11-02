@@ -22,7 +22,7 @@ export default function Mypage() {
       try {
         const response = await apiClient.get('/user/my', {
           headers: {
-            Authorization: `Bearer ${Cookies.get('Authorization') || ''}`,
+            Authorization: Cookies.get('Authorization'),
           },
         });
 

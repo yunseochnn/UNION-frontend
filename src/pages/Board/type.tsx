@@ -8,15 +8,15 @@ import FloatingActionButton from '../../common/FloatingActionButton';
 import { fetchBoardPosts } from '../../api/BoardListRequest';
 
 const BOARD_TITLES = {
-  free: '자유게시판',
-  market: '장터게시판',
-  info: '정보게시판',
-  humanities: '인문사회',
-  sciences: '자연과학',
-  engineering: '공학',
-  arts: '예체능',
-  medicine: '의학',
-  employment: '추후 생각',
+  FREE: '자유게시판',
+  MARKET: '장터게시판',
+  INFO: '정보게시판',
+  HUMANITIES: '인문사회',
+  SCIENCES: '자연과학',
+  ENGINEERING: '공학',
+  ARTS: '예체능',
+  MEDICINE: '의학',
+  EMPLOYMENT: '추후 생각',
 } as const;
 
 const BoardList: React.FC = () => {

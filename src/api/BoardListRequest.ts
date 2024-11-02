@@ -1,5 +1,5 @@
-import Cookies from 'js-cookie';
 import apiClient from './apiClient';
+import Cookies from 'js-cookie';
 
 interface ReadBoardRequestParams {
   boardType: string;
