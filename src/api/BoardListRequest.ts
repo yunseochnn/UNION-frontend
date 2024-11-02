@@ -1,5 +1,3 @@
-// src/api/ReadBoardRequest.ts
-
 import axios from 'axios';
 
 interface ReadBoardRequestParams {
