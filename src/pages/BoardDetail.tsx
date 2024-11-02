@@ -80,7 +80,10 @@ export default function BoardDetail() {
   const BoardId = Number(id);
   const queryClient = useQueryClient();
   const commentListRef = useRef<HTMLDivElement>(null);
-  const myNickname = useRecoilValue(userState).nickname;
+  const user = useRecoilValue(userState);
+  const myNickname = user.nickname;
+
+  console.log(myNickname);
 
   const onClickLikeHandler = () => {
     setLike(!like);

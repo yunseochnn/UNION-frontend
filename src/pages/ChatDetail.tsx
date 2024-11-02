@@ -92,7 +92,7 @@ export default function ChatDetail() {
       const privateChatRequest = {
         receiverToken: uid,
         content: input,
-        senderNickname: 'user2nick',
+        senderNickname: myNickname,
       };
 
       client.current.publish({

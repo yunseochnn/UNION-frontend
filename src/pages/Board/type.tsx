@@ -14,7 +14,10 @@ const BOARD_TITLES = {
 
 const BoardList: React.FC = () => {
   const navigate = useNavigate();
-  const { type } = useParams<{ type: string }>();
+  // const { type } = useParams<{ type: string }>();
+  const { type } = useParams();
+  console.log('렌더링');
+  console.log(type);
   const [posts, setPosts] = useState<any[]>([]);
   const page = 0;
   const size = 3;
