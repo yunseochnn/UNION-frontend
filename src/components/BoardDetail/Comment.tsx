@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 import { MdOutlineMoreHoriz } from 'react-icons/md';
-import { IFComment, UpComment } from '../../pages/BoardDetail';
+import { IFComment, ParentInfo, UpComment } from '../../pages/BoardDetail';
 
 interface Prop {
   comment: IFComment;
   setUpdateComment: React.Dispatch<React.SetStateAction<UpComment | null>>;
-  setParentId: React.Dispatch<React.SetStateAction<number | null>>;
+  setParent: React.Dispatch<React.SetStateAction<ParentInfo>>;
   handleDeleteComment: (commentId: number) => void;
+  parent: ParentInfo;
 }
 
-const Comment = ({ comment, setUpdateComment, setParentId, handleDeleteComment }: Prop) => {
+const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, parent }: Prop) => {
   const [like, setLike] = useState(false);
   const [more, setMore] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null); //요소를 참조하는 useRef
@@ -29,8 +30,9 @@ const Comment = ({ comment, setUpdateComment, setParentId, handleDeleteComment }
     setMore(true);
   };
 
-  const onAddComment = () => {
-    setParentId(comment.id);
+  const onAddComment = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    setParent({ id: comment.id, nickname: comment.commenter.nickname });
     setMore(false);
   };
 
@@ -55,7 +57,11 @@ const Comment = ({ comment, setUpdateComment, setParentId, handleDeleteComment }
 
   return (
     <>
-      <div className={`w-full h-[70px] flex justify-between items-center ${comment.parentId ? 'ml-12' : ''}`}>
+      <div
+        className={`${comment.parentId ? 'w-[87%]' : 'w-full'} h-[70px] flex justify-between items-center ${
+          comment.parentId ? 'ml-12' : ''
+        } ${parent.id === comment.id ? 'bg-red-400' : ''}`}
+      >
         <div className="flex gap-3 items-center">
           <div className="h-[52px] w-[52px] rounded-full bg-gray-300"></div>
           <div className="flex flex-col ">
@@ -67,7 +73,7 @@ const Comment = ({ comment, setUpdateComment, setParentId, handleDeleteComment }
             <div className="text-[10px] text-gray-400">{comment.createdAt}</div>
 
             <div className="text-sm font-semibold flex">
-              <span className="font-bold">{`@${comment.parentNickname} `}</span>
+              {!comment.parentNickname && <span className="font-bold mr-1">{`@${comment.parentNickname} `}</span>}
               <span>{comment.content}</span>
             </div>
           </div>
@@ -92,7 +98,7 @@ const Comment = ({ comment, setUpdateComment, setParentId, handleDeleteComment }
             <MdOutlineMoreHoriz size={25} />
           </div>
 
-          <div className="flex items-center gap-1">
+          <div className={`flex items-center gap-1 ${comment.parentId ? 'pl-1' : ''}`}>
             <span onClick={onClickLikeHandler} className="cursor-pointer">
               {like ? <FaHeart size={14} color="#ff4a4d" /> : <FaRegHeart size={14} />}{' '}
             </span>
@@ -103,13 +109,16 @@ const Comment = ({ comment, setUpdateComment, setParentId, handleDeleteComment }
 
       {comment.children && comment.children.length > 0 && (
         <>
-          {comment.children.map(childComment => (
-            <Comment
-              comment={childComment}
-              setUpdateComment={setUpdateComment}
-              setParentId={setParentId}
-              handleDeleteComment={handleDeleteComment}
-            />
+          {comment.children.map((childComment, index) => (
+            <div key={index}>
+              <Comment
+                parent={parent}
+                comment={childComment}
+                setUpdateComment={setUpdateComment}
+                setParent={setParent}
+                handleDeleteComment={handleDeleteComment}
+              />
+            </div>
           ))}
         </>
       )}

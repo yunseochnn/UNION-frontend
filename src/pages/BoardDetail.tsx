@@ -62,13 +62,18 @@ interface Like {
   postLikes: number;
 }
 
+export interface ParentInfo {
+  id: number | null;
+  nickname: string | null;
+}
+
 export default function BoardDetail() {
   const [Modal, setModal] = useState(false);
   const [userBlock, setUserBlock] = useState(false);
   const [modify, setModify] = useState(false);
   const [remove, setRemove] = useState(false);
   const [like, setLike] = useState(false);
-  const [parentId, setParentId] = useState<number | null>(null);
+  const [parent, setParent] = useState<ParentInfo>({ id: null, nickname: null });
   const [updateComment, setUpdateComment] = useState<UpComment | null>(null);
   const { type, id } = useParams();
   const Type = type?.toUpperCase() || '';
@@ -92,8 +97,7 @@ export default function BoardDetail() {
       const response = await apiClient.get<BoardInfo>(`/board/${Type}/${BoardId}`, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization:
-            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU0MSwiZXhwIjoxNzMyNDMxNTQxLCJzdWIiOiJ0b2tlbjEifQ.ObKaKc37PY7NcO6ZRjw44pSu8xlvr4Oq_TdY_ySQJB4',
+          Authorization: Cookies.get('Authorization'),
         },
       });
       return response.data;
@@ -109,11 +113,10 @@ export default function BoardDetail() {
   } = useQuery<IFComment[]>({
     queryKey: ['commentDetail', BoardId],
     queryFn: async () => {
-      const response = await apiClient.get(`/comment/${BoardId}`, {
+      const response = await apiClient.get(`/comments/${BoardId}`, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization:
-            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU0MSwiZXhwIjoxNzMyNDMxNTQxLCJzdWIiOiJ0b2tlbjEifQ.ObKaKc37PY7NcO6ZRjw44pSu8xlvr4Oq_TdY_ySQJB4',
+          Authorization: Cookies.get('Authorization'),
         },
       });
       return response.data.comments;
@@ -132,8 +135,7 @@ export default function BoardDetail() {
       const response = await apiClient.get(`/${BoardId}/likes`, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization:
-            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU0MSwiZXhwIjoxNzMyNDMxNTQxLCJzdWIiOiJ0b2tlbjEifQ.ObKaKc37PY7NcO6ZRjw44pSu8xlvr4Oq_TdY_ySQJB4',
+          Authorization: Cookies.get('Authorization'),
         },
       });
       return response.data;
@@ -145,7 +147,7 @@ export default function BoardDetail() {
     mutationFn: (newComment: string) =>
       apiClient.post(
         `/comment`,
-        { postId: BoardId, content: newComment, parentId: parentId },
+        { postId: BoardId, content: newComment, parentId: parent.id, parentNickname: parent.nickname },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -154,9 +156,11 @@ export default function BoardDetail() {
         },
       ),
     onSuccess: () => {
+      setParent({ id: null, nickname: null });
       queryClient.invalidateQueries({
         queryKey: ['commentDetail', BoardId],
       }); //리패칭하여 댓글 목록 최신화
+
       commentListRef.current?.scrollIntoView({ behavior: 'smooth' });
     },
     onError: (error: Error) => {
@@ -281,8 +285,9 @@ export default function BoardDetail() {
         <CommentList
           comments={commentData}
           setUpdateComment={setUpdateComment}
-          setParentId={setParentId}
           handleDeleteComment={handleDeleteComment}
+          parent={parent}
+          setParent={setParent}
         />
       </div>
 
@@ -290,7 +295,7 @@ export default function BoardDetail() {
         <Footer
           handleAddComment={handleAddComment}
           handleUpdateComment={handleUpdateComment}
-          parentId={parentId}
+          parent={parent}
           updateComment={updateComment}
         />
       </div>
