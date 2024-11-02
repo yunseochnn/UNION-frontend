@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { TbPhoto } from 'react-icons/tb';
 import apiClient from '../api/apiClient';
+import Cookies from 'js-cookie';
 
 interface Prop {
   setImages: React.Dispatch<React.SetStateAction<string[]>>;
@@ -22,8 +23,7 @@ const PlusImage = ({ setImages }: Prop) => {
       const response = await apiClient.post('/photo/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization:
-            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1bmlvbiIsImlhdCI6MTcyOTgzOTU0MSwiZXhwIjoxNzMyNDMxNTQxLCJzdWIiOiJ0b2tlbjEifQ.ObKaKc37PY7NcO6ZRjw44pSu8xlvr4Oq_TdY_ySQJB4',
+          Authorization: Cookies.get('Authorization'),
         },
       });
 

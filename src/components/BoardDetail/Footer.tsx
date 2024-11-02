@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FaPlus } from 'react-icons/fa6';
 import { LuPencil, LuSendHorizonal } from 'react-icons/lu';
-import { UpComment } from '../../pages/BoardDetail';
+import { ParentInfo, UpComment } from '../../pages/BoardDetail';
 
 interface FooterProps {
   handleAddComment: (newComment: string) => void;
   handleUpdateComment: ({ content, commentId }: { content: string; commentId: number }) => void;
   updateComment: UpComment | null;
-  parentId: number | null;
+  parent: ParentInfo;
 }
 
-const Footer = ({ handleAddComment, handleUpdateComment, parentId, updateComment }: FooterProps) => {
+const Footer = ({ handleAddComment, handleUpdateComment, parent, updateComment }: FooterProps) => {
   const [comment, setComment] = useState('');
   const inputRef = useRef<HTMLInputElement>(null); // input 요소에 대한 참조 생성
 
@@ -31,7 +31,7 @@ const Footer = ({ handleAddComment, handleUpdateComment, parentId, updateComment
 
   const onUpdateComment = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (comment !== '' && updateComment && parentId) {
+    if (comment !== '' && updateComment && parent.id) {
       handleUpdateComment({ content: comment, commentId: updateComment?.commentId });
       setComment('');
     }
