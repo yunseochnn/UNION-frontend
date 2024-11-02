@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FiSearch, FiBell } from 'react-icons/fi';
 import SideBar from '../common/SideBar';
 import PostList from '../common/PostList';
 import '../style.css';
+import Cookies from 'js-cookie';
 
 interface Post {
   profileImage: string;
@@ -18,6 +19,7 @@ interface Post {
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState<'posts' | 'meetings'>('posts');
 
   const posts: Post[] = [
@@ -85,6 +87,20 @@ const Home: React.FC = () => {
       thumbnail: '/path/to/image',
     },
   ];
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const accessToken = queryParams.get('accessToken');
+    const refreshToken = queryParams.get('refreshToken');
+
+    // URL에 토큰이 있을 때만 쿠키에 저장
+    if (accessToken && refreshToken) {
+      Cookies.set('Authorization', accessToken, { path: '/' });
+      Cookies.set('Refresh-Token', refreshToken, { path: '/' });
+    } else if (!Cookies.get('Authorization')) {
+      navigate('/');
+    }
+  }, [location, navigate]);
 
   return (
     <div className="center-content flex flex-col bg-white pt-1">
