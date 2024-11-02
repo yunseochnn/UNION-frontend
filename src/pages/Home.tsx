@@ -98,8 +98,6 @@ const Home: React.FC = () => {
       Cookies.set('Authorization', `Bearer ${accessToken}`, { path: '/' });
       Cookies.set('Refresh-Token', refreshToken, { path: '/' });
       setIsAuthenticated(true);
-      console.log('Access token received and stored:', accessToken);
-      console.log('Refresh token received and stored:', refreshToken);
     } else if (!Cookies.get('Authorization')) {
       navigate('/');
     } else {
@@ -157,7 +155,7 @@ const Home: React.FC = () => {
           </footer>
         </>
       ) : (
-        <div>Loading...</div>
+        <div></div>
       )}
     </div>
   );
