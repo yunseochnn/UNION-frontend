@@ -54,7 +54,7 @@ const Content = ({ messages }: Props) => {
                   </div>
 
                   <div
-                    className="w-[60%] h-auto text-xs  rounded-xl flex items-center justify-center p-3 text-white font-semibold"
+                    className="max-w-[60%] h-auto text-xs  rounded-xl flex items-center justify-center p-3 text-white font-semibold"
                     style={{ backgroundColor: '#ff4a4d' }}
                   >
                     {message.content}
@@ -62,10 +62,10 @@ const Content = ({ messages }: Props) => {
                 </div>
               ) : (
                 <div className="flex mt-4">
-                  <div className="h-10 w-10 rounded-full bg-gray-300">
+                  <div className="h-10 w-10 rounded-full bg-gray-300 overflow-hidden">
                     {message.senderProfileImage ? <img src={message.senderProfileImage} /> : <img src={DefaultImage} />}
                   </div>
-                  <div className="w-[60%] h-auto text-xs bg-gray-200 rounded-xl flex items-center justify-center ml-3 p-3 font-semibold">
+                  <div className="max-w-[60%] h-auto text-xs bg-gray-200 rounded-xl flex items-center justify-center ml-3 p-3 font-semibold">
                     {message.content}
                   </div>
                   <div className="flex items-end ml-2">

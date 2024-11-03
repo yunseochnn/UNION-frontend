@@ -3,16 +3,12 @@ import { useState } from 'react';
 interface UserTabsProps {
   onTabChange: (tab: string) => void;
   postCount: number;
+  commentCount: number;
+  meetingCount: number;
 }
 
-export default function UserTabs({ onTabChange, postCount }: UserTabsProps) {
+export default function UserTabs({ onTabChange, postCount, commentCount, meetingCount }: UserTabsProps) {
   const [activeTab, setActiveTab] = useState('posts');
-
-  const userData = {
-    posts: Array(postCount).fill(''),
-    comments: ['댓글 1', '댓글 2', '댓글 3'],
-    meetings: ['모임글 1', '모임글 2', '모임글 3'],
-  };
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -38,7 +34,7 @@ export default function UserTabs({ onTabChange, postCount }: UserTabsProps) {
           onClick={() => handleTabChange('comments')}
         >
           댓글
-          <span className="text-sm text-customGray mt-1">{userData.comments.length}</span>
+          <span className="text-sm text-customGray mt-1">{commentCount}</span>
         </button>
         <button
           className={`text-[17px] font-semibold p-2 flex flex-col items-center ${
@@ -47,7 +43,7 @@ export default function UserTabs({ onTabChange, postCount }: UserTabsProps) {
           onClick={() => handleTabChange('meetings')}
         >
           모임글
-          <span className="text-sm text-customGray mt-1">{userData.meetings.length}</span>
+          <span className="text-sm text-customGray mt-1">{meetingCount}</span>
         </button>
       </div>
     </div>

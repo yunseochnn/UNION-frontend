@@ -8,11 +8,12 @@ interface Props {
   setParent: React.Dispatch<React.SetStateAction<ParentInfo>>;
   handleDeleteComment: (commentId: number) => void;
   parent: ParentInfo;
+  footerRef: React.RefObject<HTMLDivElement>;
 }
 
-const CommentList = ({ comments, setUpdateComment, setParent, handleDeleteComment, parent }: Props) => {
+const CommentList = ({ comments, setUpdateComment, setParent, handleDeleteComment, parent, footerRef }: Props) => {
   return (
-    <div className="min-h-80 border-t border-gray-300 pt-3">
+    <div className="min-h-80 pt-2 w-[90%]">
       {comments ? (
         comments?.map((comment, index) => (
           <div key={index}>
@@ -22,6 +23,7 @@ const CommentList = ({ comments, setUpdateComment, setParent, handleDeleteCommen
               setParent={setParent}
               handleDeleteComment={handleDeleteComment}
               parent={parent}
+              footerRef={footerRef}
             />
           </div>
         ))

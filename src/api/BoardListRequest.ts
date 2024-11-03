@@ -61,12 +61,13 @@ export const fetchBoardPosts = async ({
   page = 0,
   size = 3,
 }: ReadBoardRequestParams): Promise<BoardListResponse> => {
-  const url = `/Board/${boardType}`;
+  const url = `/board/${boardType}`;
 
   try {
     const response = await apiClient.get<BoardListResponse>(url, {
       headers: {
         Authorization: Cookies.get('Authorization'),
+        'Content-Type': 'application/json',
       },
       params: {
         page,
