@@ -20,7 +20,7 @@ const CreateMeetRequest = async ({ info }: Prop) => {
   console.log(info);
   try {
     const response = await apiClient.post(
-      '/gathering',
+      '/gatherings',
       {
         title: info.title,
         content: info.text,

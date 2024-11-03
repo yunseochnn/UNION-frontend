@@ -23,7 +23,7 @@ const RemoveMeet = ({ setRemove }: Prop) => {
       const { status } = response;
       if (status === 204) {
         console.log('모임 삭제 성공');
-        navigate(`/MEET`);
+        navigate(`/meet`);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {

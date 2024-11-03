@@ -139,7 +139,7 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
                     </div>
                   </>
                 )}
-                {comment.commenter.nickname !== myNickname && <div className="px-2">차단하기</div>}
+                {comment.commenter.nickname !== myNickname && <div className="px-2">채팅보내기</div>}
               </div>
             )}
             <MdOutlineMoreHoriz size={25} />

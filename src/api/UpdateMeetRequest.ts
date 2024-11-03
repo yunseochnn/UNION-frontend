@@ -20,7 +20,7 @@ interface Prop {
 const UpdateMeetRequest = async ({ info, id }: Prop) => {
   try {
     const response = await apiClient.put(
-      `/gathering/${id}`,
+      `/gatherings/${id}`,
       {
         title: info.title,
         content: info.text,

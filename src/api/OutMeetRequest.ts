@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 
 const OutMeetRequest = async (gatheringId: number) => {
   try {
-    const response = await apiClient.delete(`/gathering/${gatheringId}/exit`, {
+    const response = await apiClient.delete(`/gatherings/${gatheringId}/exit`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: Cookies.get('Authorization'),
