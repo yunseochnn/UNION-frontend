@@ -1,4 +1,3 @@
-import { useSearchParams } from 'react-router-dom';
 import Policy from '../../common/Policy';
 import '../../style.css';
 import { IFChatInfo } from '../../pages/ChatDetail';
@@ -13,8 +12,6 @@ interface Props {
 }
 
 const Content = ({ messages }: Props) => {
-  const [searchParams] = useSearchParams();
-  const option = searchParams.get('option');
   const user = useRecoilValue(userState);
   const myNickname = user.nickname;
   const messageEndRef = useRef<HTMLDivElement | null>(null);
@@ -24,8 +21,6 @@ const Content = ({ messages }: Props) => {
   }, [messages]);
 
   let lastDate = '';
-
-  console.log(option);
 
   return (
     <div className="flex flex-col flex-1 overflow-y-auto hidden-scrollbar w-[85%]">
@@ -59,7 +54,7 @@ const Content = ({ messages }: Props) => {
                   </div>
 
                   <div
-                    className="w-[60%] h-auto text-xs  rounded-xl flex items-center justify-center p-3 text-white font-semibold"
+                    className="max-w-[60%] h-auto text-xs  rounded-xl flex items-center justify-center p-3 text-white font-semibold"
                     style={{ backgroundColor: '#ff4a4d' }}
                   >
                     {message.content}
@@ -67,10 +62,10 @@ const Content = ({ messages }: Props) => {
                 </div>
               ) : (
                 <div className="flex mt-4">
-                  <div className="h-10 w-10 rounded-full bg-gray-300">
+                  <div className="h-10 w-10 rounded-full bg-gray-300 overflow-hidden">
                     {message.senderProfileImage ? <img src={message.senderProfileImage} /> : <img src={DefaultImage} />}
                   </div>
-                  <div className="w-[60%] h-auto text-xs bg-gray-200 rounded-xl flex items-center justify-center ml-3 p-3 font-semibold">
+                  <div className="max-w-[60%] h-auto text-xs bg-gray-200 rounded-xl flex items-center justify-center ml-3 p-3 font-semibold">
                     {message.content}
                   </div>
                   <div className="flex items-end ml-2">

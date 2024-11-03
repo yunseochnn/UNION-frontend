@@ -8,7 +8,6 @@ import Update from '../components/MeetDetail/Update.tsx/Update';
 import RemoveMeet from '../components/MeetDetail/RemoveMeet';
 import OutMeet from '../components/MeetDetail/OutMeet';
 import More from '../components/MeetDetail/More';
-
 export interface Response {
   id: number;
   title: string;
@@ -33,6 +32,7 @@ export default function MeetDetail() {
   const [remove, setRemove] = useState(false);
   const [outMeet, setOutMeet] = useState(false);
   const fullMember = gatheringData?.currentMember === gatheringData?.maxMember;
+  const owner = gatheringData?.owner;
 
   return (
     <div className="h-full w-full flex flex-col items-center pt-1 pb-2 relative">
@@ -54,7 +54,7 @@ export default function MeetDetail() {
       </div>
 
       <div className="w-[90%]">
-        <Footer fullMember={fullMember} />
+        <Footer fullMember={fullMember} owner={owner} />
       </div>
     </div>
   );
