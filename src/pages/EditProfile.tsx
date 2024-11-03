@@ -11,7 +11,7 @@ import Cookies from 'js-cookie';
 
 export default function EditProfile() {
   const [user, setUser] = useRecoilState(userState);
-  const [profileImage, setProfileImage] = useState(user.profileImage);
+  const [profileImage, setProfileImage] = useState<string | Blob>(user.profileImage);
   const [nickname, setNickname] = useState(user.nickname);
   const [description, setDescription] = useState(user.description);
 
@@ -26,16 +26,16 @@ export default function EditProfile() {
       alert('닉네임을 입력해 주세요.');
       return;
     }
-    // 변경사항이 없으면 함수 종료
+
     if (profileImage === user.profileImage && nickname === user.nickname && description === user.description) {
       alert('변경된 내용이 없습니다.');
       return;
     }
 
     try {
-      let profileImageUrl = profileImage;
+      let profileImageUrl = user.profileImage;
 
-      if (profileImage && profileImage !== user.profileImage) {
+      if (profileImage instanceof Blob) {
         const formData = new FormData();
         formData.append('images', profileImage);
 
@@ -68,7 +68,11 @@ export default function EditProfile() {
 
       alert('프로필이 성공적으로 업데이트되었습니다.');
     } catch (error) {
-      console.error('프로필 업데이트 중 오류 발생:', error);
+      if (error instanceof Error) {
+        console.error('프로필 업데이트 중 오류 발생:', error.message);
+      } else {
+        console.error('알 수 없는 오류 발생:', error);
+      }
       alert('프로필 업데이트에 실패했습니다. 다시 시도해 주세요.');
     }
   };
@@ -77,7 +81,7 @@ export default function EditProfile() {
     <div className="h-full w-full flex flex-col">
       <Header title="프로필 수정" navigateTo="/mypage" />
       <div className="px-[36px] flex-grow">
-        <ProfileImg profileImage={profileImage} onImageChange={setProfileImage} />
+        <ProfileImg profileImage={profileImage as string} onImageChange={setProfileImage} />
         <ProfileInput
           nickname={nickname}
           description={description}
