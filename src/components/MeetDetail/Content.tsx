@@ -88,7 +88,7 @@ const Content = ({ gatheringData, setGatheringData, modify, outMeet }: Prop) => 
       </div>
 
       <div className="mt-4">
-        <div className="h-[396px] w-full cursor-pointer">{/* <Slide /> */}</div>
+        <div className="h-auto w-full cursor-pointer">{/* <Slide /> */}</div>
       </div>
 
       {gatheringData?.address && (

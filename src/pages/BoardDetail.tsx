@@ -80,7 +80,10 @@ export default function BoardDetail() {
   const BoardId = Number(id);
   const queryClient = useQueryClient();
   const commentListRef = useRef<HTMLDivElement>(null);
-  const myNickname = useRecoilValue(userState).nickname;
+  const user = useRecoilValue(userState);
+  const myNickname = user.nickname;
+
+  console.log(myNickname);
 
   const onClickLikeHandler = () => {
     setLike(!like);
@@ -273,9 +276,9 @@ export default function BoardDetail() {
         <Header setModal={setModal} />
       </div>
 
-      <div className="flex flex-col overflow-y-auto flex-1 hidden-scrollbar relative w-[85%]">
+      <div className="flex flex-col overflow-y-auto flex-1 hidden-scrollbar relative w-full items-center">
         <Content boardContent={boardInfo} />
-        <div className="flex gap-3 my-3">
+        <div className="flex gap-3 my-3 w-[85%] border-b border-gray-300 pb-3">
           <div className="flex items-center gap-1 font-semibold cursor-pointer" onClick={onClickLikeHandler}>
             {like ? <FaHeart size={18} color="#ff4a4d" /> : <FaRegHeart size={18} />}{' '}
             <span className="text-xs">{Like?.postLikes || 0}</span>
@@ -298,8 +301,8 @@ export default function BoardDetail() {
         <Footer
           handleAddComment={handleAddComment}
           handleUpdateComment={handleUpdateComment}
-          parent={parent}
           updateComment={updateComment}
+          setUpdateComment={setUpdateComment}
         />
       </div>
     </div>
