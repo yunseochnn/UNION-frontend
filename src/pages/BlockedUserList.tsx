@@ -56,22 +56,15 @@ export default function BlockedUserList() {
 
     try {
       if (userToToggle.isBlocked) {
+        // 차단 해제 요청
         await apiClient.delete(`/user/block/${userToken}`, {
           headers: { Authorization: Cookies.get('Authorization') },
         });
+        // 차단 해제된 유저를 목록에서 제거
         setBlockedUsers(prev => prev.filter(user => user.token !== userToken));
-      } else {
-        await apiClient.post(
-          `/user/block/${userToken}`,
-          {},
-          {
-            headers: { Authorization: Cookies.get('Authorization') },
-          },
-        );
-        setBlockedUsers(prev => [...prev, { ...userToToggle, isBlocked: true }]);
       }
     } catch (error) {
-      console.error('차단/차단 해제 실패:', error);
+      console.error('차단 해제 실패:', error);
     }
   };
 
@@ -89,7 +82,7 @@ export default function BlockedUserList() {
             university={user.univName}
             bio={user.description}
             profileImage={user.profileImage}
-            buttonLabel={user.isBlocked ? '차단 해제' : '차단 하기'}
+            buttonLabel="차단 해제" // 차단 해제 버튼으로 고정
             buttonWidth="84px"
             isBlocked={user.isBlocked}
             onClick={() => handleUserClick(user.token)}
