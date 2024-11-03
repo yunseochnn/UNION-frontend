@@ -33,13 +33,14 @@ export default function ChatDetail() {
 
   const privateChatHistory = useCallback(async () => {
     try {
-      const response = await apiClient.get(`chat/private/${uid}`, {
+      const response = await apiClient.get(`/chat/private/${uid}`, {
         headers: {
           Authorization: Cookies.get('Authorization'),
         },
       });
 
       if (response.data) {
+        console.log(response);
         const ChatInfos = response.data;
         const formattedMessages = ChatInfos.map((message: IFChatInfo) => ({
           content: message.content,
@@ -48,6 +49,7 @@ export default function ChatDetail() {
           senderProfileImage: message.senderProfileImage,
           createdAt: message.createdAt,
         }));
+        console.log(formattedMessages);
         setMessages(formattedMessages);
       }
     } catch {

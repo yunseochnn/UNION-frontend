@@ -56,8 +56,10 @@ const Lists = () => {
       </div>
 
       <div className="mt-3">
-        {chatList?.map(chat => (
-          <List filter={filter} chat={chat} />
+        {chatList?.map((chat, index) => (
+          <div key={index}>
+            <List filter={filter} chat={chat} />
+          </div>
         ))}
       </div>
     </div>
