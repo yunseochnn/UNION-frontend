@@ -12,7 +12,7 @@ export default function WithdrawBtn() {
     try {
       await apiClient.delete('/user', {
         headers: {
-          Authorization: Cookies.get('Authorization') || '',
+          Authorization: Cookies.get('Authorization'),
         },
       });
 

@@ -30,15 +30,34 @@ export default function BlockedUserList() {
     fetchBlockedUsers();
   }, [setBlockedUsers]);
 
-  const handleUserClick = (userToken: string) => {
-    setSelectedUser(userToken); // 선택한 유저의 토큰 저장
-    navigate('/userinfo');
+  const fetchUserDetails = async (userToken: string) => {
+    try {
+      const response = await apiClient.get(`/user/${userToken}`, {
+        headers: {
+          Authorization: Cookies.get('Authorization'),
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('유저 상세 정보 불러오기 실패:', error);
+      return null;
+    }
+  };
+
+  const handleUserClick = async (userToken: string) => {
+    const userDetails = await fetchUserDetails(userToken);
+    if (userDetails) {
+      setSelectedUser(userDetails.token); // 선택한 유저의 토큰 저장
+      navigate('/userinfo');
+    }
   };
 
   const handleBlockToggle = async (userToken: string) => {
     try {
-      const isBlocked = blockedUsers.find(user => user.token === userToken)?.isBlocked;
+      const userDetails = await fetchUserDetails(userToken);
+      if (!userDetails) return;
 
+      const isBlocked = userDetails.isBlocked;
       if (isBlocked) {
         await apiClient.delete(`/user/block/${userToken}`, {
           headers: {
