@@ -5,7 +5,7 @@ import getCroppedImg from './cropImage';
 
 interface ProfileImgProps {
   profileImage: string;
-  onImageChange: (image: string) => void;
+  onImageChange: (image: Blob) => void; // Blob 형식으로 변경
 }
 
 export default function ProfileImg({ profileImage: initialProfileImage, onImageChange }: ProfileImgProps) {
@@ -44,9 +44,10 @@ export default function ProfileImg({ profileImage: initialProfileImage, onImageC
   const handleCropComplete = async () => {
     setIsCropping(false);
     if (croppedAreaPixels && profileImage) {
-      const croppedImg = await getCroppedImg(profileImage, croppedAreaPixels);
-      setCroppedImage(croppedImg);
-      onImageChange(croppedImg);
+      const croppedBlob = await getCroppedImg(profileImage, croppedAreaPixels); // getCroppedImg에서 Blob 반환
+      const croppedUrl = URL.createObjectURL(croppedBlob); // 임시 URL 생성 (UI 표시용)
+      setCroppedImage(croppedUrl);
+      onImageChange(croppedBlob); // Blob을 전달하여 서버 업로드
     }
   };
 
