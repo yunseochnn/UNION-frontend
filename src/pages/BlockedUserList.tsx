@@ -58,6 +58,8 @@ export default function BlockedUserList() {
             Authorization: Cookies.get('Authorization'),
           },
         });
+
+        setBlockedUsers(prev => prev.filter(user => user.token !== userToken));
       } else {
         await apiClient.post(
           `/user/block/${userToken}`,
@@ -68,11 +70,9 @@ export default function BlockedUserList() {
             },
           },
         );
-      }
 
-      setBlockedUsers(prev =>
-        prev.map(user => (user.token === userToken ? { ...user, isBlocked: !isCurrentlyBlocked } : user)),
-      );
+        setBlockedUsers(prev => [...prev, { ...userToToggle, isBlocked: true }]);
+      }
     } catch (error) {
       console.error('차단/차단 해제 실패:', error);
     }
