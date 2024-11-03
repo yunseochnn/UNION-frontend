@@ -22,13 +22,13 @@ export default function BlockedUserList() {
   const setSelectedUser = useSetRecoilState(selectedUserState);
   const navigate = useNavigate();
 
-  // 차단 유저 목록 불러오기
   const fetchBlockedUsers = async () => {
     try {
       const response = await apiClient.get<BlockedUser[]>('/user/block', {
         headers: { Authorization: Cookies.get('Authorization') },
       });
       setBlockedUsers(response.data);
+      console.log('차단 유저 목록:', response.data);
     } catch (error) {
       console.error('차단 유저 목록 불러오기 실패:', error);
     }
@@ -56,12 +56,15 @@ export default function BlockedUserList() {
 
     try {
       if (userToToggle.isBlocked) {
-        // 차단 해제 요청
+        console.log(`차단 해제 요청 중: ${userToken}`);
         await apiClient.delete(`/user/block/${userToken}`, {
           headers: { Authorization: Cookies.get('Authorization') },
         });
-        // 차단 해제된 유저를 목록에서 제거
-        setBlockedUsers(prev => prev.filter(user => user.token !== userToken));
+        setBlockedUsers(prev => {
+          const updatedUsers = prev.filter(user => user.token !== userToken);
+          console.log('차단 해제 후 차단 유저 목록:', updatedUsers);
+          return updatedUsers;
+        });
       }
     } catch (error) {
       console.error('차단 해제 실패:', error);
@@ -82,7 +85,7 @@ export default function BlockedUserList() {
             university={user.univName}
             bio={user.description}
             profileImage={user.profileImage}
-            buttonLabel="차단 해제" // 차단 해제 버튼으로 고정
+            buttonLabel="차단 해제"
             buttonWidth="84px"
             isBlocked={user.isBlocked}
             onClick={() => handleUserClick(user.token)}
