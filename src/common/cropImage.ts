@@ -1,4 +1,4 @@
-export default async function getCroppedImg(imageSrc: string, pixelCrop: any) {
+export default async function getCroppedImg(imageSrc: string, pixelCrop: any): Promise<Blob> {
   const image = new Image();
   image.src = imageSrc;
   const canvas = document.createElement('canvas');
@@ -19,13 +19,12 @@ export default async function getCroppedImg(imageSrc: string, pixelCrop: any) {
     pixelCrop.height,
   );
 
-  return new Promise<string>((resolve, reject) => {
+  return new Promise<Blob>((resolve, reject) => {
     canvas.toBlob(blob => {
       if (!blob) {
         return reject(new Error('Canvas is empty'));
       }
-      const fileUrl = URL.createObjectURL(blob);
-      resolve(fileUrl);
+      resolve(blob);
     }, 'image/jpeg');
   });
 }
