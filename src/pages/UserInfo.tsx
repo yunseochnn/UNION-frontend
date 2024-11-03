@@ -166,19 +166,27 @@ export default function UserInfo() {
 
     try {
       if (userInfo.isBlocked) {
-        await apiClient.delete(`/user/block/${userInfo.token}`, {
+        console.log('차단 해제 요청 중:', userInfo.token);
+        const response = await apiClient.delete(`/user/block/${userInfo.token}`, {
           headers: { Authorization: Cookies.get('Authorization') },
         });
+        console.log('차단 해제 응답:', response);
       } else {
-        await apiClient.post(
+        console.log('차단 요청 중:', userInfo.token);
+        const response = await apiClient.post(
           `/user/block/${userInfo.token}`,
           {},
           {
             headers: { Authorization: Cookies.get('Authorization') },
           },
         );
+        console.log('차단 요청 응답:', response);
       }
-      setUserInfo({ ...userInfo, isBlocked: !userInfo.isBlocked });
+      setUserInfo(prevInfo => {
+        const updatedUserInfo = { ...prevInfo!, isBlocked: !prevInfo!.isBlocked };
+        console.log('업데이트된 userInfo:', updatedUserInfo);
+        return updatedUserInfo;
+      });
     } catch (error) {
       console.error('차단/차단 해제 실패:', error);
     }
