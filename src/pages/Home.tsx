@@ -110,7 +110,7 @@ const Home: React.FC = () => {
       {isAuthenticated ? (
         <>
           <header className="flex justify-between items-center p-4">
-            <img src="/public/Logo.svg" alt="UNION" className="h-8" />
+            <img src="/Logo.svg" alt="UNION" className="h-8" />
             <div className="flex space-x-4">
               <FiSearch size={24} />
               <FiBell size={24} />
