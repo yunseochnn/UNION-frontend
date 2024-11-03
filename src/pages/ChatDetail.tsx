@@ -7,8 +7,6 @@ import { Client } from '@stomp/stompjs';
 import { useSearchParams } from 'react-router-dom';
 import apiClient from '../api/apiClient';
 import Cookies from 'js-cookie';
-import { useRecoilValue } from 'recoil';
-import { userState } from '../recoil/userAtoms';
 
 const socketUrl = `${import.meta.env.VITE_API_BASE_URL.replace('https', 'wss')}/ws`;
 
@@ -24,15 +22,28 @@ export default function ChatDetail() {
   const [searchParams] = useSearchParams();
   const uid = searchParams.get('uid');
   const title = searchParams.get('title');
+  const [myNickname, setMyNickname] = useState('');
   console.log(uid);
-  const user = useRecoilValue(userState);
-  const myNickname = user.nickname;
-  console.log(myNickname);
 
   const [modal, setModal] = useState(false);
   const [messages, setMessages] = useState<IFChatInfo[]>([]);
   const client = useRef<Client | null>(null);
   const [input, setInput] = useState('');
+
+  const ReadMe = async () => {
+    try {
+      const response = await apiClient.get('/user/my', {
+        headers: {
+          Authorization: Cookies.get('Authorization'),
+        },
+      });
+
+      const data = response.data;
+      setMyNickname(data.nickname);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const privateChatHistory = useCallback(async () => {
     try {
@@ -64,6 +75,9 @@ export default function ChatDetail() {
     privateChatHistory();
   }, [privateChatHistory]);
 
+  useEffect(() => {
+    ReadMe();
+  }, []);
   //소켓 연결
   useEffect(() => {
     client.current = new Client({
