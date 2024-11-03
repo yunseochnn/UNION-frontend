@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { blockedUserState, BlockedUser } from '../recoil/blockedUserState';
+import { useEffect, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+
 import { selectedUserState } from '../recoil/selectedUserState';
 import apiClient from '../api/apiClient';
 import Header from '../common/Header';
@@ -8,33 +8,42 @@ import User from '../common/User';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
+interface BlockedUser {
+  token: string;
+  nickname: string;
+  description: string;
+  univName: string;
+  profileImage: string;
+  isBlocked: boolean;
+}
+
 export default function BlockedUserList() {
-  const [blockedUsers, setBlockedUsers] = useRecoilState(blockedUserState);
+  const [blockedUsers, setBlockedUsers] = useState<BlockedUser[]>([]);
   const setSelectedUser = useSetRecoilState(selectedUserState);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchBlockedUsers = async () => {
-      try {
-        const response = await apiClient.get<BlockedUser[]>('/user/block', {
-          headers: { Authorization: Cookies.get('Authorization') },
-        });
-        setBlockedUsers(response.data);
-      } catch (error) {
-        console.error('차단 유저 목록 불러오기 실패:', error);
-      }
-    };
+  // 차단 유저 목록 불러오기
+  const fetchBlockedUsers = async () => {
+    try {
+      const response = await apiClient.get<BlockedUser[]>('/user/block', {
+        headers: { Authorization: Cookies.get('Authorization') },
+      });
+      setBlockedUsers(response.data);
+    } catch (error) {
+      console.error('차단 유저 목록 불러오기 실패:', error);
+    }
+  };
 
+  useEffect(() => {
     fetchBlockedUsers();
-  }, [setBlockedUsers]);
+  }, []);
 
   const handleUserClick = async (userToken: string) => {
     try {
       const response = await apiClient.get(`/user/${userToken}`, {
         headers: { Authorization: Cookies.get('Authorization') },
       });
-      const userDetails = response.data;
-      setSelectedUser(userDetails.token);
+      setSelectedUser(response.data.token);
       navigate('/userinfo');
     } catch (error) {
       console.error('유저 상세 정보 불러오기 실패:', error);
@@ -42,13 +51,11 @@ export default function BlockedUserList() {
   };
 
   const handleBlockToggle = async (userToken: string) => {
+    const userToToggle = blockedUsers.find(user => user.token === userToken);
+    if (!userToToggle) return;
+
     try {
-      const userToToggle = blockedUsers.find(user => user.token === userToken);
-      if (!userToToggle) return;
-
-      const isCurrentlyBlocked = userToToggle.isBlocked;
-
-      if (isCurrentlyBlocked) {
+      if (userToToggle.isBlocked) {
         await apiClient.delete(`/user/block/${userToken}`, {
           headers: { Authorization: Cookies.get('Authorization') },
         });
