@@ -30,41 +30,34 @@ export default function BlockedUserList() {
     fetchBlockedUsers();
   }, [setBlockedUsers]);
 
-  const fetchUserDetails = async (userToken: string) => {
+  const handleUserClick = async (userToken: string) => {
     try {
       const response = await apiClient.get(`/user/${userToken}`, {
         headers: {
           Authorization: Cookies.get('Authorization'),
         },
       });
-      return response.data;
+      const userDetails = response.data;
+      setSelectedUser(userDetails.token);
+      navigate('/userinfo');
     } catch (error) {
       console.error('유저 상세 정보 불러오기 실패:', error);
-      return null;
-    }
-  };
-
-  const handleUserClick = async (userToken: string) => {
-    const userDetails = await fetchUserDetails(userToken);
-    if (userDetails) {
-      setSelectedUser(userDetails.token); // 선택한 유저의 토큰 저장
-      navigate('/userinfo');
     }
   };
 
   const handleBlockToggle = async (userToken: string) => {
     try {
-      const userDetails = await fetchUserDetails(userToken);
-      if (!userDetails) return;
+      const userToToggle = blockedUsers.find(user => user.token === userToken);
+      if (!userToToggle) return;
 
-      const isBlocked = userDetails.isBlocked;
-      if (isBlocked) {
+      const isCurrentlyBlocked = userToToggle.isBlocked;
+
+      if (isCurrentlyBlocked) {
         await apiClient.delete(`/user/block/${userToken}`, {
           headers: {
             Authorization: Cookies.get('Authorization'),
           },
         });
-        setBlockedUsers(prev => prev.map(user => (user.token === userToken ? { ...user, isBlocked: false } : user)));
       } else {
         await apiClient.post(
           `/user/block/${userToken}`,
@@ -75,8 +68,11 @@ export default function BlockedUserList() {
             },
           },
         );
-        setBlockedUsers(prev => prev.map(user => (user.token === userToken ? { ...user, isBlocked: true } : user)));
       }
+
+      setBlockedUsers(prev =>
+        prev.map(user => (user.token === userToken ? { ...user, isBlocked: !isCurrentlyBlocked } : user)),
+      );
     } catch (error) {
       console.error('차단/차단 해제 실패:', error);
     }
