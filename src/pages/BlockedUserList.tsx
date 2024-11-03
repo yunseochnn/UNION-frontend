@@ -55,19 +55,19 @@ export default function BlockedUserList() {
     if (!userToToggle) return;
 
     try {
-      if (userToToggle.isBlocked) {
-        console.log(`차단 해제 요청 중: ${userToken}`);
-        await apiClient.delete(`/user/block/${userToken}`, {
-          headers: { Authorization: Cookies.get('Authorization') },
-        });
-        setBlockedUsers(prev => {
-          const updatedUsers = prev.filter(user => user.token !== userToken);
-          console.log('차단 해제 후 차단 유저 목록:', updatedUsers);
-          return updatedUsers;
-        });
-      }
+      console.log(`차단 해제 요청 중: ${userToken}`);
+      await apiClient.delete(`/user/block/${userToken}`, {
+        headers: { Authorization: Cookies.get('Authorization') },
+      });
+      setBlockedUsers(prev => {
+        const updatedUsers = prev.filter(user => user.token !== userToken);
+        console.log('차단 해제 후 차단 유저 목록:', updatedUsers);
+        return updatedUsers;
+      });
+      console.log('차단 해제 성공');
     } catch (error) {
       console.error('차단 해제 실패:', error);
+      console.error(error); // 오류 메시지 확인
     }
   };
 
