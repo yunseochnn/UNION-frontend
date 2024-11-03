@@ -9,7 +9,7 @@ export default function LogoutBtn() {
     try {
       await apiClient.post('/user/signout', null, {
         headers: {
-          Authorization: `Bearer ${Cookies.get('Authorization')}`,
+          Authorization: Cookies.get('Authorization'),
         },
       });
 

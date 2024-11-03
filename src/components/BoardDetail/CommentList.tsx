@@ -1,26 +1,29 @@
-import { IFComment, UpComment } from '../../pages/BoardDetail';
+import { IFComment, ParentInfo, UpComment } from '../../pages/BoardDetail';
 import Comment from './Comment';
 import EmptyComment from './EmptyComment';
 
 interface Props {
   comments: IFComment[] | undefined;
-  parentId: number | null;
   setUpdateComment: React.Dispatch<React.SetStateAction<UpComment | null>>;
-  setParentId: React.Dispatch<React.SetStateAction<number | null>>;
+  setParent: React.Dispatch<React.SetStateAction<ParentInfo>>;
   handleDeleteComment: (commentId: number) => void;
+  parent: ParentInfo;
+  footerRef: React.RefObject<HTMLDivElement>;
 }
 
-const CommentList = ({ comments, parentId, setUpdateComment, setParentId, handleDeleteComment }: Props) => {
+const CommentList = ({ comments, setUpdateComment, setParent, handleDeleteComment, parent, footerRef }: Props) => {
   return (
-    <div className="min-h-80 border-t border-gray-300 pt-3">
+    <div className="min-h-80 pt-2 w-[90%]">
       {comments ? (
-        comments?.map(comment => (
-          <div className={`${parentId ? 'ml-12' : ''}`}>
+        comments?.map((comment, index) => (
+          <div key={index}>
             <Comment
               comment={comment}
               setUpdateComment={setUpdateComment}
-              setParentId={setParentId}
+              setParent={setParent}
               handleDeleteComment={handleDeleteComment}
+              parent={parent}
+              footerRef={footerRef}
             />
           </div>
         ))

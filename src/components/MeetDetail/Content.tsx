@@ -1,7 +1,7 @@
 import { FaRegCalendarCheck } from 'react-icons/fa6';
 import { HiOutlineUserGroup } from 'react-icons/hi2';
 import '../../style.css';
-import Slide from '../../common/Slide';
+// import Slide from '../../common/Slide';
 import Map from '../../common/Map';
 import { IoIosArrowForward } from 'react-icons/io';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -15,9 +15,11 @@ import { Response } from '../../pages/MeetDetail';
 interface Prop {
   gatheringData: Response | null;
   setGatheringData: React.Dispatch<React.SetStateAction<Response | null>>;
+  modify: boolean;
+  outMeet: boolean;
 }
 
-const Content = ({ gatheringData, setGatheringData }: Prop) => {
+const Content = ({ gatheringData, setGatheringData, modify, outMeet }: Prop) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const MeetId = Number(id);
@@ -27,17 +29,15 @@ const Content = ({ gatheringData, setGatheringData }: Prop) => {
       const response = await ReadMeetRequest(MeetId);
       const data = response.data;
       setGatheringData(data);
-      console.log(data);
-      console.log(gatheringData);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
-          console.log(error.response);
+          console.log(error.response.data);
         }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [MeetId, setGatheringData]);
+  }, [MeetId, setGatheringData, modify, outMeet]);
 
   useEffect(() => {
     onReadMeet();
@@ -88,9 +88,7 @@ const Content = ({ gatheringData, setGatheringData }: Prop) => {
       </div>
 
       <div className="mt-4">
-        <div className="h-[396px] w-full cursor-pointer">
-          <Slide />
-        </div>
+        <div className="h-auto w-full cursor-pointer">{/* <Slide /> */}</div>
       </div>
 
       {gatheringData?.address && (

@@ -1,6 +1,5 @@
 import { useRecoilState } from 'recoil';
 import Header from '../common/Header';
-import ProfileImg from '../common/ProfileImg';
 import ProfileInput from '../common/ProfileInput';
 import Button from '../components/Profile/Button';
 import { userState } from '../recoil/userAtoms';
@@ -8,9 +7,9 @@ import { useState } from 'react';
 import Cookies from 'js-cookie';
 import apiClient from '../api/apiClient';
 import { useNavigate } from 'react-router-dom';
+import OauthImg from '../common/OauthImg';
 
 const SIGNUP_URL = '/user/signup';
-const UPLOAD_URL = '/photo/upload';
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -19,40 +18,8 @@ export default function Profile() {
   const [description, setDescription] = useState(user.description || '');
   const isNicknameEmpty = nickname.trim() === '';
 
-  const handleImageChange = (newImage: string) => {
-    setUser(prev => ({ ...prev, profileImage: newImage }));
-  };
-
-  // 이미지 업로드 함수
-  const uploadImage = async (image: string) => {
-    try {
-      const formData = new FormData();
-      formData.append('images', image);
-
-      const response = await apiClient.post(UPLOAD_URL, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${Cookies.get('Authorization')}`,
-        },
-      });
-
-      return response.data[0];
-    } catch (error) {
-      console.error('이미지 업로드 실패:', error);
-      alert('이미지 업로드에 실패했습니다. 다른 이미지를 선택해 주세요.');
-      throw error;
-    }
-  };
-
   const handleSignup = async () => {
     try {
-      let profileImageUrl = user.profileImage;
-
-      // 프로필 이미지가 새로 변경된 경우 업로드
-      if (user.profileImage) {
-        profileImageUrl = await uploadImage(user.profileImage);
-      }
-
       // 회원가입 요청
       const response = await apiClient.post(
         SIGNUP_URL,
@@ -60,7 +27,7 @@ export default function Profile() {
           oauthUserToken: user.oauthUserToken,
           nickname,
           description: description || '',
-          profileImage: profileImageUrl,
+          profileImage: user.profileImage, // OAuth 기본 프로필 사진 사용
           univName: user.univName,
         },
         {
@@ -98,7 +65,7 @@ export default function Profile() {
     <div className="h-full w-full flex flex-col relative">
       <Header title="" navigateTo="/emailverification" />
       <div className="px-[36px] flex-grow">
-        <ProfileImg profileImage={user.profileImage} onImageChange={handleImageChange} />
+        <OauthImg profileImage={user.profileImage} />
         <ProfileInput
           nickname={nickname}
           description={description}
