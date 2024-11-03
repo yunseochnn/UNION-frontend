@@ -54,7 +54,7 @@ export default function UserInfo() {
 
   const fetchPosts = useCallback(async () => {
     try {
-      const response = await apiClient.get(`/user/${userToken}/post`, {
+      const response = await apiClient.get(`/user/${userToken}/posts`, {
         headers: {
           Authorization: Cookies.get('Authorization'),
           'Content-Type': 'application/json',

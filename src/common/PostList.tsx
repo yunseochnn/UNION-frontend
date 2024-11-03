@@ -13,24 +13,25 @@ interface Post {
 
 interface PostListProps {
   posts: Post[];
+  lastPostRef?: (node: HTMLDivElement | null) => void;
 }
 
-export default function PostList({ posts }: PostListProps) {
+export default function PostList({ posts, lastPostRef }: PostListProps) {
   return (
     <div>
       {posts.map((post, index) => (
-        <Post
-          key={index}
-          profileImage={post.profileImage}
-          nickname={post.nickname}
-          university={post.university}
-          title={post.title}
-          content={post.content}
-          likes={post.likes}
-          comments={post.comments}
-          thumbnail={post.thumbnail}
-          isLast={index === posts.length - 1}
-        />
+        <div key={index} ref={index === posts.length - 1 ? lastPostRef : null}>
+          <Post
+            profileImage={post.profileImage}
+            nickname={post.nickname}
+            university={post.university}
+            title={post.title}
+            content={post.content}
+            likes={post.likes}
+            comments={post.comments}
+            thumbnail={post.thumbnail}
+          />
+        </div>
       ))}
     </div>
   );
