@@ -61,11 +61,10 @@ export const fetchBoardPosts = async ({
   page = 0,
   size = 3,
 }: ReadBoardRequestParams): Promise<BoardListResponse> => {
-  const url = `/Board/${boardType}`;
+  const url = `/board/${boardType.toUpperCase()}`; // 소문자 board로 변경, type은 대문자로 변환
 
   try {
-    const response = await apiClient.get<BoardListResponse>(url, {
-      headers: {
+    const response = await apiClient.get<BoardListResponse>(url, {      headers: {
         Authorization: Cookies.get('Authorization'),
       },
       params: {
