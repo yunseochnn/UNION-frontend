@@ -22,7 +22,7 @@ const Lists = () => {
     isError: isChatError,
     error: chatError,
   } = useQuery<IFChat[]>({
-    queryKey: ['chatList'],
+    queryKey: ['chatList', filter],
     queryFn: async () => {
       const response = await apiClient.get<IFChat[]>(`/chat/${filter}`, {
         headers: {
@@ -42,13 +42,13 @@ const Lists = () => {
     <div className="flex flex-col mt-5">
       <div className="flex gap-3 font-semibold">
         <span
-          className={`cursor-pointer ${filter === 'meet' ? 'text-gray-400' : 'text-black'}`}
+          className={`cursor-pointer ${filter === 'gathering' ? 'text-gray-400' : 'text-black'}`}
           onClick={() => setFilter('private')}
         >
           개인
         </span>
         <span
-          className={`cursor-pointer ${filter === 'meet' ? 'text-black' : 'text-gray-400'}`}
+          className={`cursor-pointer ${filter === 'gathering' ? 'text-black' : 'text-gray-400'}`}
           onClick={() => setFilter('gathering')}
         >
           모임
