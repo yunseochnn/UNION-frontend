@@ -22,6 +22,10 @@ export default function EditProfile() {
   }, [user]);
 
   const handleSave = async () => {
+    if (!nickname.trim()) {
+      alert('닉네임을 입력해 주세요.');
+      return;
+    }
     // 변경사항이 없으면 함수 종료
     if (profileImage === user.profileImage && nickname === user.nickname && description === user.description) {
       alert('변경된 내용이 없습니다.');
@@ -33,7 +37,7 @@ export default function EditProfile() {
 
       if (profileImage && profileImage !== user.profileImage) {
         const formData = new FormData();
-        formData.append('file', profileImage);
+        formData.append('images', profileImage);
 
         const uploadResponse = await apiClient.post('/photo/upload', formData, {
           headers: {
