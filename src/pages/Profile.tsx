@@ -41,6 +41,8 @@ export default function Profile() {
       const refreshHeader = response.headers['refresh-token'];
       const data = response.data;
 
+      localStorage.setItem('nickname', data.nickname);
+
       if (authHeader) Cookies.set('Authorization', authHeader, { path: '/' });
       if (refreshHeader) Cookies.set('Refresh-Token', refreshHeader, { path: '/' });
 

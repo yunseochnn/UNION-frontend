@@ -3,10 +3,9 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 import { MdOutlineMoreHoriz } from 'react-icons/md';
 import { IFComment, ParentInfo, UpComment } from '../../pages/BoardDetail';
 import dayjs from 'dayjs';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { selectedUserState } from '../../recoil/selectedUserState';
 import { useNavigate } from 'react-router-dom';
-import { userState } from '../../recoil/userAtoms';
 
 interface Prop {
   comment: IFComment;
@@ -24,8 +23,7 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
   const navigate = useNavigate();
   const ref = useRef<HTMLDivElement | null>(null); //요소를 참조하는 useRef
   const commentRef = useRef<HTMLDivElement | null>(null);
-  const user = useRecoilValue(userState);
-  const myNickname = user.nickname;
+  const myNickname = localStorage.getItem('nickname');
 
   const handleClickOutSide = useCallback((e: MouseEvent) => {
     if (ref.current && !ref.current.contains(e.target as Node)) {
