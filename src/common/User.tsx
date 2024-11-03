@@ -6,7 +6,7 @@ export interface UserProps {
   profileImage: string;
   buttonLabel: string;
   buttonWidth: string;
-  blocked: boolean;
+  blocked?: boolean;
   onClick?: () => void; // 유저 정보 클릭 이벤트
   onButtonClick: (token?: string) => void; // 차단 버튼 클릭 이벤트
 }
