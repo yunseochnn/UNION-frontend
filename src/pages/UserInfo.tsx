@@ -7,6 +7,7 @@ import User from '../common/User';
 import UserTabs from '../components/UserInfo/UserTabs';
 import PostList from '../common/PostList';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 interface UserInfoType {
   token: string;
@@ -29,6 +30,7 @@ interface PostType {
 }
 
 export default function UserInfo() {
+  const navigate = useNavigate();
   const recoilUserToken = useRecoilValue(selectedUserState);
   const userToken = recoilUserToken || localStorage.getItem('userToken') || '';
 
@@ -40,6 +42,10 @@ export default function UserInfo() {
   const [commentCount, setCommentCount] = useState(0);
   const [meetingCount, setMeetingCount] = useState(0);
   const [activeTab, setActiveTab] = useState('posts');
+
+  const handleBack = () => {
+    navigate(-1); // 이전 페이지로 이동
+  };
 
   // 유저 정보 가져오기
   const fetchUserInfo = useCallback(async () => {
@@ -160,19 +166,27 @@ export default function UserInfo() {
 
     try {
       if (userInfo.isBlocked) {
-        await apiClient.delete(`/user/block/${userInfo.token}`, {
+        console.log('차단 해제 요청 중:', userInfo.token);
+        const response = await apiClient.delete(`/user/block/${userInfo.token}`, {
           headers: { Authorization: Cookies.get('Authorization') },
         });
+        console.log('차단 해제 응답:', response);
       } else {
-        await apiClient.post(
+        console.log('차단 요청 중:', userInfo.token);
+        const response = await apiClient.post(
           `/user/block/${userInfo.token}`,
           {},
           {
             headers: { Authorization: Cookies.get('Authorization') },
           },
         );
+        console.log('차단 요청 응답:', response);
       }
-      setUserInfo({ ...userInfo, isBlocked: !userInfo.isBlocked });
+      setUserInfo(prevInfo => {
+        const updatedUserInfo = { ...prevInfo!, isBlocked: !prevInfo!.isBlocked };
+        console.log('업데이트된 userInfo:', updatedUserInfo);
+        return updatedUserInfo;
+      });
     } catch (error) {
       console.error('차단/차단 해제 실패:', error);
     }
@@ -182,7 +196,7 @@ export default function UserInfo() {
 
   return (
     <div className="h-full w-full flex flex-col relative">
-      <Header title="유저 정보" navigateTo="/mypage" />
+      <Header title="유저 정보" onBack={handleBack} />
       <div className="px-[36px]">
         <User
           name={userInfo.nickname}

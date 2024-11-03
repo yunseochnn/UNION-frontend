@@ -3,14 +3,21 @@ import { useNavigate } from 'react-router-dom';
 
 interface HeaderProps {
   title: string;
-  navigateTo: string;
+  navigateTo?: string;
+  onBack?: () => void;
 }
 
-export default function Header({ title, navigateTo }: HeaderProps) {
+export default function Header({ title, navigateTo, onBack }: HeaderProps) {
   const navigate = useNavigate();
 
   const handleBackClick = () => {
-    navigate(navigateTo);
+    if (onBack) {
+      onBack();
+    } else if (navigateTo) {
+      navigate(navigateTo);
+    } else {
+      navigate(-1);
+    }
   };
 
   return (
@@ -18,7 +25,7 @@ export default function Header({ title, navigateTo }: HeaderProps) {
       <div className="ml-5 cursor-pointer font-black" onClick={handleBackClick}>
         <IoIosArrowBack size={32} />
       </div>
-      {title && <div className="absolute left-1/2 transform -translate-x-1/2 text-[18px] font-semibold">{title}</div>}
+      <div className="absolute left-1/2 transform -translate-x-1/2 text-[18px] font-semibold">{title}</div>
     </div>
   );
 }
