@@ -17,10 +17,12 @@ const Content = ({ boardContent }: Prop) => {
 
   const onClickeProfile = () => {
     if (boardContent?.author.token) {
-      setUser(boardContent?.author.token);
+      setUser(boardContent.author.token);
+      localStorage.setItem('selectedUserToken', boardContent.author.token);
       navigate('/userinfo');
     }
   };
+
   return (
     <div className="flex flex-col w-[85%]">
       <div className="flex items-center mt-[20px] gap-3">

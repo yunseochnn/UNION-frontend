@@ -1,7 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
 import { selectedUserState } from '../recoil/selectedUserState';
-
 import apiClient from '../api/apiClient';
 import Header from '../common/Header';
 import User from '../common/User';
@@ -30,7 +29,9 @@ interface PostType {
 }
 
 export default function UserInfo() {
-  const userToken = useRecoilValue(selectedUserState);
+  const recoilUserToken = useRecoilValue(selectedUserState);
+  const userToken = recoilUserToken || localStorage.getItem('userToken') || '';
+
   const [userInfo, setUserInfo] = useState<UserInfoType | null>(null);
   const [posts, setPosts] = useState<PostType[]>([]);
   const [comments, setComments] = useState<PostType[]>([]);
@@ -42,11 +43,10 @@ export default function UserInfo() {
 
   // 유저 정보 가져오기
   const fetchUserInfo = useCallback(async () => {
+    if (!userToken) return;
     try {
       const response = await apiClient.get(`/user/${userToken}`, {
-        headers: {
-          Authorization: Cookies.get('Authorization'),
-        },
+        headers: { Authorization: Cookies.get('Authorization') },
       });
       setUserInfo(response.data);
     } catch (error) {
@@ -55,11 +55,15 @@ export default function UserInfo() {
   }, [userToken]);
 
   useEffect(() => {
-    if (userToken) fetchUserInfo();
+    if (userToken) {
+      localStorage.setItem('userToken', userToken);
+      fetchUserInfo();
+    }
   }, [userToken, fetchUserInfo]);
 
   // 게시물 가져오기
   const fetchPosts = useCallback(async () => {
+    if (!userToken) return;
     try {
       const response = await apiClient.get(`/user/${userToken}/posts`, {
         headers: {
@@ -87,6 +91,7 @@ export default function UserInfo() {
 
   // 댓글 가져오기
   const fetchComments = useCallback(async () => {
+    if (!userToken) return;
     try {
       const response = await apiClient.get(`/user/${userToken}/comments`, {
         headers: {
@@ -114,6 +119,7 @@ export default function UserInfo() {
 
   // 모임글 가져오기
   const fetchMeetings = useCallback(async () => {
+    if (!userToken) return;
     try {
       const response = await apiClient.get(`/gatherings/user/${userToken}`, {
         headers: {
@@ -148,6 +154,7 @@ export default function UserInfo() {
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
   };
+
   const handleBlockToggle = async () => {
     if (!userInfo) return;
 
@@ -165,7 +172,7 @@ export default function UserInfo() {
           },
         );
       }
-      setUserInfo({ ...userInfo, isBlocked: !userInfo.isBlocked }); // 상태 직접 업데이트
+      setUserInfo({ ...userInfo, isBlocked: !userInfo.isBlocked });
     } catch (error) {
       console.error('차단/차단 해제 실패:', error);
     }
