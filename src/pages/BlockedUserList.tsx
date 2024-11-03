@@ -14,7 +14,7 @@ interface BlockedUser {
   description: string;
   univName: string;
   profileImage: string;
-  isBlocked: boolean;
+  blocked: boolean;
 }
 
 export default function BlockedUserList() {
@@ -67,7 +67,7 @@ export default function BlockedUserList() {
       console.log('차단 해제 성공');
     } catch (error) {
       console.error('차단 해제 실패:', error);
-      console.error(error); // 오류 메시지 확인
+      console.error(error);
     }
   };
 
@@ -87,7 +87,7 @@ export default function BlockedUserList() {
             profileImage={user.profileImage}
             buttonLabel="차단 해제"
             buttonWidth="84px"
-            isBlocked={user.isBlocked}
+            blocked={user.blocked}
             onClick={() => handleUserClick(user.token)}
             onButtonClick={() => handleBlockToggle(user.token)}
           />

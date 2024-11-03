@@ -15,7 +15,7 @@ interface UserInfoType {
   description: string;
   univName: string;
   profileImage: string;
-  isBlocked: boolean;
+  blocked: boolean;
 }
 
 interface PostType {
@@ -53,12 +53,12 @@ export default function UserInfo() {
       const response = await apiClient.get(`/user/${userToken}`, {
         headers: { Authorization: Cookies.get('Authorization') },
       });
-      console.log('서버 응답 데이터:', response.data);
       setUserInfo(response.data);
     } catch (error) {
       console.error('유저 정보 불러오기 실패:', error);
     }
   }, [userToken]);
+
   useEffect(() => {
     if (userToken) {
       localStorage.setItem('userToken', userToken);
@@ -164,8 +164,8 @@ export default function UserInfo() {
     if (!userInfo) return;
 
     try {
-      const updatedIsBlocked = !userInfo.isBlocked;
-      if (updatedIsBlocked) {
+      const updatedBlocked = !userInfo.blocked;
+      if (updatedBlocked) {
         await apiClient.post(
           `/user/block/${userInfo.token}`,
           {},
@@ -180,8 +180,8 @@ export default function UserInfo() {
         });
         console.log('차단 해제 응답: 해제됨');
       }
-      setUserInfo(prevInfo => ({ ...prevInfo!, isBlocked: updatedIsBlocked }));
-      console.log('업데이트된 userInfo:', { ...userInfo, isBlocked: updatedIsBlocked });
+      setUserInfo(prevInfo => ({ ...prevInfo!, blocked: updatedBlocked }));
+      console.log('업데이트된 userInfo:', { ...userInfo, blocked: updatedBlocked });
     } catch (error) {
       console.error('차단/차단 해제 실패:', error);
     }
@@ -198,7 +198,8 @@ export default function UserInfo() {
           university={userInfo.univName}
           bio={userInfo.description}
           profileImage={userInfo.profileImage}
-          buttonLabel={userInfo.isBlocked ? '차단 해제' : '차단 하기'}
+          buttonLabel={userInfo.blocked ? '차단 해제' : '차단 하기'}
+          blocked={userInfo.blocked}
           buttonWidth="84px"
           onButtonClick={handleBlockToggle}
         />
