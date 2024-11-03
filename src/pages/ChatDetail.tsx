@@ -27,6 +27,7 @@ export default function ChatDetail() {
   console.log(uid);
   const user = useRecoilValue(userState);
   const myNickname = user.nickname;
+  console.log(myNickname);
 
   const [modal, setModal] = useState(false);
   const [messages, setMessages] = useState<IFChatInfo[]>([]);
