@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { selectedUserState } from '../recoil/selectedUserState';
-import { blockedUserState } from '../recoil/blockedUserState';
+
 import apiClient from '../api/apiClient';
 import Header from '../common/Header';
 import User from '../common/User';
@@ -31,7 +31,6 @@ interface PostType {
 
 export default function UserInfo() {
   const userToken = useRecoilValue(selectedUserState);
-  const [blockedUsers, setBlockedUsers] = useRecoilState(blockedUserState);
   const [userInfo, setUserInfo] = useState<UserInfoType | null>(null);
   const [posts, setPosts] = useState<PostType[]>([]);
   const [comments, setComments] = useState<PostType[]>([]);
@@ -42,25 +41,22 @@ export default function UserInfo() {
   const [activeTab, setActiveTab] = useState('posts');
 
   // 유저 정보 가져오기
+  const fetchUserInfo = useCallback(async () => {
+    try {
+      const response = await apiClient.get(`/user/${userToken}`, {
+        headers: {
+          Authorization: Cookies.get('Authorization'),
+        },
+      });
+      setUserInfo(response.data);
+    } catch (error) {
+      console.error('유저 정보 불러오기 실패:', error);
+    }
+  }, [userToken]);
+
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const response = await apiClient.get(`/user/${userToken}`, {
-          headers: {
-            Authorization: Cookies.get('Authorization'),
-          },
-        });
-        const fetchedUserInfo = response.data;
-        const isUserBlocked = blockedUsers.some(user => user.token === fetchedUserInfo.token);
-
-        setUserInfo({ ...fetchedUserInfo, isBlocked: isUserBlocked });
-      } catch (error) {
-        console.error('유저 정보 불러오기 실패:', error);
-      }
-    };
-
     if (userToken) fetchUserInfo();
-  }, [userToken, blockedUsers]);
+  }, [userToken, fetchUserInfo]);
 
   // 게시물 가져오기
   const fetchPosts = useCallback(async () => {
@@ -152,36 +148,26 @@ export default function UserInfo() {
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
   };
-
-  // 차단 토글
   const handleBlockToggle = async () => {
-    if (userInfo) {
-      const updatedBlockedStatus = !userInfo.isBlocked;
-      try {
-        if (updatedBlockedStatus) {
-          await apiClient.post(
-            `/user/block/${userInfo.token}`,
-            {},
-            {
-              headers: {
-                Authorization: Cookies.get('Authorization'),
-              },
-            },
-          );
-          setUserInfo({ ...userInfo, isBlocked: true });
-          setBlockedUsers(prev => [...prev, { ...userInfo, isBlocked: true }]);
-        } else {
-          await apiClient.delete(`/user/block/${userInfo.token}`, {
-            headers: {
-              Authorization: Cookies.get('Authorization'),
-            },
-          });
-          setUserInfo({ ...userInfo, isBlocked: false });
-          setBlockedUsers(prev => prev.filter(user => user.token !== userInfo.token));
-        }
-      } catch (error) {
-        console.error('차단/차단 해제 실패:', error);
+    if (!userInfo) return;
+
+    try {
+      if (userInfo.isBlocked) {
+        await apiClient.delete(`/user/block/${userInfo.token}`, {
+          headers: { Authorization: Cookies.get('Authorization') },
+        });
+      } else {
+        await apiClient.post(
+          `/user/block/${userInfo.token}`,
+          {},
+          {
+            headers: { Authorization: Cookies.get('Authorization') },
+          },
+        );
       }
+      setUserInfo({ ...userInfo, isBlocked: !userInfo.isBlocked }); // 상태 직접 업데이트
+    } catch (error) {
+      console.error('차단/차단 해제 실패:', error);
     }
   };
 
