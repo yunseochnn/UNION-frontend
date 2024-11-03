@@ -6,7 +6,7 @@ export interface BlockedUser {
   description: string;
   univName: string;
   profileImage: string;
-  isBlocked: boolean;
+  blocked: boolean;
 }
 
 export const blockedUserState = atom<BlockedUser[]>({
