@@ -45,7 +45,7 @@ export default function MyPosts() {
     const fetchPosts = async () => {
       setIsLoading(true);
       try {
-        const response = await apiClient.get(`/user/my/post`, {
+        const response = await apiClient.get(`/user/my/posts`, {
           params: { page, size },
           headers: {
             Authorization: Cookies.get('Authorization'),
@@ -78,9 +78,8 @@ export default function MyPosts() {
 
   return (
     <div>
-      <MyPageList posts={posts} pageTitle="내가 작성한 게시물" />
+      <MyPageList posts={posts} pageTitle="내가 작성한 게시물" lastPostRef={lastPostRef} />
       {isLoading && <p>Loading...</p>}
-      <div ref={lastPostRef} />
     </div>
   );
 }

@@ -32,7 +32,11 @@ export default function UserInfo() {
   const userToken = useRecoilValue(selectedUserState);
   const [userInfo, setUserInfo] = useState<UserInfoType | null>(null);
   const [posts, setPosts] = useState<PostType[]>([]);
+  const [comments, setComments] = useState<PostType[]>([]);
+  const [meetings, setMeetings] = useState<PostType[]>([]);
   const [postCount, setPostCount] = useState(0);
+  const [commentCount, setCommentCount] = useState(0);
+  const [meetingCount, setMeetingCount] = useState(0);
   const [activeTab, setActiveTab] = useState('posts');
 
   useEffect(() => {
@@ -54,7 +58,7 @@ export default function UserInfo() {
 
   const fetchPosts = useCallback(async () => {
     try {
-      const response = await apiClient.get(`/user/${userToken}/post`, {
+      const response = await apiClient.get(`/user/${userToken}/posts`, {
         headers: {
           Authorization: Cookies.get('Authorization'),
           'Content-Type': 'application/json',
@@ -79,9 +83,66 @@ export default function UserInfo() {
     }
   }, [userToken]);
 
+  const fetchComments = useCallback(async () => {
+    try {
+      const response = await apiClient.get(`/user/${userToken}/comments`, {
+        headers: {
+          Authorization: Cookies.get('Authorization'),
+          'Content-Type': 'application/json',
+        },
+        params: { page: 0, size: 10 },
+      });
+
+      const fetchedComments = response.data.content.map((comment: any) => ({
+        profileImage: comment.author.profileImage,
+        nickname: comment.author.nickname,
+        university: comment.author.univName,
+        title: comment.title,
+        content: comment.contentPreview,
+        likes: comment.postLikes,
+        comments: comment.commentCount,
+        thumbnail: comment.thumbnail,
+      }));
+      setComments(fetchedComments);
+      setCommentCount(response.data.totalElements);
+    } catch (error) {
+      console.error('댓글 목록 불러오기 실패:', error);
+    }
+  }, [userToken]);
+
+  //임시 api
+  const fetchMeetings = useCallback(async () => {
+    try {
+      const response = await apiClient.get(`/gatherings/user/${userToken}`, {
+        headers: {
+          Authorization: Cookies.get('Authorization'),
+          'Content-Type': 'application/json',
+        },
+        params: { page: 0, size: 10 },
+      });
+
+      const fetchedMeetings = response.data.content.map((meeting: any) => ({
+        profileImage: meeting.author.profileImage,
+        nickname: meeting.author.nickname,
+        university: meeting.author.univName,
+        title: meeting.title,
+        content: meeting.contentPreview,
+        likes: meeting.postLikes,
+        comments: meeting.commentCount,
+        thumbnail: meeting.thumbnail,
+      }));
+      setMeetings(fetchedMeetings);
+      setMeetingCount(response.data.totalElements);
+    } catch (error) {
+      console.error('모임글 목록 불러오기 실패:', error);
+    }
+  }, [userToken]);
+
   useEffect(() => {
     if (activeTab === 'posts') fetchPosts();
-  }, [activeTab, fetchPosts]);
+    if (activeTab === 'comments') fetchComments();
+    if (activeTab === 'meetings') fetchMeetings();
+  }, [activeTab, fetchPosts, fetchComments, fetchMeetings]);
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -131,11 +192,16 @@ export default function UserInfo() {
           onButtonClick={handleBlockToggle}
         />
       </div>
-      <UserTabs onTabChange={handleTabChange} postCount={postCount} />
+      <UserTabs
+        onTabChange={handleTabChange}
+        postCount={postCount}
+        commentCount={commentCount}
+        meetingCount={meetingCount}
+      />
       <div className="mt-5 px-[36px]">
         {activeTab === 'posts' && <PostList posts={posts} />}
-        {activeTab === 'comments' && <div>댓글 목록</div>}
-        {activeTab === 'meetings' && <div>모임글 목록</div>}
+        {activeTab === 'comments' && <PostList posts={comments} />}
+        {activeTab === 'meetings' && <PostList posts={meetings} />}
       </div>
     </div>
   );
