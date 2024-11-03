@@ -17,9 +17,7 @@ export default function BlockedUserList() {
     const fetchBlockedUsers = async () => {
       try {
         const response = await apiClient.get<BlockedUser[]>('/user/block', {
-          headers: {
-            Authorization: Cookies.get('Authorization'),
-          },
+          headers: { Authorization: Cookies.get('Authorization') },
         });
         setBlockedUsers(response.data);
       } catch (error) {
@@ -33,9 +31,7 @@ export default function BlockedUserList() {
   const handleUserClick = async (userToken: string) => {
     try {
       const response = await apiClient.get(`/user/${userToken}`, {
-        headers: {
-          Authorization: Cookies.get('Authorization'),
-        },
+        headers: { Authorization: Cookies.get('Authorization') },
       });
       const userDetails = response.data;
       setSelectedUser(userDetails.token);
@@ -54,23 +50,17 @@ export default function BlockedUserList() {
 
       if (isCurrentlyBlocked) {
         await apiClient.delete(`/user/block/${userToken}`, {
-          headers: {
-            Authorization: Cookies.get('Authorization'),
-          },
+          headers: { Authorization: Cookies.get('Authorization') },
         });
-
         setBlockedUsers(prev => prev.filter(user => user.token !== userToken));
       } else {
         await apiClient.post(
           `/user/block/${userToken}`,
           {},
           {
-            headers: {
-              Authorization: Cookies.get('Authorization'),
-            },
+            headers: { Authorization: Cookies.get('Authorization') },
           },
         );
-
         setBlockedUsers(prev => [...prev, { ...userToToggle, isBlocked: true }]);
       }
     } catch (error) {
