@@ -44,22 +44,21 @@ export default function UserInfo() {
   const [activeTab, setActiveTab] = useState('posts');
 
   const handleBack = () => {
-    navigate(-1); // 이전 페이지로 이동
+    navigate(-1);
   };
 
-  // 유저 정보 가져오기
   const fetchUserInfo = useCallback(async () => {
     if (!userToken) return;
     try {
       const response = await apiClient.get(`/user/${userToken}`, {
         headers: { Authorization: Cookies.get('Authorization') },
       });
+      console.log('서버 응답 데이터:', response.data);
       setUserInfo(response.data);
     } catch (error) {
       console.error('유저 정보 불러오기 실패:', error);
     }
   }, [userToken]);
-
   useEffect(() => {
     if (userToken) {
       localStorage.setItem('userToken', userToken);
@@ -67,7 +66,6 @@ export default function UserInfo() {
     }
   }, [userToken, fetchUserInfo]);
 
-  // 게시물 가져오기
   const fetchPosts = useCallback(async () => {
     if (!userToken) return;
     try {
@@ -78,24 +76,24 @@ export default function UserInfo() {
         },
         params: { page: 0, size: 10 },
       });
-      const fetchedPosts = response.data.content.map((post: any) => ({
-        profileImage: post.author.profileImage,
-        nickname: post.author.nickname,
-        university: post.author.univName,
-        title: post.title,
-        content: post.contentPreview,
-        likes: post.postLikes,
-        comments: post.commentCount,
-        thumbnail: post.thumbnail,
-      }));
-      setPosts(fetchedPosts);
+      setPosts(
+        response.data.content.map((post: any) => ({
+          profileImage: post.author.profileImage,
+          nickname: post.author.nickname,
+          university: post.author.univName,
+          title: post.title,
+          content: post.contentPreview,
+          likes: post.postLikes,
+          comments: post.commentCount,
+          thumbnail: post.thumbnail,
+        })),
+      );
       setPostCount(response.data.totalElements);
     } catch (error) {
       console.error('게시물 목록 불러오기 실패:', error);
     }
   }, [userToken]);
 
-  // 댓글 가져오기
   const fetchComments = useCallback(async () => {
     if (!userToken) return;
     try {
@@ -106,24 +104,24 @@ export default function UserInfo() {
         },
         params: { page: 0, size: 10 },
       });
-      const fetchedComments = response.data.content.map((comment: any) => ({
-        profileImage: comment.author.profileImage,
-        nickname: comment.author.nickname,
-        university: comment.author.univName,
-        title: comment.title,
-        content: comment.contentPreview,
-        likes: comment.postLikes,
-        comments: comment.commentCount,
-        thumbnail: comment.thumbnail,
-      }));
-      setComments(fetchedComments);
+      setComments(
+        response.data.content.map((comment: any) => ({
+          profileImage: comment.author.profileImage,
+          nickname: comment.author.nickname,
+          university: comment.author.univName,
+          title: comment.title,
+          content: comment.contentPreview,
+          likes: comment.postLikes,
+          comments: comment.commentCount,
+          thumbnail: comment.thumbnail,
+        })),
+      );
       setCommentCount(response.data.totalElements);
     } catch (error) {
       console.error('댓글 목록 불러오기 실패:', error);
     }
   }, [userToken]);
 
-  // 모임글 가져오기
   const fetchMeetings = useCallback(async () => {
     if (!userToken) return;
     try {
@@ -134,17 +132,18 @@ export default function UserInfo() {
         },
         params: { page: 0, size: 10 },
       });
-      const fetchedMeetings = response.data.content.map((meeting: any) => ({
-        profileImage: meeting.author.profileImage,
-        nickname: meeting.author.nickname,
-        university: meeting.author.univName,
-        title: meeting.title,
-        content: meeting.contentPreview,
-        likes: meeting.postLikes,
-        comments: meeting.commentCount,
-        thumbnail: meeting.thumbnail,
-      }));
-      setMeetings(fetchedMeetings);
+      setMeetings(
+        response.data.content.map((meeting: any) => ({
+          profileImage: meeting.author.profileImage,
+          nickname: meeting.author.nickname,
+          university: meeting.author.univName,
+          title: meeting.title,
+          content: meeting.contentPreview,
+          likes: meeting.postLikes,
+          comments: meeting.commentCount,
+          thumbnail: meeting.thumbnail,
+        })),
+      );
       setMeetingCount(response.data.totalElements);
     } catch (error) {
       console.error('모임글 목록 불러오기 실패:', error);
@@ -165,34 +164,30 @@ export default function UserInfo() {
     if (!userInfo) return;
 
     try {
-      if (userInfo.isBlocked) {
-        console.log('차단 해제 요청 중:', userInfo.token);
-        const response = await apiClient.delete(`/user/block/${userInfo.token}`, {
-          headers: { Authorization: Cookies.get('Authorization') },
-        });
-        console.log('차단 해제 응답:', response);
-      } else {
-        console.log('차단 요청 중:', userInfo.token);
-        const response = await apiClient.post(
+      const updatedIsBlocked = !userInfo.isBlocked;
+      if (updatedIsBlocked) {
+        await apiClient.post(
           `/user/block/${userInfo.token}`,
           {},
           {
             headers: { Authorization: Cookies.get('Authorization') },
           },
         );
-        console.log('차단 요청 응답:', response);
+        console.log('차단 요청 응답: 차단됨');
+      } else {
+        await apiClient.delete(`/user/block/${userInfo.token}`, {
+          headers: { Authorization: Cookies.get('Authorization') },
+        });
+        console.log('차단 해제 응답: 해제됨');
       }
-      setUserInfo(prevInfo => {
-        const updatedUserInfo = { ...prevInfo!, isBlocked: !prevInfo!.isBlocked };
-        console.log('업데이트된 userInfo:', updatedUserInfo);
-        return updatedUserInfo;
-      });
+      setUserInfo(prevInfo => ({ ...prevInfo!, isBlocked: updatedIsBlocked }));
+      console.log('업데이트된 userInfo:', { ...userInfo, isBlocked: updatedIsBlocked });
     } catch (error) {
       console.error('차단/차단 해제 실패:', error);
     }
   };
 
-  if (!userInfo) return <div>유저 정보를 불러오는 중입니다...</div>;
+  if (!userInfo) return <div></div>;
 
   return (
     <div className="h-full w-full flex flex-col relative">
