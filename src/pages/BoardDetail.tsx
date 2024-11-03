@@ -82,6 +82,7 @@ export default function BoardDetail() {
   const commentListRef = useRef<HTMLDivElement>(null);
   const user = useRecoilValue(userState);
   const myNickname = user.nickname;
+  const footerRef = useRef<HTMLDivElement | null>(null);
 
   console.log(myNickname);
 
@@ -294,10 +295,11 @@ export default function BoardDetail() {
           handleDeleteComment={handleDeleteComment}
           parent={parent}
           setParent={setParent}
+          footerRef={footerRef}
         />
       </div>
 
-      <div className="w-[90%]">
+      <div className="w-[90%]" ref={footerRef}>
         <Footer
           handleAddComment={handleAddComment}
           handleUpdateComment={handleUpdateComment}

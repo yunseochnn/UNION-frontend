@@ -14,9 +14,10 @@ interface Prop {
   setParent: React.Dispatch<React.SetStateAction<ParentInfo>>;
   handleDeleteComment: (commentId: number) => void;
   parent: ParentInfo;
+  footerRef: React.RefObject<HTMLDivElement>;
 }
 
-const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, parent }: Prop) => {
+const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, parent, footerRef }: Prop) => {
   const [like, setLike] = useState(false);
   const [more, setMore] = useState(false);
   const setUser = useSetRecoilState(selectedUserState);
@@ -26,19 +27,24 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
   const user = useRecoilValue(userState);
   const myNickname = user.nickname;
 
-  const handleClickOutSide = (e: MouseEvent) => {
+  const handleClickOutSide = useCallback((e: MouseEvent) => {
     if (ref.current && !ref.current.contains(e.target as Node)) {
       setMore(false);
     }
-  };
+  }, []);
 
   const handleClickCommentOutSide = useCallback(
     (e: MouseEvent) => {
-      if (commentRef.current && !commentRef.current.contains(e.target as Node)) {
+      if (
+        commentRef.current &&
+        footerRef.current &&
+        !commentRef.current.contains(e.target as Node) &&
+        !footerRef.current.contains(e.target as Node)
+      ) {
         setParent({ id: null, nickname: null });
       }
     },
-    [setParent],
+    [footerRef, setParent],
   );
 
   const onClickLikeHandler = () => {
@@ -81,7 +87,7 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
       //컴포넌트가 언마운트될 때 이벤트 리스너 해제
       document.removeEventListener('mousedown', handleClickOutSide);
     };
-  }, []);
+  }, [handleClickOutSide]);
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickCommentOutSide);
@@ -155,6 +161,7 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
           {comment.children.map((childComment, index) => (
             <div key={index}>
               <Comment
+                footerRef={footerRef}
                 parent={parent}
                 comment={childComment}
                 setUpdateComment={setUpdateComment}
