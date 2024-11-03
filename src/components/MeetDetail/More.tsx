@@ -1,6 +1,5 @@
 import { FaRegEyeSlash } from 'react-icons/fa6';
 import { MdOutlineNoMeetingRoom } from 'react-icons/md';
-import { RiAlarmWarningLine } from 'react-icons/ri';
 
 interface Props {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,12 +28,6 @@ const More = ({ setModal, setOutMeet }: Props) => {
               <MdOutlineNoMeetingRoom />
             </span>
             <span>모임 나가기</span>
-          </div>
-          <div className="flex flex-1 border-b border-gray-200 items-center text-red-600 gap-2">
-            <span>
-              <RiAlarmWarningLine />
-            </span>
-            <span>신고하기</span>
           </div>
         </div>
 

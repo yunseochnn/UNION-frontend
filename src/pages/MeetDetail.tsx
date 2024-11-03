@@ -49,7 +49,7 @@ export default function MeetDetail() {
         <Header setModal={setModal} title={gatheringData?.title} />
       </div>
 
-      <div className="overflow-y-auto hidden-scrollbar w-[85%]">
+      <div className="overflow-y-auto hidden-scrollbar w-[85%] flex-1">
         <Content gatheringData={gatheringData} setGatheringData={setGatheringData} modify={modify} outMeet={outMeet} />
       </div>
 
