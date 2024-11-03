@@ -22,6 +22,12 @@ export default function EditProfile() {
   }, [user]);
 
   const handleSave = async () => {
+    // 변경사항이 없으면 함수 종료
+    if (profileImage === user.profileImage && nickname === user.nickname && description === user.description) {
+      alert('변경된 내용이 없습니다.');
+      return;
+    }
+
     try {
       let profileImageUrl = profileImage;
 
@@ -39,9 +45,9 @@ export default function EditProfile() {
       }
 
       const updatedProfileData: Record<string, any> = {};
-      if (nickname) updatedProfileData.nickname = nickname;
-      if (description !== undefined) updatedProfileData.description = description;
-      if (profileImageUrl) updatedProfileData.profileImage = profileImageUrl;
+      if (nickname !== user.nickname) updatedProfileData.nickname = nickname;
+      if (description !== user.description) updatedProfileData.description = description || '';
+      if (profileImageUrl !== user.profileImage) updatedProfileData.profileImage = profileImageUrl;
 
       const { data: updatedUser } = await apiClient.put('/user/my', updatedProfileData, {
         headers: {
