@@ -37,7 +37,7 @@ export default function EditProfile() {
 
       if (profileImage instanceof Blob) {
         const formData = new FormData();
-        formData.append('images', profileImage);
+        formData.append('images[0]', profileImage);
 
         const uploadResponse = await apiClient.post('/photo/upload', formData, {
           headers: {
