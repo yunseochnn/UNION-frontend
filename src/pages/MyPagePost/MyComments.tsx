@@ -65,6 +65,7 @@ export default function MyComments() {
           comments: item.commentCount,
           thumbnail: item.thumbnail,
           type: item.type,
+          id: item.id,
         }));
 
         setComments(prevComments => [...prevComments, ...fetchedComments]);
