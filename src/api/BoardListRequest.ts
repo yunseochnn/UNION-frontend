@@ -13,7 +13,7 @@ interface Author {
   univName: string;
 }
 
-interface Post {
+interface BoardPost {
   id: number;
   type: string;
   title: string;
@@ -40,7 +40,7 @@ interface Pageable {
 }
 
 interface BoardListResponse {
-  content: Post[];
+  content: BoardPost[];
   pageable: Pageable;
   last: boolean;
   totalPages: number;
@@ -55,6 +55,19 @@ interface BoardListResponse {
   };
   numberOfElements: number;
   empty: boolean;
+}
+
+interface Post {
+  id: number;
+  title: string;
+  content: string;
+  thumbnail: string;
+  profileImage: string;
+  nickname: string;
+  university: string;
+  likes: number;
+  comments: number;
+  type: string;
 }
 
 export const fetchBoardPosts = async ({ boardType, page = 0, size = 3 }: ReadBoardRequestParams): Promise<Post[]> => {
@@ -72,7 +85,19 @@ export const fetchBoardPosts = async ({ boardType, page = 0, size = 3 }: ReadBoa
       },
     });
 
-    return response.data.content;
+    // BoardPost[]를 Post[]로 매핑
+    return response.data.content.map(post => ({
+      id: post.id,
+      title: post.title,
+      content: post.contentPreview,
+      thumbnail: post.thumbnail,
+      profileImage: post.author.profileImage,
+      nickname: post.author.nickname,
+      university: post.author.univName,
+      likes: post.postLikes,
+      comments: post.commentCount,
+      type: post.type,
+    }));
   } catch (error) {
     console.error('게시글 조회 실패:', error);
     throw error;
