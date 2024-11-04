@@ -39,6 +39,11 @@ export default function EditProfile() {
   }, [fetchUserInfo]);
 
   const handleSave = async () => {
+    if (nickname === user.nickname && description === user.description && !croppedImage) {
+      alert('변경된 사항이 없습니다.');
+      return;
+    }
+
     if (!nickname.trim()) {
       alert('닉네임을 입력해 주세요.');
       return;
