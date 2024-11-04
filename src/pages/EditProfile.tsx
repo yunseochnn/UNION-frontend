@@ -4,7 +4,7 @@ import EditButton from '../components/EditProfile/EditButton';
 import ProfileImg from '../common/ProfileImg';
 import ProfileInput from '../common/ProfileInput';
 import { useRecoilState } from 'recoil';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { userState } from '../recoil/userAtoms';
 import apiClient from '../api/apiClient';
 import Cookies from 'js-cookie';
@@ -16,11 +16,27 @@ export default function EditProfile() {
   const [description, setDescription] = useState(user.description);
   const [croppedImage, setCroppedImage] = useState<Blob | null>(null);
 
+  // 유저 정보
+  const fetchUserInfo = useCallback(async () => {
+    try {
+      const { data } = await apiClient.get('/user/my', {
+        headers: {
+          Authorization: Cookies.get('Authorization'),
+        },
+      });
+      setUser(data);
+      setProfileImage(data.profileImage);
+      setNickname(data.nickname);
+      setDescription(data.description);
+    } catch (error) {
+      console.error('유저 정보 불러오기 오류:', error);
+      alert('유저 정보를 불러오는 데 실패했습니다.');
+    }
+  }, [setUser]);
+
   useEffect(() => {
-    setProfileImage(user.profileImage);
-    setNickname(user.nickname);
-    setDescription(user.description);
-  }, [user]);
+    fetchUserInfo();
+  }, [fetchUserInfo]);
 
   const handleSave = async () => {
     if (!nickname.trim()) {
@@ -62,6 +78,8 @@ export default function EditProfile() {
         description: updatedUser.description,
         profileImage: updatedUser.profileImage,
       }));
+
+      localStorage.setItem('nickname', updatedUser.nickname);
 
       setProfileImage(profileImageUrl);
       setCroppedImage(null);
