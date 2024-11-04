@@ -43,6 +43,8 @@ export default function UserInfo() {
   const [meetingCount, setMeetingCount] = useState(0);
   const [activeTab, setActiveTab] = useState('posts');
 
+  const myNickname = localStorage.getItem('nickname');
+
   const fetchUserInfo = useCallback(async () => {
     if (!userToken) return;
     try {
@@ -187,6 +189,8 @@ export default function UserInfo() {
 
   if (!userInfo) return <div></div>;
 
+  const isMyProfile = userInfo.nickname === myNickname;
+
   return (
     <div className="h-full w-full flex flex-col relative">
       <Header title="유저 정보" />
@@ -200,6 +204,7 @@ export default function UserInfo() {
           blocked={userInfo.blocked}
           buttonWidth="84px"
           onButtonClick={handleBlockToggle}
+          hideButton={isMyProfile}
         />
       </div>
       <UserTabs

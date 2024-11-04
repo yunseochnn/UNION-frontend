@@ -7,6 +7,7 @@ export interface UserProps {
   buttonLabel: string;
   buttonWidth: string;
   blocked?: boolean;
+  hideButton?: boolean;
   onClick?: () => void; // 유저 정보 클릭 이벤트
   onButtonClick: (token?: string) => void; // 차단 버튼 클릭 이벤트
 }
@@ -19,6 +20,7 @@ export default function User({
   profileImage,
   buttonLabel,
   buttonWidth,
+  hideButton = false,
   onClick,
   onButtonClick,
 }: UserProps) {
@@ -35,16 +37,18 @@ export default function User({
             <div className="font-semibold text-sm text-customGray2">{bio}</div>
           </div>
         </div>
-        <button
-          className="h-7 rounded-full text-white flex items-center justify-center font-semibold text-sm cursor-pointer bg-mainColor"
-          style={{ width: buttonWidth }}
-          onClick={event => {
-            event.stopPropagation();
-            if (onButtonClick) onButtonClick(token); // token이 있을 때만 전달
-          }}
-        >
-          {buttonLabel}
-        </button>
+        {!hideButton && (
+          <button
+            className="h-7 rounded-full text-white flex items-center justify-center font-semibold text-sm cursor-pointer bg-mainColor"
+            style={{ width: buttonWidth }}
+            onClick={event => {
+              event.stopPropagation();
+              if (onButtonClick) onButtonClick(token);
+            }}
+          >
+            {buttonLabel}
+          </button>
+        )}
       </div>
     </div>
   );
