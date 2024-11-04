@@ -5,9 +5,6 @@ import Slide from '../../common/Slide';
 import Map from '../../common/Map';
 import { IoIosArrowForward } from 'react-icons/io';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useCallback, useEffect } from 'react';
-import axios from 'axios';
-import ReadMeetRequest from '../../api/ReadMeetRequest';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { Response } from '../../pages/MeetDetail';
@@ -19,30 +16,11 @@ interface Prop {
   outMeet: boolean;
 }
 
-const Content = ({ gatheringData, setGatheringData, modify, outMeet }: Prop) => {
+const Content = ({ gatheringData }: Prop) => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const MeetId = Number(id);
+
   const images = gatheringData?.photos || [];
-
-  const onReadMeet = useCallback(async () => {
-    try {
-      const response = await ReadMeetRequest(MeetId);
-      const data = response.data;
-      setGatheringData(data);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          console.log(error.response.data);
-        }
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [MeetId, setGatheringData, modify, outMeet]);
-
-  useEffect(() => {
-    onReadMeet();
-  }, [onReadMeet]);
 
   const formattedDate = gatheringData?.gatheringDateTime
     ? format(gatheringData.gatheringDateTime, 'yyyy년 MM월 dd일 a hh:mm', { locale: ko })
