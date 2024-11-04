@@ -89,7 +89,7 @@ export const fetchBoardPosts = async ({ boardType, page = 0, size = 3 }: ReadBoa
     return response.data.content.map(post => ({
       id: post.id,
       title: post.title,
-      content: post.contentPreview,
+      content: post.contentPreview, // `contentPreview`를 `content`로 매핑
       thumbnail: post.thumbnail,
       profileImage: post.author.profileImage,
       nickname: post.author.nickname,
