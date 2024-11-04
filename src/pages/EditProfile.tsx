@@ -10,7 +10,7 @@ import Cookies from 'js-cookie';
 
 export default function EditProfile() {
   const [user, setUser] = useRecoilState(userState);
-  const [profileImage, setProfileImage] = useState<File | string | null>(null);
+  const [profileImage, setProfileImage] = useState<string | null>(user.profileImage);
   const [nickname, setNickname] = useState(user.nickname);
   const [description, setDescription] = useState(user.description);
 
@@ -20,9 +20,26 @@ export default function EditProfile() {
     setDescription(user.description);
   }, [user]);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // 파일 선택 시 이미지 업로드를 실행하는 함수
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setProfileImage(e.target.files[0]);
+      const selectedFile = e.target.files[0];
+      const formData = new FormData();
+      formData.append('images[0]', selectedFile);
+
+      try {
+        const uploadResponse = await apiClient.post('/photo/upload', formData, {
+          headers: {
+            Authorization: Cookies.get('Authorization'),
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        const uploadedUrl = uploadResponse.data[0];
+        setProfileImage(uploadedUrl); // 서버에서 받은 URL로 상태 업데이트
+      } catch (error) {
+        console.error('이미지 업로드 중 오류 발생:', error);
+        alert('이미지 업로드에 실패했습니다. 다시 시도해 주세요.');
+      }
     }
   };
 
@@ -38,25 +55,10 @@ export default function EditProfile() {
     }
 
     try {
-      let profileImageUrl = user.profileImage;
-
-      if (profileImage instanceof File) {
-        const formData = new FormData();
-        formData.append('images[0]', profileImage);
-
-        const uploadResponse = await apiClient.post('/photo/upload', formData, {
-          headers: {
-            Authorization: Cookies.get('Authorization'),
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-        profileImageUrl = uploadResponse.data[0];
-      }
-
       const updatedProfileData: Record<string, any> = {};
       if (nickname !== user.nickname) updatedProfileData.nickname = nickname;
       if (description !== user.description) updatedProfileData.description = description || '';
-      if (profileImageUrl !== user.profileImage) updatedProfileData.profileImage = profileImageUrl;
+      if (profileImage && profileImage !== user.profileImage) updatedProfileData.profileImage = profileImage;
 
       const { data: updatedUser } = await apiClient.put('/user/my', updatedProfileData, {
         headers: {
@@ -88,9 +90,7 @@ export default function EditProfile() {
       <div className="px-[36px] flex-grow">
         <div className="mb-4">
           <input type="file" accept="image/*" onChange={handleImageChange} />
-          {typeof profileImage === 'string' && (
-            <img src={profileImage} alt="Profile" className="w-24 h-24 rounded-full" />
-          )}
+          {profileImage && <img src={profileImage} alt="Profile" className="w-24 h-24 rounded-full" />}
         </div>
         <ProfileInput
           nickname={nickname}
