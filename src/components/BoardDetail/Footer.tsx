@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LuPencil, LuSendHorizonal } from 'react-icons/lu';
 import { UpComment } from '../../pages/BoardDetail';
 import { IoClose } from 'react-icons/io5';
@@ -8,18 +8,18 @@ interface FooterProps {
   handleUpdateComment: ({ content, commentId }: { content: string; commentId: number }) => void;
   updateComment: UpComment | null;
   setUpdateComment: React.Dispatch<React.SetStateAction<UpComment | null>>;
+  inputRef: React.RefObject<HTMLInputElement>;
 }
 
-const Footer = ({ handleAddComment, handleUpdateComment, updateComment, setUpdateComment }: FooterProps) => {
+const Footer = ({ handleAddComment, handleUpdateComment, updateComment, setUpdateComment, inputRef }: FooterProps) => {
   const [comment, setComment] = useState('');
-  const inputRef = useRef<HTMLInputElement>(null); // input 요소에 대한 참조 생성
 
   useEffect(() => {
     if (updateComment) {
       setComment(updateComment.content);
       inputRef.current?.focus(); // updateComment가 있을 때 포커스 설정
     }
-  }, [updateComment]);
+  }, [inputRef, updateComment]);
 
   const onSubmitComment = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

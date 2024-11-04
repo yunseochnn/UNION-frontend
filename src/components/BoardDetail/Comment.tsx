@@ -14,9 +14,10 @@ interface Prop {
   handleDeleteComment: (commentId: number) => void;
   parent: ParentInfo;
   footerRef: React.RefObject<HTMLDivElement>;
+  inputRef: React.RefObject<HTMLInputElement>;
 }
 
-const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, parent, footerRef }: Prop) => {
+const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, parent, footerRef, inputRef }: Prop) => {
   const [like, setLike] = useState(false);
   const [more, setMore] = useState(false);
   const setUser = useSetRecoilState(selectedUserState);
@@ -56,6 +57,7 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
   const onAddComment = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     setParent({ id: comment.id, nickname: comment.commenter.nickname });
+    inputRef.current?.focus();
     setMore(false);
   };
 
@@ -165,6 +167,7 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
                 setUpdateComment={setUpdateComment}
                 setParent={setParent}
                 handleDeleteComment={handleDeleteComment}
+                inputRef={inputRef}
               />
             </div>
           ))}

@@ -81,6 +81,7 @@ export default function BoardDetail() {
   const footerRef = useRef<HTMLDivElement | null>(null);
   const name = localStorage.getItem('nickname') || '';
   const [myNickname, setMyNickname] = useState(name);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   console.log(myNickname);
 
   const getUserInfo = async () => {
@@ -316,11 +317,13 @@ export default function BoardDetail() {
           parent={parent}
           setParent={setParent}
           footerRef={footerRef}
+          inputRef={inputRef}
         />
       </div>
 
       <div className="w-[90%]" ref={footerRef}>
         <Footer
+          inputRef={inputRef}
           handleAddComment={handleAddComment}
           handleUpdateComment={handleUpdateComment}
           updateComment={updateComment}

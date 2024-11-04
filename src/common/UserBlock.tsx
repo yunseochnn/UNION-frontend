@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import apiClient from '../api/apiClient';
 import Cookies from 'js-cookie';
 
@@ -9,8 +9,6 @@ interface Prop {
 
 const UserBlock = ({ setUserBlock, token }: Prop) => {
   const navigate = useNavigate();
-  const { type } = useParams();
-  const pathname = useLocation().pathname;
   const BlockUser = async () => {
     try {
       const response = await apiClient.post(
@@ -26,13 +24,7 @@ const UserBlock = ({ setUserBlock, token }: Prop) => {
       const { status } = response;
       if (status === 200) {
         console.log('유저차단 성공');
-        if (pathname.includes('board') || pathname.includes('Board')) {
-          navigate(`/board/${type}`);
-        } else if (pathname.includes('meet') || pathname.includes('Meet')) {
-          navigate('/meet');
-        } else if (pathname.includes('chat') || pathname.includes('Chat')) {
-          navigate('/chatList');
-        }
+        navigate(-1);
       }
     } catch (error) {
       console.log(error);
