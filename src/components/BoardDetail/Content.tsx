@@ -18,7 +18,7 @@ const Content = ({ boardContent }: Prop) => {
   const onClickeProfile = () => {
     if (boardContent?.author.token) {
       setUser(boardContent.author.token);
-      localStorage.setItem('selectedUserToken', boardContent.author.token);
+      localStorage.setItem('userToken', boardContent.author.token);
       navigate('/userinfo');
     }
   };
