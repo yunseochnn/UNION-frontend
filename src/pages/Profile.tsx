@@ -65,7 +65,7 @@ export default function Profile() {
 
   return (
     <div className="h-full w-full flex flex-col relative">
-      <Header title="" navigateTo="/emailverification" />
+      <Header title="" />
       <div className="px-[36px] flex-grow">
         <OauthImg profileImage={user.profileImage} />
         <ProfileInput

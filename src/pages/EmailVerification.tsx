@@ -58,7 +58,7 @@ export default function EmailVerification() {
 
   return (
     <div className="h-full w-full flex flex-col relative">
-      <Header title="" navigateTo="/" />
+      <Header title="" />
       <div className="px-[36px] flex-grow">
         <Title />
         <VerificationInput onVerificationComplete={handleVerificationComplete} />
