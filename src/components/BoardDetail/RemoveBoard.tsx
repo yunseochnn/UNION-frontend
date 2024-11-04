@@ -1,6 +1,6 @@
 import axios from 'axios';
 import RemoveBoardRequest from '../../api/RemoveBoardRequest';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 interface Prop {
   setRemove: React.Dispatch<React.SetStateAction<boolean>>;
@@ -8,6 +8,8 @@ interface Prop {
 
 const RemoveBoard = ({ setRemove }: Prop) => {
   const { type, id } = useParams();
+  const [searchParams] = useSearchParams();
+  const from = searchParams.get('from');
   const Type = type?.toUpperCase() || '';
   const BoardId = Number(id);
   const navigate = useNavigate();
@@ -24,7 +26,11 @@ const RemoveBoard = ({ setRemove }: Prop) => {
       const { status } = response;
       if (status === 204) {
         console.log('게시물 삭제 성공');
-        navigate(`/board/${Type}`);
+        if (from === 'write') {
+          navigate(`/board/${type}`);
+        } else {
+          navigate(-1);
+        }
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
