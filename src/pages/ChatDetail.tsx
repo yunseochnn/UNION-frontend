@@ -7,6 +7,7 @@ import { Client } from '@stomp/stompjs';
 import { useSearchParams } from 'react-router-dom';
 import apiClient from '../api/apiClient';
 import Cookies from 'js-cookie';
+import UserBlock from '../common/UserBlock';
 
 const socketUrl = `${import.meta.env.VITE_API_BASE_URL.replace('https', 'wss')}/ws`;
 
@@ -20,14 +21,40 @@ export interface IFChatInfo {
 
 export default function ChatDetail() {
   const [searchParams] = useSearchParams();
-  const uid = searchParams.get('uid');
   const title = searchParams.get('title');
+  const uid = localStorage.getItem('userToken');
   console.log(uid);
   const [modal, setModal] = useState(false);
   const [messages, setMessages] = useState<IFChatInfo[]>([]);
   const client = useRef<Client | null>(null);
   const [input, setInput] = useState('');
-  const myNickname = localStorage.getItem('nickname') || '';
+  const name = localStorage.getItem('nickname') || '';
+  const [myNickname, setMyNickname] = useState(name);
+  const [userBlock, setUserBlock] = useState(false);
+  console.log(myNickname);
+
+  const getUserInfo = async () => {
+    try {
+      const response = await apiClient.get('/user/my', {
+        headers: {
+          Authorization: Cookies.get('Authorization'),
+        },
+      });
+      console.log(response.data);
+      const data = response.data;
+      localStorage.setItem('nickname', data.nickname);
+      setMyNickname(data.nickname);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    if (myNickname === '') {
+      getUserInfo();
+    }
+  }, [myNickname]);
 
   const privateChatHistory = useCallback(async () => {
     try {
@@ -118,7 +145,8 @@ export default function ChatDetail() {
 
   return (
     <div className="flex flex-col w-full h-full pb-2 pt-1 relative items-center">
-      {modal && <More setModal={setModal} />}
+      {modal && <More setModal={setModal} setUserBlock={setUserBlock} />}
+      {userBlock && <UserBlock setUserBlock={setUserBlock} token={uid || ''} />}
       <div className="w-[85%]">
         <Header setModal={setModal} title={title} />
       </div>

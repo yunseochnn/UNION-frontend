@@ -11,7 +11,8 @@ interface Prop {
 const More = ({ setModal, setUserBlock, author }: Prop) => {
   const navigate = useNavigate();
   const onSendMessage = () => {
-    navigate(`/chat/private?uid=${author.token}&title=${author.nickname}`);
+    localStorage.setItem('userToken', author.token);
+    navigate(`/chat/private?title=${author.nickname}`);
   };
   return (
     <div className="absolute inset-0 bg-gray-500 bg-opacity-50 z-20 flex justify-center items-end">

@@ -9,9 +9,18 @@ interface Props {
   handleDeleteComment: (commentId: number) => void;
   parent: ParentInfo;
   footerRef: React.RefObject<HTMLDivElement>;
+  inputRef: React.RefObject<HTMLInputElement>;
 }
 
-const CommentList = ({ comments, setUpdateComment, setParent, handleDeleteComment, parent, footerRef }: Props) => {
+const CommentList = ({
+  comments,
+  setUpdateComment,
+  setParent,
+  handleDeleteComment,
+  parent,
+  footerRef,
+  inputRef,
+}: Props) => {
   return (
     <div className="min-h-80 pt-2 w-[90%]">
       {comments ? (
@@ -24,6 +33,7 @@ const CommentList = ({ comments, setUpdateComment, setParent, handleDeleteCommen
               handleDeleteComment={handleDeleteComment}
               parent={parent}
               footerRef={footerRef}
+              inputRef={inputRef}
             />
           </div>
         ))

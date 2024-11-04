@@ -9,7 +9,7 @@ interface PostProps {
   content: string;
   likes: number;
   comments: number;
-  thumbnail: string;
+  thumbnail?: string;
   type: string;
   id: number;
   isLast?: boolean;
@@ -56,13 +56,14 @@ export default function Post({
               </span>
             </div>
           </div>
-
-          <img
-            src={thumbnail}
-            alt="Thumbnail"
-            className="w-[90px] h-[90px] object-cover rounded-md flex-shrink-0"
-            style={{ aspectRatio: '1/1' }}
-          />
+          {thumbnail && (
+            <img
+              src={thumbnail}
+              alt="Thumbnail"
+              className="w-[90px] h-[90px] object-cover rounded-md flex-shrink-0"
+              style={{ aspectRatio: '1/1' }}
+            />
+          )}
         </div>
       </div>
     </button>

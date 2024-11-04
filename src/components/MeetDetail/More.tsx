@@ -1,4 +1,4 @@
-import { FaRegEyeSlash } from 'react-icons/fa6';
+import { LiaUserSlashSolid } from 'react-icons/lia';
 import { MdOutlineNoMeetingRoom } from 'react-icons/md';
 
 interface Props {
@@ -25,7 +25,7 @@ const More = ({ setModal, setOutMeet }: Props) => {
           </div>
           <div className="flex h-14 border-b border-gray-200 items-center gap-2">
             <span>
-              <FaRegEyeSlash />
+              <LiaUserSlashSolid />
             </span>
             <span>유저 차단하기</span>
           </div>
