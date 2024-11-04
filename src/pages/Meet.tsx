@@ -17,11 +17,11 @@ const Meet: React.FC = () => {
     const fetchMeetings = async () => {
       try {
         if (sortBy === 'DISTANCE') {
-          navigator.geolocation.getCurrentPosition(async (position) => {
+          navigator.geolocation.getCurrentPosition(async position => {
             const response = await ReadMeetListRequest.getMeetList(
               sortBy,
               position.coords.latitude,
-              position.coords.longitude
+              position.coords.longitude,
             );
             setMeetings(response.data.content);
           });
@@ -45,16 +45,14 @@ const Meet: React.FC = () => {
     <div className="relative center-content flex flex-col bg-white">
       <MeetHeader sortBy={sortBy} setSortBy={setSortBy} />
 
-      <main className="flex-1 overflow-y-auto relative flex flex-col px-[20px]">
+      <main className="flex-1 overflow-y-auto relative flex flex-col px-[23px]">
         {meetings.map(meeting => (
           <div key={meeting.id} className="border-b py-4 cursor-pointer" onClick={() => handleMeetingClick(meeting.id)}>
             <div className="flex justify-between items-start">
               <div>
                 <div className="text-xs text-gray-500">{meeting.eupMyeonDong || '위치 미정'}</div>
                 <h2 className="font-bold text-lg">{meeting.title}</h2>
-                <div className="text-sm text-gray-600">
-                  {new Date(meeting.gatheringDateTime).toLocaleString()}
-                </div>
+                <div className="text-sm text-gray-600">{new Date(meeting.gatheringDateTime).toLocaleString()}</div>
                 <div className="mt-1 text-sm text-gray-500 flex items-center">
                   <BsFillPeopleFill size={12} className="mr-1" />
                   <span>{`${meeting.currentMember}/${meeting.maxMember}`}</span>

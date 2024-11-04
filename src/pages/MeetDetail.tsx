@@ -45,33 +45,44 @@ export default function MeetDetail() {
   const [userBlock, setUserBlock] = useState(false);
 
   return (
-    <div className="h-full w-full flex flex-col items-center pt-1 pb-2 relative">
-      {Modal &&
-        (gatheringData?.owner ? (
-          <UserMore setModal={setModal} setModify={setModify} setRemove={setRemove} />
-        ) : (
-          <More setModal={setModal} setOutMeet={setOutMeet} setUserBlock={setUserBlock} />
-        ))}
-      {modify && <Update updateData={gatheringData} setModify={setModify} />}
-      {remove && <RemoveMeet setRemove={setRemove} />}
-      {outMeet && <OutMeet setOutMeet={setOutMeet} />}
-      {userBlock && <UserBlock setUserBlock={setUserBlock} token={gatheringData?.author.token || ''} />}
-      <div className="w-[85%]">
-        <Header
-          setModal={setModal}
-          title={gatheringData?.title}
-          token={gatheringData?.author.token || ''}
-          authorNickname={gatheringData?.author.nickname || ''}
-        />
-      </div>
+    <>
+      {gatheringData ? (
+        <div className="h-full w-full flex flex-col items-center pt-1 pb-2 relative">
+          {Modal &&
+            (gatheringData?.owner ? (
+              <UserMore setModal={setModal} setModify={setModify} setRemove={setRemove} />
+            ) : (
+              <More setModal={setModal} setOutMeet={setOutMeet} setUserBlock={setUserBlock} />
+            ))}
+          {modify && <Update updateData={gatheringData} setModify={setModify} />}
+          {remove && <RemoveMeet setRemove={setRemove} />}
+          {outMeet && <OutMeet setOutMeet={setOutMeet} />}
+          {userBlock && <UserBlock setUserBlock={setUserBlock} token={gatheringData?.author.token || ''} />}
+          <div className="w-[85%]">
+            <Header
+              setModal={setModal}
+              title={gatheringData?.title}
+              token={gatheringData?.author.token || ''}
+              authorNickname={gatheringData?.author.nickname || ''}
+            />
+          </div>
 
-      <div className="overflow-y-auto hidden-scrollbar w-[85%] flex-1">
-        <Content gatheringData={gatheringData} setGatheringData={setGatheringData} modify={modify} outMeet={outMeet} />
-      </div>
+          <div className="overflow-y-auto hidden-scrollbar w-[85%] flex-1">
+            <Content
+              gatheringData={gatheringData}
+              setGatheringData={setGatheringData}
+              modify={modify}
+              outMeet={outMeet}
+            />
+          </div>
 
-      <div className="w-[90%]">
-        <Footer gatheringData={gatheringData} />
-      </div>
-    </div>
+          <div className="w-[90%]">
+            <Footer gatheringData={gatheringData} />
+          </div>
+        </div>
+      ) : (
+        <div>Loading</div>
+      )}
+    </>
   );
 }
