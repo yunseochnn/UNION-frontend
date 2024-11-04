@@ -49,7 +49,7 @@ const BoardList: React.FC = () => {
           page,
           size,
         });
-        setPosts(response); // response가 이미 Post[] 타입이므로 그대로 설정
+        setPosts(response); // 이미 Post[] 타입의 response 사용
       } catch (error) {
         console.error('게시글 조회 실패:', error);
         setPosts([]); // 에러 발생 시 빈 배열로 설정
