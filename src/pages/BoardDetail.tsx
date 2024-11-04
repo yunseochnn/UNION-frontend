@@ -16,8 +16,6 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 import { HiOutlineChatBubbleOvalLeft } from 'react-icons/hi2';
 import Cookies from 'js-cookie';
 import More from '../components/BoardDetail/More';
-import { useRecoilValue } from 'recoil';
-import { userState } from '../recoil/userAtoms';
 
 export interface IFComment {
   id: number;
@@ -80,8 +78,7 @@ export default function BoardDetail() {
   const BoardId = Number(id);
   const queryClient = useQueryClient();
   const commentListRef = useRef<HTMLDivElement>(null);
-  const user = useRecoilValue(userState);
-  const myNickname = user.nickname;
+  const myNickname = localStorage.getItem('nickname');
   const footerRef = useRef<HTMLDivElement | null>(null);
 
   console.log(myNickname);

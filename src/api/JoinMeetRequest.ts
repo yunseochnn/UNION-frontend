@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 const JoinMeetRequest = async (gatheringId: number) => {
   try {
     const response = await apiClient.post(
-      `/gathering/${gatheringId}/participants`,
+      `/gatherings/${gatheringId}/participants`,
       {},
       {
         headers: {
