@@ -80,6 +80,8 @@ export default function UserInfo() {
       });
       setPosts(
         response.data.content.map((post: any) => ({
+          id: post.id,
+          type: post.type,
           profileImage: post.author.profileImage,
           nickname: post.author.nickname,
           university: post.author.univName,
