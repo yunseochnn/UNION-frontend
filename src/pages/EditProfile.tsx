@@ -14,41 +14,13 @@ export default function EditProfile() {
   const [profileImage, setProfileImage] = useState<string | null>(user.profileImage);
   const [nickname, setNickname] = useState(user.nickname);
   const [description, setDescription] = useState(user.description);
+  const [croppedImage, setCroppedImage] = useState<Blob | null>(null);
 
   useEffect(() => {
     setProfileImage(user.profileImage);
     setNickname(user.nickname);
     setDescription(user.description);
   }, [user]);
-
-  const handleImageUpload = async (croppedImage: Blob) => {
-    // Blob 데이터를 JPEG 파일로 변환
-    const jpegFile = new File([croppedImage], 'cropped-profile.jpg', { type: 'image/jpeg' });
-
-    // FormData에 변환된 JPEG 파일 추가
-    const formData = new FormData();
-    formData.append('images', jpegFile);
-
-    for (const [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
-
-    try {
-      // 서버에 이미지 업로드 요청
-      const uploadResponse = await apiClient.post('/photo/upload', formData, {
-        headers: {
-          Authorization: Cookies.get('Authorization'),
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      const uploadedUrl = uploadResponse.data[0];
-      setProfileImage(uploadedUrl);
-    } catch (error) {
-      console.error('이미지 업로드 중 오류 발생:', error);
-      alert('이미지 업로드에 실패했습니다. 다시 시도해 주세요.');
-    }
-  };
 
   const handleSave = async () => {
     if (!nickname.trim()) {
@@ -57,14 +29,30 @@ export default function EditProfile() {
     }
 
     try {
+      let profileImageUrl = user.profileImage;
+
+      if (croppedImage) {
+        const jpegFile = new File([croppedImage], 'cropped-profile.jpg', { type: 'image/jpeg' });
+        const formData = new FormData();
+        formData.append('images', jpegFile);
+
+        const uploadResponse = await apiClient.post('/photo/upload', formData, {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('Authorization')}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        profileImageUrl = uploadResponse.data[0];
+      }
+
       const updatedProfileData: Record<string, any> = {};
       if (nickname !== user.nickname) updatedProfileData.nickname = nickname;
       if (description !== user.description) updatedProfileData.description = description || '';
-      if (profileImage && profileImage !== user.profileImage) updatedProfileData.profileImage = profileImage;
+      if (profileImageUrl && profileImageUrl !== user.profileImage) updatedProfileData.profileImage = profileImageUrl;
 
       const { data: updatedUser } = await apiClient.put('/user/my', updatedProfileData, {
         headers: {
-          Authorization: Cookies.get('Authorization'),
+          Authorization: `Bearer ${Cookies.get('Authorization')}`,
         },
       });
 
@@ -75,6 +63,8 @@ export default function EditProfile() {
         profileImage: updatedUser.profileImage,
       }));
 
+      setProfileImage(profileImageUrl);
+      setCroppedImage(null);
       alert('프로필이 성공적으로 업데이트되었습니다.');
     } catch (error) {
       if (error instanceof Error) {
@@ -90,7 +80,7 @@ export default function EditProfile() {
     <div className="h-full w-full flex flex-col">
       <Header title="프로필 수정" navigateTo="/mypage" />
       <div className="px-[36px] flex-grow">
-        <ProfileImg profileImage={profileImage || ''} onImageChange={handleImageUpload} />
+        <ProfileImg profileImage={profileImage || ''} onImageChange={setCroppedImage} />
         <ProfileInput
           nickname={nickname}
           description={description}
