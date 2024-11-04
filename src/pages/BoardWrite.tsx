@@ -63,7 +63,7 @@ export default function BoardWrite() {
         await onSaveImage(id);
       }
 
-      navigate(`/board/${type}/${id}`);
+      navigate(`/board/${type}/${id}?from=write`);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.response);

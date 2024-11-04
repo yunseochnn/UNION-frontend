@@ -100,7 +100,7 @@ export default function MeetWrite() {
         await onSaveImage(id);
       }
 
-      navigate(`/meet/${id}`);
+      navigate(`/meet/${id}?from=write`);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.response);
