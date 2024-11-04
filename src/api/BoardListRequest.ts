@@ -13,9 +13,8 @@ interface Author {
   univName: string;
 }
 
-interface BoardPost {
+interface Post {
   id: number;
-  type: string;
   title: string;
   contentPreview: string;
   thumbnail: string;
@@ -40,7 +39,7 @@ interface Pageable {
 }
 
 interface BoardListResponse {
-  content: BoardPost[];
+  content: Post[];
   pageable: Pageable;
   last: boolean;
   totalPages: number;
@@ -57,44 +56,26 @@ interface BoardListResponse {
   empty: boolean;
 }
 
-interface Post {
-  id: number;
-  title: string;
-  content: string;
-  thumbnail: string;
-  profileImage: string;
-  nickname: string;
-  university: string;
-  likes: number;
-  comments: number;
-  type: string;
-}
-
-export const fetchBoardPosts = async ({ boardType, page = 0, size = 3 }: ReadBoardRequestParams): Promise<Post[]> => {
-  const url = `/board/${boardType.toUpperCase()}`;
+export const fetchBoardPosts = async ({
+  boardType,
+  page = 0,
+  size = 3,
+}: ReadBoardRequestParams): Promise<BoardListResponse> => {
+  const url = `/board/${boardType.toUpperCase()}`; // 소문자 board로 변경, type은 대문자로 변환
 
   try {
     const response = await apiClient.get<BoardListResponse>(url, {
       headers: {
-        Authorization: Cookies.get('Authorization') || '',
+        Authorization: Cookies.get('Authorization'),
         'Content-Type': 'application/json',
       },
-      params: { page, size },
+      params: {
+        page,
+        size,
+      },
     });
 
-    // BoardPost[] -> Post[]로 변환하여 반환
-    return response.data.content.map(post => ({
-      id: post.id,
-      title: post.title,
-      content: post.contentPreview, // contentPreview를 content로 변환
-      thumbnail: post.thumbnail,
-      profileImage: post.author.profileImage,
-      nickname: post.author.nickname,
-      university: post.author.univName,
-      likes: post.postLikes,
-      comments: post.commentCount,
-      type: post.type,
-    }));
+    return response.data;
   } catch (error) {
     console.error('게시글 조회 실패:', error);
     throw error;
