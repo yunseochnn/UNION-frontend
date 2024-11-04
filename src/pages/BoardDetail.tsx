@@ -166,7 +166,7 @@ export default function BoardDetail() {
   } = useQuery<Like>({
     queryKey: ['like', BoardId],
     queryFn: async () => {
-      const response = await apiClient.get(`/${BoardId}/likes`, {
+      const response = await apiClient.get(`/likes/${BoardId}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: Cookies.get('Authorization'),
