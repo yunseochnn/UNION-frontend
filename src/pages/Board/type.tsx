@@ -16,8 +16,7 @@ const BOARD_TITLES = {
   ENGINEERING: '공학',
   ARTS: '예체능',
   MEDICINE: '의학',
-  EMPLOYMENT: '추후 생각'
-
+  EMPLOYMENT: '추후 생각',
 } as const;
 
 const BoardList: React.FC = () => {
@@ -55,7 +54,7 @@ const BoardList: React.FC = () => {
   return (
     <div className="center-content flex flex-col bg-white relative">
       <Header title={BOARD_TITLES[type as keyof typeof BOARD_TITLES]} />
-      <main className="flex-1 overflow-y-auto px-[20px]">
+      <main className="flex-1 overflow-y-auto ">
         {isLoading ? (
           <div>로딩 중...</div>
         ) : (

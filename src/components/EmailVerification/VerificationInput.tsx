@@ -95,36 +95,54 @@ export default function VerificationInput({ onVerificationComplete }: Verificati
       });
   };
 
-  const handleVerificationSubmit = () => {
-    fetch('https://univcert.com/api/v1/certifycode', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        key: API_KEY,
-        email: email,
-        univName: searchTerm,
-        code: verificationCode,
-      }),
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('인증번호 확인에 실패했습니다.');
-        }
-        return response.json();
-      })
-      .then(data => {
-        if (data.success) {
-          alert('인증번호가 확인되었습니다.');
-          onVerificationComplete(searchTerm);
-        } else {
-          alert('인증번호가 올바르지 않습니다.');
-        }
-      })
-      .catch(error => {
-        alert(`인증번호 확인 중 오류가 발생했습니다: ${error.message}`);
+  const handleVerificationSubmit = async () => {
+    try {
+      // 인증 초기화 API 호출
+      const clearResponse = await fetch(`https://univcert.com/api/v1/clear/${email}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          key: API_KEY,
+        }),
       });
+
+      const clearData = await clearResponse.json();
+      if (!clearData.success) {
+        alert('인증 초기화에 실패했습니다.');
+        return;
+      }
+
+      // 인증 초기화 성공 후 인증번호 확인 요청
+      const verifyResponse = await fetch('https://univcert.com/api/v1/certifycode', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          key: API_KEY,
+          email: email,
+          univName: searchTerm,
+          code: verificationCode,
+        }),
+      });
+
+      if (!verifyResponse.ok) {
+        throw new Error('인증번호 확인에 실패했습니다.');
+      }
+
+      const verifyData = await verifyResponse.json();
+      if (verifyData.success) {
+        alert('인증번호가 확인되었습니다.');
+        onVerificationComplete(searchTerm);
+      } else {
+        alert('인증번호가 올바르지 않습니다.');
+      }
+    } catch (error) {
+      console.error('인증번호 확인 중 오류 발생:', error);
+      alert(`인증번호 확인 중 오류가 발생했습니다: ${error instanceof Error ? error.message : error}`);
+    }
   };
 
   const fetchUniversities = async () => {
@@ -167,30 +185,6 @@ export default function VerificationInput({ onVerificationComplete }: Verificati
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
-  const clearCertifiedUsers = () => {
-    fetch('https://univcert.com/api/v1/clear', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        key: API_KEY,
-      }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          alert('인증된 유저 목록이 초기화되었습니다.');
-        } else {
-          alert('초기화에 실패했습니다. 서버 응답: ' + data.message);
-        }
-      })
-      .catch(error => {
-        console.error('목록 초기화 중 오류 발생:', error);
-        alert('서버와의 통신 중 오류가 발생했습니다.');
-      });
-  };
 
   return (
     <div className="font-semibold">
@@ -284,7 +278,6 @@ export default function VerificationInput({ onVerificationComplete }: Verificati
               인증 완료
             </button>
           </div>
-          <button onClick={clearCertifiedUsers}>인증 리스트 초기화</button>
         </div>
       </div>
     </div>
