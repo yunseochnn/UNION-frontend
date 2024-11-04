@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import RemoveMeetRequest from '../../api/RemoveMeetRequest';
 
 interface Prop {
@@ -8,6 +8,8 @@ interface Prop {
 
 const RemoveMeet = ({ setRemove }: Prop) => {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const from = searchParams.get('from');
   const BoardId = Number(id);
   const navigate = useNavigate();
 
@@ -23,7 +25,11 @@ const RemoveMeet = ({ setRemove }: Prop) => {
       const { status } = response;
       if (status === 204) {
         console.log('모임 삭제 성공');
-        navigate(`/meet`);
+        if (from === 'write') {
+          navigate('/meet');
+        } else {
+          navigate(-1);
+        }
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
