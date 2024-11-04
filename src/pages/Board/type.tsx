@@ -8,15 +8,16 @@ import FloatingActionButton from '../../common/FloatingActionButton';
 import { fetchBoardPosts } from '../../api/BoardListRequest';
 
 const BOARD_TITLES = {
-  Free: '자유게시판',
-  Market: '장터게시판',
-  Info: '정보게시판',
-  Humanities: '인문사회',
-  Sciences: '자연과학',
-  Engineering: '공학',
-  Arts: '예체능',
-  Medicine: '의학',
-  Employment: '추후 생각',
+  FREE: '자유게시판',
+  MARKET: '장터게시판',
+  INFO: '정보게시판',
+  HUMANITIES: '인문사회',
+  SCIENCES: '자연과학',
+  ENGINEERING: '공학',
+  ARTS: '예체능',
+  MEDICINE: '의학',
+  EMPLOYMENT: '추후 생각'
+
 } as const;
 
 const BoardList: React.FC = () => {
@@ -62,7 +63,7 @@ const BoardList: React.FC = () => {
         )}
       </main>
       <div className="right-8 bottom-24 absolute">
-        <FloatingActionButton onClick={() => navigate(`/board/write/${type}`)} />
+        <FloatingActionButton onClick={() => navigate(`/Board/write/${type}`)} />
       </div>
       <footer className="h-14 flex justify-center">
         <div className="w-[90%]">

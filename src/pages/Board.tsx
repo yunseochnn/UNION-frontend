@@ -8,11 +8,11 @@ const Board: React.FC = () => {
   const [isAcademicOpen, setIsAcademicOpen] = useState(false);
 
   const departments: { [key: string]: string } = {
-    Humanities: '인문사회',
-    Sciences: '자연과학',
-    Engineering: '공학',
-    Arts: '예체능',
-    Medicine: '의학',
+    HUMANITIES: '인문사회',
+    SCIENCES: '자연과학',
+    ENGINEERING: '공학',
+    ARTS: '예체능',
+    MEDICINE: '의학',
   };
 
   return (
@@ -33,7 +33,7 @@ const Board: React.FC = () => {
       <div className="flex flex-col flex-1 px-[15px]">
         <div
           className="p-4 border-b cursor-pointer flex justify-between items-center hover:bg-gray-50"
-          onClick={() => navigate('/board/Free')}
+          onClick={() => navigate('/board/FREE')}
         >
           <span>자유 게시판</span>
           <FiChevronRight />
@@ -53,7 +53,7 @@ const Board: React.FC = () => {
               <div
                 key={key}
                 className="pl-8 py-3 cursor-pointer hover:bg-gray-100 flex justify-between items-center"
-                onClick={() => navigate(`/board/${key}`)}  // 경로 수정
+                onClick={() => navigate(`/board/${key}`)} // 경로 수정
               >
                 <span>{value}</span>
                 <FiChevronRight className="mr-4" />
@@ -64,7 +64,7 @@ const Board: React.FC = () => {
 
         <div
           className="p-4 border-b cursor-pointer flex justify-between items-center hover:bg-gray-50"
-          onClick={() => navigate('/board/Market')}
+          onClick={() => navigate('/board/MARKET')}
         >
           <span>장터 게시판</span>
           <FiChevronRight />
@@ -72,7 +72,7 @@ const Board: React.FC = () => {
 
         <div
           className="p-4 border-b cursor-pointer flex justify-between items-center hover:bg-gray-50"
-          onClick={() => navigate('/board/Info')}
+          onClick={() => navigate('/board/INFO')}
         >
           <span>정보 게시판</span>
           <FiChevronRight />
@@ -80,7 +80,7 @@ const Board: React.FC = () => {
 
         <div
           className="p-4 border-b cursor-pointer flex justify-between items-center hover:bg-gray-50"
-          onClick={() => navigate('/board/Employment')}
+          onClick={() => navigate('/board/EMPLOYMENT')}
         >
           <span>추후 생각</span>
           <FiChevronRight />
