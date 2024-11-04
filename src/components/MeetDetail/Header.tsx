@@ -12,6 +12,7 @@ const Header = ({ setModal, title }: Props) => {
   const [searchParams] = useSearchParams();
   const from = searchParams.get('from');
   const navigate = useNavigate();
+
   const onClickBack = () => {
     if (from === 'write') {
       navigate('meet');
@@ -19,6 +20,7 @@ const Header = ({ setModal, title }: Props) => {
       navigate(-1);
     }
   };
+
   return (
     <div className="flex items-center justify-between w-full h-[60px]">
       <div className="cursor-pointer font-black" onClick={onClickBack}>

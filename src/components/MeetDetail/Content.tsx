@@ -1,7 +1,7 @@
 import { FaRegCalendarCheck } from 'react-icons/fa6';
 import { HiOutlineUserGroup } from 'react-icons/hi2';
 import '../../style.css';
-// import Slide from '../../common/Slide';
+import Slide from '../../common/Slide';
 import Map from '../../common/Map';
 import { IoIosArrowForward } from 'react-icons/io';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -23,6 +23,7 @@ const Content = ({ gatheringData, setGatheringData, modify, outMeet }: Prop) => 
   const navigate = useNavigate();
   const { id } = useParams();
   const MeetId = Number(id);
+  const images = gatheringData?.photos || [];
 
   const onReadMeet = useCallback(async () => {
     try {
@@ -64,15 +65,20 @@ const Content = ({ gatheringData, setGatheringData, modify, outMeet }: Prop) => 
       <div className="flex items-center mt-[30px] gap-3">
         <div className="h-10 w-10 bg-gray-300 rounded-full cursor-pointer"></div>
         <div>
-          <div className="font-semibold text-sm">{gatheringData?.userNickname}</div>
+          <div className="font-semibold text-sm">{gatheringData?.author.nickname}</div>
           <div className="font-semibold text-sm text-gray-400">{gatheringData?.createdAt}</div>
         </div>
       </div>
 
       <div className="mt-5 text-[22px]">
-        <span className="font-bold" style={{ color: '#FF4A4D' }}>
-          모집중
-        </span>
+        {gatheringData?.recruited ? (
+          <span className="font-bold text-customGray1">모집완료</span>
+        ) : (
+          <span className="font-bold" style={{ color: '#FF4A4D' }}>
+            모집중
+          </span>
+        )}
+
         <span className="font-bold">{gatheringData?.title}</span>
       </div>
 
@@ -87,9 +93,11 @@ const Content = ({ gatheringData, setGatheringData, modify, outMeet }: Prop) => 
         <div>{gatheringData?.content}</div>
       </div>
 
-      <div className="mt-4">
-        <div className="h-auto w-full cursor-pointer">{/* <Slide /> */}</div>
-      </div>
+      {images?.length > 0 && (
+        <div className="mt-4">
+          <div className="h-auto w-full cursor-pointer">{<Slide images={images} />}</div>
+        </div>
+      )}
 
       {gatheringData?.address && (
         <div className="mt-4 flex flex-col">
