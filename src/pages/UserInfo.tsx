@@ -210,7 +210,7 @@ export default function UserInfo() {
         commentCount={commentCount}
         meetingCount={meetingCount}
       />
-      <div className="mt-5 px-[36px]">
+      <div className="mt-2">
         {activeTab === 'posts' && <PostList posts={posts} />}
         {activeTab === 'comments' && <PostList posts={comments} />}
         {activeTab === 'meetings' && <PostList posts={meetings} />}
