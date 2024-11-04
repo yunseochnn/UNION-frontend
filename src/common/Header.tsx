@@ -3,21 +3,13 @@ import { useNavigate } from 'react-router-dom';
 
 interface HeaderProps {
   title: string;
-  navigateTo?: string;
-  onBack?: () => void;
 }
 
-export default function Header({ title, navigateTo, onBack }: HeaderProps) {
+export default function Header({ title }: HeaderProps) {
   const navigate = useNavigate();
 
   const handleBackClick = () => {
-    if (onBack) {
-      onBack();
-    } else if (navigateTo) {
-      navigate(navigateTo);
-    } else {
-      navigate(-1);
-    }
+    navigate(-1);
   };
 
   return (
