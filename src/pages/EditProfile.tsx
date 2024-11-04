@@ -1,7 +1,6 @@
 import WithdrawBtn from '../components/EditProfile/WithdrawBtn';
 import Header from '../common/Header';
 import EditButton from '../components/EditProfile/EditButton';
-import ProfileImg from '../common/ProfileImg';
 import ProfileInput from '../common/ProfileInput';
 import { useRecoilState } from 'recoil';
 import { useEffect, useState } from 'react';
@@ -11,7 +10,7 @@ import Cookies from 'js-cookie';
 
 export default function EditProfile() {
   const [user, setUser] = useRecoilState(userState);
-  const [profileImage, setProfileImage] = useState<string | Blob>(user.profileImage);
+  const [profileImage, setProfileImage] = useState<File | string | null>(null);
   const [nickname, setNickname] = useState(user.nickname);
   const [description, setDescription] = useState(user.description);
 
@@ -20,6 +19,12 @@ export default function EditProfile() {
     setNickname(user.nickname);
     setDescription(user.description);
   }, [user]);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setProfileImage(e.target.files[0]);
+    }
+  };
 
   const handleSave = async () => {
     if (!nickname.trim()) {
@@ -35,7 +40,7 @@ export default function EditProfile() {
     try {
       let profileImageUrl = user.profileImage;
 
-      if (profileImage instanceof Blob) {
+      if (profileImage instanceof File) {
         const formData = new FormData();
         formData.append('images', profileImage);
 
@@ -81,7 +86,12 @@ export default function EditProfile() {
     <div className="h-full w-full flex flex-col">
       <Header title="프로필 수정" navigateTo="/mypage" />
       <div className="px-[36px] flex-grow">
-        <ProfileImg profileImage={profileImage as string} onImageChange={setProfileImage} />
+        <div className="mb-4">
+          <input type="file" accept="image/*" onChange={handleImageChange} />
+          {typeof profileImage === 'string' && (
+            <img src={profileImage} alt="Profile" className="w-24 h-24 rounded-full" />
+          )}
+        </div>
         <ProfileInput
           nickname={nickname}
           description={description}
