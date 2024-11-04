@@ -13,6 +13,8 @@ interface Post {
   likes: number;
   comments: number;
   thumbnail: string;
+  type: string;
+  id: number;
 }
 
 export default function MyComments() {
@@ -62,6 +64,7 @@ export default function MyComments() {
           likes: item.postLikes,
           comments: item.commentCount,
           thumbnail: item.thumbnail,
+          type: item.type,
         }));
 
         setComments(prevComments => [...prevComments, ...fetchedComments]);
@@ -79,7 +82,7 @@ export default function MyComments() {
   return (
     <div>
       <MyPageList posts={comments} pageTitle="내가 댓글 단 글" lastPostRef={lastCommentRef} />
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <p></p>}
     </div>
   );
 }

@@ -10,6 +10,8 @@ interface PostProps {
   likes: number;
   comments: number;
   thumbnail: string;
+  type: string;
+  id: number;
   isLast?: boolean;
 }
 
