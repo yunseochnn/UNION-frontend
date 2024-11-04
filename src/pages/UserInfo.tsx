@@ -27,6 +27,8 @@ interface PostType {
   likes: number;
   comments: number;
   thumbnail: string;
+  type: string;
+  id: number;
 }
 
 export default function UserInfo() {
