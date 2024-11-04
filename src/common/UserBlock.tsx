@@ -31,7 +31,6 @@ const UserBlock = ({ setUserBlock, token }: Prop) => {
     }
   };
   const onClickYes = async () => {
-    // 유저 차단 api 연동
     await BlockUser();
     setUserBlock(false);
   };

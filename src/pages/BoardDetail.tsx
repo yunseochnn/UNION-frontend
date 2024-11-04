@@ -84,6 +84,7 @@ export default function BoardDetail() {
   const inputRef = useRef<HTMLInputElement | null>(null);
   console.log(myNickname);
 
+  //유저 상세정보
   const getUserInfo = async () => {
     try {
       const response = await apiClient.get('/user/my', {
@@ -300,6 +301,7 @@ export default function BoardDetail() {
 
       <div className="flex flex-col overflow-y-auto flex-1 hidden-scrollbar relative w-full items-center">
         <Content boardContent={boardInfo} />
+
         <div className="flex gap-3 my-3 w-[85%] border-b border-gray-300 pb-3">
           <div className="flex items-center gap-1 font-semibold cursor-pointer" onClick={onClickLikeHandler}>
             {like ? <FaHeart size={18} color="#ff4a4d" /> : <FaRegHeart size={18} />}{' '}
@@ -310,6 +312,7 @@ export default function BoardDetail() {
             <span className="text-xs">{commentData?.length}</span>
           </div>
         </div>
+
         <CommentList
           comments={commentData}
           setUpdateComment={setUpdateComment}
