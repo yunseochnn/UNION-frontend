@@ -22,6 +22,19 @@ interface MyPageListProps {
 }
 
 export default function MyPageList({ posts, pageTitle, lastPostRef }: MyPageListProps) {
+  const emptyMessage = (() => {
+    switch (pageTitle) {
+      case '내가 작성한 게시물':
+        return '작성한 게시물이 없습니다';
+      case '내가 작성한 모임글':
+        return '작성한 모임글이 없습니다';
+      case '내가 댓글 단 글':
+        return '댓글 단 글이 없습니다';
+      default:
+        return '게시물이 없습니다';
+    }
+  })();
+
   return (
     <div className="h-screen flex flex-col">
       <div className="sticky top-0 z-10">
@@ -33,7 +46,7 @@ export default function MyPageList({ posts, pageTitle, lastPostRef }: MyPageList
         ) : (
           <div className="flex flex-col items-center h-full text-customGray2 mt-[170px] text-[18px]">
             <HiOutlinePencilSquare size={50} className="mb-1" />
-            작성한 글이 없습니다
+            {emptyMessage}
           </div>
         )}
       </div>
