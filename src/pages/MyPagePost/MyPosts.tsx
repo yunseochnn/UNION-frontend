@@ -65,6 +65,7 @@ export default function MyPosts() {
           comments: post.commentCount,
           thumbnail: post.thumbnail,
           type: post.type,
+          id: post.id,
         }));
 
         setPosts(prevPosts => [...prevPosts, ...fetchedPosts]);
