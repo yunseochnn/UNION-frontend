@@ -7,7 +7,6 @@ import User from '../common/User';
 import UserTabs from '../components/UserInfo/UserTabs';
 import PostList from '../common/PostList';
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
 
 interface UserInfoType {
   token: string;
@@ -32,7 +31,6 @@ interface PostType {
 }
 
 export default function UserInfo() {
-  const navigate = useNavigate();
   const recoilUserToken = useRecoilValue(selectedUserState);
   const userToken = recoilUserToken || localStorage.getItem('userToken') || '';
 
@@ -44,10 +42,6 @@ export default function UserInfo() {
   const [commentCount, setCommentCount] = useState(0);
   const [meetingCount, setMeetingCount] = useState(0);
   const [activeTab, setActiveTab] = useState('posts');
-
-  const handleBack = () => {
-    navigate(-1);
-  };
 
   const fetchUserInfo = useCallback(async () => {
     if (!userToken) return;
@@ -195,7 +189,7 @@ export default function UserInfo() {
 
   return (
     <div className="h-full w-full flex flex-col relative">
-      <Header title="유저 정보" onBack={handleBack} />
+      <Header title="유저 정보" />
       <div className="px-[36px]">
         <User
           name={userInfo.nickname}
