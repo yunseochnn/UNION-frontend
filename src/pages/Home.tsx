@@ -15,6 +15,8 @@ interface Post {
   likes: number;
   comments: number;
   thumbnail: string;
+  type: string;
+  id: number;
 }
 
 const Home: React.FC = () => {
@@ -33,6 +35,8 @@ const Home: React.FC = () => {
       likes: 155,
       comments: 3,
       thumbnail: '/path/to/image',
+      type: 'FREE',
+      id: 2,
     },
     {
       profileImage: '/path/to/profile',
@@ -43,6 +47,8 @@ const Home: React.FC = () => {
       likes: 155,
       comments: 3,
       thumbnail: '/path/to/image',
+      type: 'FREE',
+      id: 2,
     },
     {
       profileImage: '/path/to/profile',
@@ -53,6 +59,8 @@ const Home: React.FC = () => {
       likes: 155,
       comments: 3,
       thumbnail: '/path/to/image',
+      type: 'FREE',
+      id: 2,
     },
   ];
 
@@ -66,6 +74,8 @@ const Home: React.FC = () => {
       likes: 89,
       comments: 12,
       thumbnail: '/path/to/image',
+      type: 'FREE',
+      id: 2,
     },
     {
       profileImage: '/path/to/profile',
@@ -76,6 +86,8 @@ const Home: React.FC = () => {
       likes: 76,
       comments: 8,
       thumbnail: '/path/to/image',
+      type: 'FREE',
+      id: 2,
     },
     {
       profileImage: '/path/to/profile',
@@ -86,6 +98,8 @@ const Home: React.FC = () => {
       likes: 122,
       comments: 15,
       thumbnail: '/path/to/image',
+      type: 'FREE',
+      id: 2,
     },
   ];
 

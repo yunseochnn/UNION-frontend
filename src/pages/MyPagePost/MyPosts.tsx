@@ -13,6 +13,8 @@ interface Post {
   likes: number;
   comments: number;
   thumbnail: string;
+  type: string;
+  id: number;
 }
 
 export default function MyPosts() {
@@ -62,6 +64,7 @@ export default function MyPosts() {
           likes: post.postLikes,
           comments: post.commentCount,
           thumbnail: post.thumbnail,
+          type: post.type,
         }));
 
         setPosts(prevPosts => [...prevPosts, ...fetchedPosts]);
@@ -79,7 +82,7 @@ export default function MyPosts() {
   return (
     <div>
       <MyPageList posts={posts} pageTitle="내가 작성한 게시물" lastPostRef={lastPostRef} />
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <p></p>}
     </div>
   );
 }

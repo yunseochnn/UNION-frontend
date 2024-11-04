@@ -11,6 +11,8 @@ interface Post {
   likes: number;
   comments: number;
   thumbnail: string;
+  type: string;
+  id: number;
 }
 
 interface MyPageListProps {

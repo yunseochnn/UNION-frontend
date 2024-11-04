@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import Post from '../common/Post';
 
 interface Post {
@@ -9,6 +10,8 @@ interface Post {
   likes: number;
   comments: number;
   thumbnail: string;
+  type: string;
+  id: number;
 }
 
 interface PostListProps {
@@ -17,10 +20,16 @@ interface PostListProps {
 }
 
 export default function PostList({ posts, lastPostRef }: PostListProps) {
+  const navigate = useNavigate();
+
+  const handlePostClick = (post: Post) => {
+    navigate(`/board/${post.type}/${post.id}`);
+  };
+
   return (
     <div>
       {posts.map((post, index) => (
-        <div key={index} ref={index === posts.length - 1 ? lastPostRef : null}>
+        <div key={post.id} ref={index === posts.length - 1 ? lastPostRef : null} onClick={() => handlePostClick(post)}>
           <Post
             profileImage={post.profileImage}
             nickname={post.nickname}
@@ -30,6 +39,9 @@ export default function PostList({ posts, lastPostRef }: PostListProps) {
             likes={post.likes}
             comments={post.comments}
             thumbnail={post.thumbnail}
+            type={post.type}
+            id={post.id}
+            isLast={index === posts.length - 1}
           />
         </div>
       ))}
