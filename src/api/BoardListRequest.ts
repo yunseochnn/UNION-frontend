@@ -15,6 +15,7 @@ interface Author {
 
 interface Post {
   id: number;
+  type: string;
   title: string;
   contentPreview: string;
   thumbnail: string;
@@ -56,17 +57,12 @@ interface BoardListResponse {
   empty: boolean;
 }
 
-export const fetchBoardPosts = async ({
-  boardType,
-  page = 0,
-  size = 3,
-}: ReadBoardRequestParams): Promise<BoardListResponse> => {
-
-  const url = `/board/${boardType.toUpperCase()}`; // 소문자 board로 변경, type은 대문자로 변환
-
+export const fetchBoardPosts = async ({ boardType, page = 0, size = 3 }: ReadBoardRequestParams): Promise<Post[]> => {
+  const url = `/board/${boardType.toUpperCase()}`;
 
   try {
-    const response = await apiClient.get<BoardListResponse>(url, {      headers: {
+    const response = await apiClient.get<BoardListResponse>(url, {
+      headers: {
         Authorization: Cookies.get('Authorization'),
         'Content-Type': 'application/json',
       },
@@ -76,7 +72,7 @@ export const fetchBoardPosts = async ({
       },
     });
 
-    return response.data;
+    return response.data.content;
   } catch (error) {
     console.error('게시글 조회 실패:', error);
     throw error;
