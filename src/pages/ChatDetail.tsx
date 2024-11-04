@@ -27,7 +27,32 @@ export default function ChatDetail() {
   const [messages, setMessages] = useState<IFChatInfo[]>([]);
   const client = useRef<Client | null>(null);
   const [input, setInput] = useState('');
-  const myNickname = localStorage.getItem('nickname') || '';
+  const name = localStorage.getItem('nickname') || '';
+  const [myNickname, setMyNickname] = useState(name);
+  console.log(myNickname);
+
+  const getUserInfo = async () => {
+    try {
+      const response = await apiClient.get('/user/my', {
+        headers: {
+          Authorization: Cookies.get('Authorization'),
+        },
+      });
+      console.log(response.data);
+      const data = response.data;
+      localStorage.setItem('nickname', data.nickname);
+      setMyNickname(data.nickname);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    if (myNickname === '') {
+      getUserInfo();
+    }
+  }, [myNickname]);
 
   const privateChatHistory = useCallback(async () => {
     try {

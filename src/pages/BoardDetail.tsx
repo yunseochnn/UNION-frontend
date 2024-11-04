@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CommentList from '../components/BoardDetail/CommentList';
 import Content from '../components/BoardDetail/Content';
 import Footer from '../components/BoardDetail/Footer';
@@ -78,10 +78,33 @@ export default function BoardDetail() {
   const BoardId = Number(id);
   const queryClient = useQueryClient();
   const commentListRef = useRef<HTMLDivElement>(null);
-  const myNickname = localStorage.getItem('nickname');
   const footerRef = useRef<HTMLDivElement | null>(null);
-
+  const name = localStorage.getItem('nickname') || '';
+  const [myNickname, setMyNickname] = useState(name);
   console.log(myNickname);
+
+  const getUserInfo = async () => {
+    try {
+      const response = await apiClient.get('/user/my', {
+        headers: {
+          Authorization: Cookies.get('Authorization'),
+        },
+      });
+      console.log(response.data);
+      const data = response.data;
+      localStorage.setItem('nickname', data.nickname);
+      setMyNickname(data.nickname);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    if (myNickname === '') {
+      getUserInfo();
+    }
+  }, [myNickname]);
 
   const onClickLikeHandler = () => {
     setLike(!like);
@@ -261,7 +284,7 @@ export default function BoardDetail() {
           />
         ))}
 
-      {userBlock && <UserBlock setUserBlock={setUserBlock} />}
+      {userBlock && <UserBlock setUserBlock={setUserBlock} token={boardInfo?.author.token || ''} />}
       {modify && (
         <Update
           updateData={updateData}
