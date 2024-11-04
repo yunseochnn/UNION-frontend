@@ -76,20 +76,17 @@ export const fetchBoardPosts = async ({ boardType, page = 0, size = 3 }: ReadBoa
   try {
     const response = await apiClient.get<BoardListResponse>(url, {
       headers: {
-        Authorization: Cookies.get('Authorization'),
+        Authorization: Cookies.get('Authorization') || '',
         'Content-Type': 'application/json',
       },
-      params: {
-        page,
-        size,
-      },
+      params: { page, size },
     });
 
-    // BoardPost[]를 Post[]로 매핑
+    // BoardPost[] -> Post[]로 변환하여 반환
     return response.data.content.map(post => ({
       id: post.id,
       title: post.title,
-      content: post.contentPreview, // `contentPreview`를 `content`로 매핑
+      content: post.contentPreview, // contentPreview를 content로 변환
       thumbnail: post.thumbnail,
       profileImage: post.author.profileImage,
       nickname: post.author.nickname,
