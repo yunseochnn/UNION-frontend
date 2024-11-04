@@ -57,7 +57,12 @@ export default function MeetDetail() {
       {outMeet && <OutMeet setOutMeet={setOutMeet} />}
       {userBlock && <UserBlock setUserBlock={setUserBlock} token={gatheringData?.author.token || ''} />}
       <div className="w-[85%]">
-        <Header setModal={setModal} title={gatheringData?.title} />
+        <Header
+          setModal={setModal}
+          title={gatheringData?.title}
+          token={gatheringData?.author.token || ''}
+          authorNickname={gatheringData?.author.nickname || ''}
+        />
       </div>
 
       <div className="overflow-y-auto hidden-scrollbar w-[85%] flex-1">
