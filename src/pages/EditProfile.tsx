@@ -1,6 +1,7 @@
 import WithdrawBtn from '../components/EditProfile/WithdrawBtn';
 import Header from '../common/Header';
 import EditButton from '../components/EditProfile/EditButton';
+import ProfileImg from '../common/ProfileImg';
 import ProfileInput from '../common/ProfileInput';
 import { useRecoilState } from 'recoil';
 import { useEffect, useState } from 'react';
@@ -10,9 +11,10 @@ import Cookies from 'js-cookie';
 
 export default function EditProfile() {
   const [user, setUser] = useRecoilState(userState);
-  const [profileImage, setProfileImage] = useState<File | string | null>(null);
+  const [profileImage, setProfileImage] = useState<string | null>(user.profileImage);
   const [nickname, setNickname] = useState(user.nickname);
   const [description, setDescription] = useState(user.description);
+  const [croppedImage, setCroppedImage] = useState<Blob | null>(null);
 
   useEffect(() => {
     setProfileImage(user.profileImage);
@@ -20,29 +22,19 @@ export default function EditProfile() {
     setDescription(user.description);
   }, [user]);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setProfileImage(e.target.files[0]);
-    }
-  };
-
   const handleSave = async () => {
     if (!nickname.trim()) {
       alert('닉네임을 입력해 주세요.');
       return;
     }
 
-    if (profileImage === user.profileImage && nickname === user.nickname && description === user.description) {
-      alert('변경된 내용이 없습니다.');
-      return;
-    }
-
     try {
       let profileImageUrl = user.profileImage;
 
-      if (profileImage instanceof File) {
+      if (croppedImage) {
+        const jpegFile = new File([croppedImage], 'cropped-profile.jpg', { type: 'image/jpeg' });
         const formData = new FormData();
-        formData.append('images', profileImage);
+        formData.append('images', jpegFile);
 
         const uploadResponse = await apiClient.post('/photo/upload', formData, {
           headers: {
@@ -56,7 +48,7 @@ export default function EditProfile() {
       const updatedProfileData: Record<string, any> = {};
       if (nickname !== user.nickname) updatedProfileData.nickname = nickname;
       if (description !== user.description) updatedProfileData.description = description || '';
-      if (profileImageUrl !== user.profileImage) updatedProfileData.profileImage = profileImageUrl;
+      if (profileImageUrl && profileImageUrl !== user.profileImage) updatedProfileData.profileImage = profileImageUrl;
 
       const { data: updatedUser } = await apiClient.put('/user/my', updatedProfileData, {
         headers: {
@@ -71,6 +63,8 @@ export default function EditProfile() {
         profileImage: updatedUser.profileImage,
       }));
 
+      setProfileImage(profileImageUrl);
+      setCroppedImage(null);
       alert('프로필이 성공적으로 업데이트되었습니다.');
     } catch (error) {
       if (error instanceof Error) {
@@ -86,12 +80,7 @@ export default function EditProfile() {
     <div className="h-full w-full flex flex-col">
       <Header title="프로필 수정" navigateTo="/mypage" />
       <div className="px-[36px] flex-grow">
-        <div className="mb-4">
-          <input type="file" accept="image/*" onChange={handleImageChange} />
-          {typeof profileImage === 'string' && (
-            <img src={profileImage} alt="Profile" className="w-24 h-24 rounded-full" />
-          )}
-        </div>
+        <ProfileImg profileImage={profileImage || ''} onImageChange={setCroppedImage} />
         <ProfileInput
           nickname={nickname}
           description={description}
