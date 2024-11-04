@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Content from '../components/MeetDetail/Content';
 import Footer from '../components/MeetDetail/Footer';
 import Header from '../components/MeetDetail/Header';
@@ -9,6 +9,8 @@ import RemoveMeet from '../components/MeetDetail/RemoveMeet';
 import OutMeet from '../components/MeetDetail/OutMeet';
 import More from '../components/MeetDetail/More';
 import UserBlock from '../common/UserBlock';
+import ReadMeetRequest from '../api/ReadMeetRequest';
+import { useParams } from 'react-router-dom';
 export interface Response {
   id: number;
   title: string;
@@ -43,6 +45,25 @@ export default function MeetDetail() {
   const [remove, setRemove] = useState(false);
   const [outMeet, setOutMeet] = useState(false);
   const [userBlock, setUserBlock] = useState(false);
+  const { id } = useParams();
+  const MeetId = Number(id);
+
+  console.log(gatheringData);
+
+  const onReadMeet = useCallback(async () => {
+    try {
+      const response = await ReadMeetRequest(MeetId);
+      const data = response.data;
+      console.log(data);
+      setGatheringData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [MeetId]);
+
+  useEffect(() => {
+    onReadMeet();
+  }, [onReadMeet]);
 
   return (
     <>
