@@ -1,6 +1,7 @@
 import WithdrawBtn from '../components/EditProfile/WithdrawBtn';
 import Header from '../common/Header';
 import EditButton from '../components/EditProfile/EditButton';
+import ProfileImg from '../common/ProfileImg';
 import ProfileInput from '../common/ProfileInput';
 import { useRecoilState } from 'recoil';
 import { useEffect, useState } from 'react';
@@ -10,7 +11,7 @@ import Cookies from 'js-cookie';
 
 export default function EditProfile() {
   const [user, setUser] = useRecoilState(userState);
-  const [profileImage, setProfileImage] = useState<string | null>(user.profileImage);
+  const [profileImage, setProfileImage] = useState<Blob | string | null>(null); // Blob 형식도 추가
   const [nickname, setNickname] = useState(user.nickname);
   const [description, setDescription] = useState(user.description);
 
@@ -20,27 +21,9 @@ export default function EditProfile() {
     setDescription(user.description);
   }, [user]);
 
-  // 파일 선택 시 이미지 업로드
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const selectedFile = e.target.files[0];
-      const formData = new FormData();
-      formData.append('images', selectedFile);
-
-      try {
-        const uploadResponse = await apiClient.post('/photo/upload', formData, {
-          headers: {
-            Authorization: Cookies.get('Authorization') || '',
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-        const uploadedUrl = uploadResponse.data[0];
-        setProfileImage(uploadedUrl); // 서버에서 받은 URL로 상태 업데이트
-      } catch (error) {
-        console.error('이미지 업로드 중 오류 발생:', error);
-        alert('이미지 업로드에 실패했습니다. 다시 시도해 주세요.');
-      }
-    }
+  // 크롭된 이미지 Blob을 받아와 상태로 저장하는 함수
+  const handleImageChange = async (croppedImage: Blob) => {
+    setProfileImage(croppedImage);
   };
 
   const handleSave = async () => {
@@ -49,20 +32,32 @@ export default function EditProfile() {
       return;
     }
 
-    if (profileImage === user.profileImage && nickname === user.nickname && description === user.description) {
-      alert('변경된 내용이 없습니다.');
-      return;
-    }
-
     try {
+      let profileImageUrl = user.profileImage;
+
+      // profileImage가 Blob일 경우 File로 변환하여 업로드
+      if (profileImage instanceof Blob) {
+        const file = new File([profileImage], 'profile.jpg', { type: 'image/jpeg' });
+        const formData = new FormData();
+        formData.append('images', file);
+
+        const uploadResponse = await apiClient.post('/photo/upload', formData, {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('Authorization')}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        profileImageUrl = uploadResponse.data[0];
+      }
+
       const updatedProfileData: Record<string, any> = {};
       if (nickname !== user.nickname) updatedProfileData.nickname = nickname;
       if (description !== user.description) updatedProfileData.description = description || '';
-      if (profileImage && profileImage !== user.profileImage) updatedProfileData.profileImage = profileImage;
+      if (profileImageUrl && profileImageUrl !== user.profileImage) updatedProfileData.profileImage = profileImageUrl;
 
       const { data: updatedUser } = await apiClient.put('/user/my', updatedProfileData, {
         headers: {
-          Authorization: Cookies.get('Authorization') || '',
+          Authorization: `Bearer ${Cookies.get('Authorization')}`,
         },
       });
 
@@ -88,10 +83,7 @@ export default function EditProfile() {
     <div className="h-full w-full flex flex-col">
       <Header title="프로필 수정" navigateTo="/mypage" />
       <div className="px-[36px] flex-grow">
-        <div className="mb-4">
-          <input type="file" accept="image/*" onChange={handleImageChange} />
-          {profileImage && <img src={profileImage} alt="Profile" className="w-24 h-24 rounded-full" />}
-        </div>
+        <ProfileImg profileImage={user.profileImage} onImageChange={handleImageChange} />
         <ProfileInput
           nickname={nickname}
           description={description}
