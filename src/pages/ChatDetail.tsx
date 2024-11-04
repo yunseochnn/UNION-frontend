@@ -21,8 +21,8 @@ export interface IFChatInfo {
 
 export default function ChatDetail() {
   const [searchParams] = useSearchParams();
-  const uid = searchParams.get('uid');
   const title = searchParams.get('title');
+  const uid = localStorage.getItem('userToken');
   console.log(uid);
   const [modal, setModal] = useState(false);
   const [messages, setMessages] = useState<IFChatInfo[]>([]);
