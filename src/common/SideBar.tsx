@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 const SideBar = () => {
   const navigate = useNavigate();
   const pathname = window.location.pathname;
-  console.log(pathname.includes('MyPage'));
   return (
     <div className="border-t">
       <div className="flex justify-between w-full mt-2">

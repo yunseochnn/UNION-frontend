@@ -1,8 +1,6 @@
 import Policy from '../../common/Policy';
 import '../../style.css';
 import { IFChatInfo } from '../../pages/ChatDetail';
-import { useRecoilValue } from 'recoil';
-import { userState } from '../../recoil/userAtoms';
 import dayjs from 'dayjs';
 import { useEffect, useRef } from 'react';
 import DefaultImage from '/default-profile-image.png';
@@ -12,8 +10,7 @@ interface Props {
 }
 
 const Content = ({ messages }: Props) => {
-  const user = useRecoilValue(userState);
-  const myNickname = user.nickname;
+  const myNickname = localStorage.getItem('nickname');
   const messageEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
