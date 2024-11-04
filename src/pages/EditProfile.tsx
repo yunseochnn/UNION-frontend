@@ -38,7 +38,7 @@ export default function EditProfile() {
 
         const uploadResponse = await apiClient.post('/photo/upload', formData, {
           headers: {
-            Authorization: `Bearer ${Cookies.get('Authorization')}`,
+            Authorization: Cookies.get('Authorization'),
             'Content-Type': 'multipart/form-data',
           },
         });
@@ -52,7 +52,7 @@ export default function EditProfile() {
 
       const { data: updatedUser } = await apiClient.put('/user/my', updatedProfileData, {
         headers: {
-          Authorization: `Bearer ${Cookies.get('Authorization')}`,
+          Authorization: Cookies.get('Authorization'),
         },
       });
 
