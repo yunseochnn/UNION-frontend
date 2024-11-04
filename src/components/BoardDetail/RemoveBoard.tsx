@@ -9,7 +9,7 @@ interface Prop {
 const RemoveBoard = ({ setRemove }: Prop) => {
   const { type, id } = useParams();
   const [searchParams] = useSearchParams();
-  const from = searchParams.get('from ');
+  const from = searchParams.get('from');
   const Type = type?.toUpperCase() || '';
   const BoardId = Number(id);
   const navigate = useNavigate();
