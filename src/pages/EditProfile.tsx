@@ -20,17 +20,17 @@ export default function EditProfile() {
     setDescription(user.description);
   }, [user]);
 
-  // 파일 선택 시 이미지 업로드를 실행하는 함수
+  // 파일 선택 시 이미지 업로드
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
       const formData = new FormData();
-      formData.append('images[0]', selectedFile);
+      formData.append('images', selectedFile);
 
       try {
         const uploadResponse = await apiClient.post('/photo/upload', formData, {
           headers: {
-            Authorization: Cookies.get('Authorization'),
+            Authorization: Cookies.get('Authorization') || '',
             'Content-Type': 'multipart/form-data',
           },
         });
@@ -62,7 +62,7 @@ export default function EditProfile() {
 
       const { data: updatedUser } = await apiClient.put('/user/my', updatedProfileData, {
         headers: {
-          Authorization: Cookies.get('Authorization'),
+          Authorization: Cookies.get('Authorization') || '',
         },
       });
 
