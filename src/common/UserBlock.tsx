@@ -1,11 +1,37 @@
+import { useNavigate } from 'react-router-dom';
+import apiClient from '../api/apiClient';
+import Cookies from 'js-cookie';
+
 interface Prop {
   setUserBlock: React.Dispatch<React.SetStateAction<boolean>>;
+  token: string;
 }
 
-const UserBlock = ({ setUserBlock }: Prop) => {
-  const onClickYes = () => {
-    // 유저 차단 api 연동
+const UserBlock = ({ setUserBlock, token }: Prop) => {
+  const navigate = useNavigate();
+  const BlockUser = async () => {
+    try {
+      const response = await apiClient.post(
+        `/user/block/${token}`,
+        {},
+        {
+          headers: {
+            Authorization: Cookies.get('Authorization'),
+          },
+        },
+      );
 
+      const { status } = response;
+      if (status === 200) {
+        console.log('유저차단 성공');
+        navigate(-1);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const onClickYes = async () => {
+    await BlockUser();
     setUserBlock(false);
   };
   const onClickNo = () => {

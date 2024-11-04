@@ -1,5 +1,5 @@
 import Slide from '../../common/Slide';
-import Vote from './Vote';
+// import Vote from './Vote';
 import { BoardInfo } from '../../pages/BoardDetail';
 import DefaultImage from '/default-profile-image.png';
 import { useSetRecoilState } from 'recoil';
@@ -56,9 +56,9 @@ const Content = ({ boardContent }: Prop) => {
         </div>
       )}
 
-      <div className="mt-4">
+      {/* <div className="mt-4">
         <Vote />
-      </div>
+      </div> */}
     </div>
   );
 };

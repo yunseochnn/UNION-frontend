@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CommentList from '../components/BoardDetail/CommentList';
 import Content from '../components/BoardDetail/Content';
 import Footer from '../components/BoardDetail/Footer';
@@ -78,10 +78,35 @@ export default function BoardDetail() {
   const BoardId = Number(id);
   const queryClient = useQueryClient();
   const commentListRef = useRef<HTMLDivElement>(null);
-  const myNickname = localStorage.getItem('nickname');
   const footerRef = useRef<HTMLDivElement | null>(null);
-
+  const name = localStorage.getItem('nickname') || '';
+  const [myNickname, setMyNickname] = useState(name);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   console.log(myNickname);
+
+  //유저 상세정보
+  const getUserInfo = async () => {
+    try {
+      const response = await apiClient.get('/user/my', {
+        headers: {
+          Authorization: Cookies.get('Authorization'),
+        },
+      });
+      console.log(response.data);
+      const data = response.data;
+      localStorage.setItem('nickname', data.nickname);
+      setMyNickname(data.nickname);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    if (myNickname === '') {
+      getUserInfo();
+    }
+  }, [myNickname]);
 
   const onClickLikeHandler = () => {
     setLike(!like);
@@ -261,7 +286,7 @@ export default function BoardDetail() {
           />
         ))}
 
-      {userBlock && <UserBlock setUserBlock={setUserBlock} />}
+      {userBlock && <UserBlock setUserBlock={setUserBlock} token={boardInfo?.author.token || ''} />}
       {modify && (
         <Update
           updateData={updateData}
@@ -276,6 +301,7 @@ export default function BoardDetail() {
 
       <div className="flex flex-col overflow-y-auto flex-1 hidden-scrollbar relative w-full items-center">
         <Content boardContent={boardInfo} />
+
         <div className="flex gap-3 my-3 w-[85%] border-b border-gray-300 pb-3">
           <div className="flex items-center gap-1 font-semibold cursor-pointer" onClick={onClickLikeHandler}>
             {like ? <FaHeart size={18} color="#ff4a4d" /> : <FaRegHeart size={18} />}{' '}
@@ -286,6 +312,7 @@ export default function BoardDetail() {
             <span className="text-xs">{commentData?.length}</span>
           </div>
         </div>
+
         <CommentList
           comments={commentData}
           setUpdateComment={setUpdateComment}
@@ -293,11 +320,13 @@ export default function BoardDetail() {
           parent={parent}
           setParent={setParent}
           footerRef={footerRef}
+          inputRef={inputRef}
         />
       </div>
 
       <div className="w-[90%]" ref={footerRef}>
         <Footer
+          inputRef={inputRef}
           handleAddComment={handleAddComment}
           handleUpdateComment={handleUpdateComment}
           updateComment={updateComment}

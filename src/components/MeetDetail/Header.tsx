@@ -12,7 +12,7 @@ const Header = ({ setModal, title }: Props) => {
   const navigate = useNavigate();
   return (
     <div className="flex items-center justify-between w-full h-[60px]">
-      <div className="cursor-pointer font-black" onClick={() => navigate('/meet')}>
+      <div className="cursor-pointer font-black" onClick={() => navigate(-1)}>
         <IoIosArrowBack size={32} />
       </div>
       <div className="font-semibold text-lg">{title}</div>
