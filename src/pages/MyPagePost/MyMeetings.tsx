@@ -3,6 +3,8 @@ import MyPageList from '../../pages/MyPageList';
 export default function MyMeetings() {
   const meetings = [
     {
+      id: 1,
+      type: 'FREE',
       profileImage: '/Logo.svg',
       nickname: '찐 감자',
       university: '구름대학교',
@@ -13,6 +15,8 @@ export default function MyMeetings() {
       thumbnail: '/Logo.svg',
     },
     {
+      id: 2,
+      type: 'FREE',
       profileImage: '/Logo.svg',
       nickname: '찐 감자',
       university: '구름대학교',
