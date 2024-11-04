@@ -6,17 +6,19 @@ import { useQuery } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
 
 export interface IFChat {
-  senderName: string;
-  senderToken: string;
-  senderProfileImage: string;
+  title: string;
+  chatroomId: 12345;
+  chatroomType: string;
   content: string;
+  userToken: string;
+  profileImage: string;
   createdAt: string;
 }
 
 const Lists = () => {
   const [filter, setFilter] = useState('private');
 
-  //개인 채팅 리스트 조회
+  //채팅 리스트 조회
   const {
     data: chatList,
     isError: isChatError,

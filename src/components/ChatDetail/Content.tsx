@@ -1,12 +1,12 @@
 import Policy from '../../common/Policy';
 import '../../style.css';
-import { IFChatInfo } from '../../pages/ChatDetail';
+import { IFMessageInfo } from '../../pages/ChatDetail';
 import dayjs from 'dayjs';
 import { useEffect, useRef } from 'react';
 import DefaultImage from '/default-profile-image.png';
 import { useNavigate } from 'react-router-dom';
 interface Props {
-  messages: IFChatInfo[] | undefined;
+  messages: IFMessageInfo[] | undefined;
 }
 
 const Content = ({ messages }: Props) => {

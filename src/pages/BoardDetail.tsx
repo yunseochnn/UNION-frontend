@@ -4,7 +4,6 @@ import Content from '../components/BoardDetail/Content';
 import Footer from '../components/BoardDetail/Footer';
 import Header from '../components/BoardDetail/Header';
 import '../style.css';
-// import More from '../components/BoardDetail/More';
 import UserBlock from '../common/UserBlock';
 import UserMore from '../common/UserMore';
 import Update from '../components/BoardDetail/Update.tsx/Update';
@@ -63,6 +62,7 @@ export interface UpComment {
 
 interface Like {
   postLikes: number;
+  liked: boolean;
 }
 
 export interface ParentInfo {
@@ -75,7 +75,6 @@ export default function BoardDetail() {
   const [userBlock, setUserBlock] = useState(false);
   const [modify, setModify] = useState(false);
   const [remove, setRemove] = useState(false);
-  const [like, setLike] = useState(false);
   const [parent, setParent] = useState<ParentInfo>({ id: null, nickname: null });
   const [updateComment, setUpdateComment] = useState<UpComment | null>(null);
   const { type, id } = useParams();
@@ -112,10 +111,6 @@ export default function BoardDetail() {
       getUserInfo();
     }
   }, [myNickname]);
-
-  const onClickLikeHandler = () => {
-    setLike(!like);
-  };
 
   //게시물 상세 데이터 가져오기
   const {
@@ -163,10 +158,11 @@ export default function BoardDetail() {
     data: Like,
     isError: isLikeError,
     error: LikeError,
+    refetch: refetchLike,
   } = useQuery<Like>({
     queryKey: ['like', BoardId],
     queryFn: async () => {
-      const response = await apiClient.get(`/likes/${BoardId}`, {
+      const response = await apiClient.get(`/board/likes/${BoardId}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: Cookies.get('Authorization'),
@@ -278,6 +274,25 @@ export default function BoardDetail() {
     console.log(`댓글 read 에러 : ${LikeError}`);
   }
 
+  const onClickLike = async () => {
+    try {
+      const response = await apiClient.post(
+        `/board/like/${BoardId}`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: Cookies.get('Authorization'),
+          },
+        },
+      );
+      console.log(response);
+      refetchLike();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="h-full w-full flex flex-col items-center pt-1 pb-2 relative">
       {Modal &&
@@ -308,8 +323,8 @@ export default function BoardDetail() {
         <Content boardContent={boardInfo} />
 
         <div className="flex gap-3 my-3 w-[85%] border-b border-gray-300 pb-3">
-          <div className="flex items-center gap-1 font-semibold cursor-pointer" onClick={onClickLikeHandler}>
-            {like ? <FaHeart size={18} color="#ff4a4d" /> : <FaRegHeart size={18} />}{' '}
+          <div className="flex items-center gap-1 font-semibold cursor-pointer" onClick={onClickLike}>
+            {Like?.liked ? <FaHeart size={18} color="#ff4a4d" /> : <FaRegHeart size={18} />}{' '}
             <span className="text-xs">{Like?.postLikes || 0}</span>
           </div>
           <div className="flex items-center gap-1 font-semibold">
