@@ -34,6 +34,11 @@ export interface IFComment {
   children: IFComment[];
 }
 
+export interface CommentData {
+  comments: IFComment[];
+  commentCount: number;
+}
+
 export interface BoardInfo {
   id: number;
   title: string;
@@ -139,7 +144,7 @@ export default function BoardDetail() {
     data: commentData,
     isError: isCommentError,
     error: commentError,
-  } = useQuery<IFComment[]>({
+  } = useQuery<CommentData>({
     queryKey: ['commentDetail', BoardId],
     queryFn: async () => {
       const response = await apiClient.get(`/comments/${BoardId}`, {
@@ -309,12 +314,12 @@ export default function BoardDetail() {
           </div>
           <div className="flex items-center gap-1 font-semibold">
             <HiOutlineChatBubbleOvalLeft size={20} />
-            <span className="text-xs">{commentData?.length}</span>
+            <span className="text-xs">{commentData?.commentCount}</span>
           </div>
         </div>
 
         <CommentList
-          comments={commentData}
+          comments={commentData?.comments}
           setUpdateComment={setUpdateComment}
           handleDeleteComment={handleDeleteComment}
           parent={parent}
