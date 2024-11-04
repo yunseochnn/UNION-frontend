@@ -74,7 +74,7 @@ export default function BlockedUserList() {
   return (
     <div className="h-screen flex flex-col">
       <div className="sticky top-0 z-10">
-        <Header title="차단 유저 목록" navigateTo="/Mypage" />
+        <Header title="차단 유저 목록" />
       </div>
       <div className="flex-grow overflow-y-auto hidden-scrollbar py-3 px-[30px]">
         {blockedUsers.map(user => (

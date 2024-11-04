@@ -25,7 +25,7 @@ export default function MyPageList({ posts, pageTitle, lastPostRef }: MyPageList
   return (
     <div className="h-screen flex flex-col">
       <div className="sticky top-0 z-10">
-        <Header title={pageTitle} navigateTo="/mypage" />
+        <Header title={pageTitle} />
       </div>
       <div className="flex-grow overflow-y-auto hidden-scrollbar">
         {posts.length > 0 ? (
