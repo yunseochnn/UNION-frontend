@@ -168,11 +168,12 @@ export default function ChatDetail() {
   return (
     <div className="flex flex-col w-full h-full pb-2 pt-1 relative items-center">
       {outMeet && <OutMeet setOutMeet={setOutMeet} />}
-      {modal && option === 'private' ? (
-        <More setModal={setModal} setUserBlock={setUserBlock} />
-      ) : (
-        <MeetMore setModal={setModal} setOutMeet={setOutMeet} />
-      )}
+      {modal &&
+        (option === 'private' ? (
+          <More setModal={setModal} setUserBlock={setUserBlock} />
+        ) : (
+          <MeetMore setModal={setModal} setOutMeet={setOutMeet} />
+        ))}
       {userBlock && <UserBlock setUserBlock={setUserBlock} token={uid || ''} />}
       <div className="w-[85%]">
         <Header setModal={setModal} title={title} />

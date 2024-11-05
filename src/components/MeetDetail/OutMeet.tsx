@@ -24,10 +24,10 @@ const OutMeet = ({ setOutMeet }: Props) => {
       const { status } = response;
       if (status === 200) {
         console.log('모임 나가기 성공');
-        setOutMeet(false);
         if (pathname.includes('chat')) {
           navigate('/chatList');
         }
+        setOutMeet(false);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -45,7 +45,7 @@ const OutMeet = ({ setOutMeet }: Props) => {
       <div className="w-72 h-36 bg-white rounded-md flex flex-col justify-center items-center gap-4">
         <div className="font-semibold text-lg flex flex-col justify-center items-center">
           <span>해당 모임을 나가시겠습니까?</span>
-          <span className="text-sm text-red-500">모임을 나가시면 모임 채팅도 나가게 됩니다</span>
+          <span className="text-sm text-red-500">모임과 모임채팅 모두 나가게 됩니다</span>
         </div>
         <div className="flex gap-8">
           <div
