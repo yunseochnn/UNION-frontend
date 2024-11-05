@@ -1,4 +1,3 @@
-// src/pages/Board/type.tsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import SideBar from '../../common/SideBar';
@@ -37,7 +36,7 @@ const BoardList: React.FC = () => {
           page,
           size,
         });
-        setPosts(response.content || []); // response.content가 undefined일 경우 빈 배열 사용
+        setPosts(response || []); // fetchBoardPosts에서 직접 Post[] 반환
       } catch (error) {
         console.error('게시글 조회 실패:', error);
         setPosts([]); // 에러 발생 시 빈 배열로 설정
@@ -54,7 +53,7 @@ const BoardList: React.FC = () => {
   return (
     <div className="center-content flex flex-col bg-white relative">
       <Header title={BOARD_TITLES[type as keyof typeof BOARD_TITLES]} />
-      <main className="flex-1 overflow-y-auto px-[20px]">
+      <main className="flex-1 overflow-y-auto ">
         {isLoading ? (
           <div>로딩 중...</div>
         ) : (
