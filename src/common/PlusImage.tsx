@@ -28,7 +28,7 @@ const PlusImage = ({ setImages }: Prop) => {
       });
 
       console.log(response);
-      setImages(response.data);
+      setImages(prev => [...prev, response.data]);
     } catch (error) {
       console.log(error);
     }

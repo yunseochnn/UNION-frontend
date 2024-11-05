@@ -51,7 +51,7 @@ const Content = ({ boardContent }: Prop) => {
       </div>
 
       {boardContent?.photos && boardContent?.photos.length > 0 && (
-        <div className="mt-4 cursor-pointer">
+        <div className="mt-4 cursor-pointer flex items-center justify-center">
           <Slide images={boardContent?.photos} />
         </div>
       )}
