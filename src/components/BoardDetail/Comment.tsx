@@ -72,6 +72,8 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
   };
 
   const onClickCommentProfile = () => {
+    if (comment.commenter.nickname === myNickname) return;
+
     if (comment.commenter.profileImage) {
       setUser(comment.commenter.token);
       localStorage.setItem('userToken', comment.commenter.token);

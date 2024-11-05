@@ -1,5 +1,5 @@
 import Slide from '../../common/Slide';
-import Vote from './Vote';
+// import Vote from './Vote';
 import { BoardInfo } from '../../pages/BoardDetail';
 import DefaultImage from '/default-profile-image.png';
 import { useSetRecoilState } from 'recoil';
@@ -14,8 +14,10 @@ interface Prop {
 const Content = ({ boardContent }: Prop) => {
   const setUser = useSetRecoilState(selectedUserState);
   const navigate = useNavigate();
-
+  const myNickname = localStorage.getItem('nickname');
   const onClickeProfile = () => {
+    if (boardContent?.author.nickname === myNickname) return;
+
     if (boardContent?.author.token) {
       setUser(boardContent.author.token);
       localStorage.setItem('userToken', boardContent.author.token);
@@ -51,14 +53,14 @@ const Content = ({ boardContent }: Prop) => {
       </div>
 
       {boardContent?.photos && boardContent?.photos.length > 0 && (
-        <div className="mt-4 cursor-pointer">
+        <div className="mt-4 cursor-pointer flex items-center justify-center">
           <Slide images={boardContent?.photos} />
         </div>
       )}
 
-      <div className="mt-4">
+      {/* <div className="mt-4">
         <Vote />
-      </div>
+      </div> */}
     </div>
   );
 };
