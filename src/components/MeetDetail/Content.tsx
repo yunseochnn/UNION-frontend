@@ -52,7 +52,7 @@ const Content = ({ gatheringData }: Prop) => {
           </span>
         )}
 
-        <span className="font-bold">{gatheringData?.title}</span>
+        <span className="font-bold ml-2">{gatheringData?.title}</span>
       </div>
 
       <div className="flex items-center gap-2 mt-5">
