@@ -6,6 +6,19 @@ import PostList from '../../common/PostList';
 import FloatingActionButton from '../../common/FloatingActionButton';
 import { fetchBoardPosts } from '../../api/BoardListRequest';
 
+interface Post {
+  id: number;
+  title: string;
+  content: string;
+  thumbnail: string;
+  profileImage: string;
+  nickname: string;
+  university: string;
+  likes: number;
+  comments: number;
+  type: string;
+}
+
 const BOARD_TITLES = {
   FREE: '자유게시판',
   MARKET: '장터게시판',
@@ -21,7 +34,7 @@ const BOARD_TITLES = {
 const BoardList: React.FC = () => {
   const navigate = useNavigate();
   const { type } = useParams<{ type: string }>();
-  const [posts, setPosts] = useState<any[]>([]); // 빈 배열로 초기화
+  const [posts, setPosts] = useState<Post[]>([]); // Post[]로 타입 설정
   const [isLoading, setIsLoading] = useState(true);
   const page = 0;
   const size = 3;
@@ -31,12 +44,8 @@ const BoardList: React.FC = () => {
       if (!type) return;
       try {
         setIsLoading(true);
-        const response = await fetchBoardPosts({
-          boardType: type,
-          page,
-          size,
-        });
-        setPosts(response || []); // fetchBoardPosts에서 직접 Post[] 반환
+        const response = await fetchBoardPosts({ boardType: type, page, size });
+        setPosts(response); // 이미 Post[] 타입의 response 사용
       } catch (error) {
         console.error('게시글 조회 실패:', error);
         setPosts([]); // 에러 발생 시 빈 배열로 설정
@@ -57,7 +66,7 @@ const BoardList: React.FC = () => {
         {isLoading ? (
           <div>로딩 중...</div>
         ) : (
-          <PostList posts={posts || []} /> // posts가 undefined일 경우 빈 배열 전달
+          <PostList posts={posts} /> // posts가 Post[]로 전달
         )}
       </main>
       <div className="right-8 bottom-24 absolute">

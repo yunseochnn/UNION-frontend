@@ -13,7 +13,7 @@ interface Author {
   univName: string;
 }
 
-interface Post {
+interface BoardPost {
   id: number;
   type: string;
   title: string;
@@ -40,7 +40,7 @@ interface Pageable {
 }
 
 interface BoardListResponse {
-  content: Post[];
+  content: BoardPost[];
   pageable: Pageable;
   last: boolean;
   totalPages: number;
@@ -57,6 +57,20 @@ interface BoardListResponse {
   empty: boolean;
 }
 
+// UI에서 사용할 Post 타입 정의
+interface Post {
+  id: number;
+  title: string;
+  content: string;
+  thumbnail: string;
+  profileImage: string;
+  nickname: string;
+  university: string;
+  likes: number;
+  comments: number;
+  type: string;
+}
+
 export const fetchBoardPosts = async ({ boardType, page = 0, size = 3 }: ReadBoardRequestParams): Promise<Post[]> => {
   const url = `/board/${boardType.toUpperCase()}`;
 
@@ -66,13 +80,22 @@ export const fetchBoardPosts = async ({ boardType, page = 0, size = 3 }: ReadBoa
         Authorization: `Bearer ${Cookies.get('Authorization')}`,
         'Content-Type': 'application/json',
       },
-      params: {
-        page,
-        size,
-      },
+      params: { page, size },
     });
 
-    return response.data.content;
+    // BoardPost[] -> Post[]로 변환하여 반환
+    return response.data.content.map(post => ({
+      id: post.id,
+      title: post.title,
+      content: post.contentPreview, // `contentPreview`를 `content`로 매핑
+      thumbnail: post.thumbnail,
+      profileImage: post.author.profileImage,
+      nickname: post.author.nickname,
+      university: post.author.univName,
+      likes: post.postLikes,
+      comments: post.commentCount,
+      type: post.type,
+    }));
   } catch (error) {
     console.error('게시글 조회 실패:', error);
     throw error;
