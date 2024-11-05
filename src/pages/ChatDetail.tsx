@@ -8,6 +8,8 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import apiClient from '../api/apiClient';
 import Cookies from 'js-cookie';
 import UserBlock from '../common/UserBlock';
+import MeetMore from '../components/ChatDetail/MeetMore';
+import OutMeet from '../components/MeetDetail/OutMeet';
 
 const socketUrl = `${import.meta.env.VITE_API_BASE_URL.replace('https', 'wss')}/ws`;
 
@@ -41,6 +43,7 @@ export default function ChatDetail() {
   const roomId = searchParams.get('chatId');
   const [chatroomId, setChatroomId] = useState(roomId || -1);
   const userToken = localStorage.getItem('userToken');
+  const [outMeet, setOutMeet] = useState(false);
   console.log(myNickname);
 
   const getUserInfo = async () => {
@@ -164,7 +167,12 @@ export default function ChatDetail() {
 
   return (
     <div className="flex flex-col w-full h-full pb-2 pt-1 relative items-center">
-      {modal && <More setModal={setModal} setUserBlock={setUserBlock} />}
+      {outMeet && <OutMeet setOutMeet={setOutMeet} />}
+      {modal && option === 'private' ? (
+        <More setModal={setModal} setUserBlock={setUserBlock} />
+      ) : (
+        <MeetMore setModal={setModal} setOutMeet={setOutMeet} />
+      )}
       {userBlock && <UserBlock setUserBlock={setUserBlock} token={uid || ''} />}
       <div className="w-[85%]">
         <Header setModal={setModal} title={title} />
