@@ -36,7 +36,9 @@ const Content = ({ gatheringData }: Prop) => {
       </div>
 
       <div className="flex items-center mt-[30px] gap-3">
-        <div className="h-10 w-10 bg-gray-300 rounded-full cursor-pointer">{gatheringData?.author.profileImage}</div>
+        <div className="h-10 w-10 bg-gray-300 rounded-full cursor-pointer">
+          <img src={gatheringData?.author.profileImage} />
+        </div>
         <div>
           <div className="font-semibold text-sm">{gatheringData?.author.nickname}</div>
           <div className="font-semibold text-sm text-gray-400">{gatheringData?.createdAt}</div>
