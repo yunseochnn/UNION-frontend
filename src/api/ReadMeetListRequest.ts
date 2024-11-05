@@ -30,7 +30,7 @@ export const ReadMeetListRequest = {
     page: number = 0,
     size: number = 3,
   ) => {
-    return await apiClient.get('/gathering', {
+    return await apiClient.get('/gatherings', {
       params: {
         sortType,
         latitude,

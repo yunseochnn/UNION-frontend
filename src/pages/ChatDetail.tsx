@@ -10,6 +10,7 @@ import Cookies from 'js-cookie';
 import UserBlock from '../common/UserBlock';
 import MeetMore from '../components/ChatDetail/MeetMore';
 import OutMeet from '../components/MeetDetail/OutMeet';
+import OutChatModal from '../components/ChatDetail/OutChatModal';
 
 const socketUrl = `${import.meta.env.VITE_API_BASE_URL.replace('https', 'wss')}/ws`;
 
@@ -44,6 +45,7 @@ export default function ChatDetail() {
   const [chatroomId, setChatroomId] = useState(roomId || -1);
   const userToken = localStorage.getItem('userToken');
   const [outMeet, setOutMeet] = useState(false);
+  const [outChat, setOutChat] = useState(false);
   console.log(myNickname);
 
   const getUserInfo = async () => {
@@ -168,9 +170,10 @@ export default function ChatDetail() {
   return (
     <div className="flex flex-col w-full h-full pb-2 pt-1 relative items-center">
       {outMeet && <OutMeet setOutMeet={setOutMeet} />}
+      {outChat && <OutChatModal setOutChat={setOutChat} />}
       {modal &&
         (option === 'private' ? (
-          <More setModal={setModal} setUserBlock={setUserBlock} />
+          <More setModal={setModal} setUserBlock={setUserBlock} setOutChat={setOutChat} />
         ) : (
           <MeetMore setModal={setModal} setOutMeet={setOutMeet} />
         ))}
