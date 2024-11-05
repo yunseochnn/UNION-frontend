@@ -23,7 +23,7 @@ export interface IFComment {
   parentId: number | null;
   parentNickname: string | null;
   createdAt: string;
-  // commentLikes: number;
+  commentLikes: number;
   commenter: {
     token: string;
     nickname: string;
@@ -301,7 +301,7 @@ export default function BoardDetail() {
   };
 
   return (
-    <div className="h-full w-full flex flex-col items-center pt-1 pb-2 relative">
+    <div className="h-full w-full flex flex-col items-center relative">
       {Modal &&
         (boardInfo?.author.nickname === myNickname ? (
           <UserMore setModal={setModal} setModify={setModify} setRemove={setRemove} />
@@ -322,7 +322,7 @@ export default function BoardDetail() {
         />
       )}
       {remove && <RemoveBoard setRemove={setRemove} />}
-      <div className="w-[85%]">
+      <div className="w-full">
         <Header setModal={setModal} />
       </div>
 

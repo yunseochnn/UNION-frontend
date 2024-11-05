@@ -19,7 +19,7 @@ const Header = ({ setModal }: Props) => {
     }
   };
   return (
-    <div className="flex items-center justify-between w-full h-[60px]">
+    <div className="flex items-center justify-between w-full h-[62px] px-5">
       <div className="cursor-pointer font-black" onClick={onClickBack}>
         <IoIosArrowBack size={32} />
       </div>
