@@ -63,7 +63,7 @@ const Lists = () => {
       <div className="mt-3">
         {chatList?.map((chat, index) => (
           <div key={index}>
-            <List filter={filter} chat={chat} />
+            <List chat={chat} />
           </div>
         ))}
       </div>

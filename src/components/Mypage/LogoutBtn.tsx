@@ -16,6 +16,7 @@ export default function LogoutBtn() {
       // 로그아웃 성공 시 쿠키 삭제
       Cookies.remove('Authorization', { path: '/' });
       Cookies.remove('Refresh-Token', { path: '/' });
+      localStorage.removeItem('nickname');
 
       alert('로그아웃 되었습니다.');
       navigate('/'); // 로그아웃 후 홈으로 이동
