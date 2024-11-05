@@ -44,7 +44,7 @@ const Home: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!localStorage.get('nickname')) {
+    if (!localStorage.getItem('nickname')) {
       getUserInfo();
     }
   }, []);
