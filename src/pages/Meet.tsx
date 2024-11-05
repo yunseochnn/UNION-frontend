@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SideBar from '../common/SideBar';
@@ -17,14 +18,24 @@ const Meet: React.FC = () => {
     const fetchMeetings = async () => {
       try {
         if (sortBy === 'DISTANCE') {
-          navigator.geolocation.getCurrentPosition(async position => {
-            const response = await ReadMeetListRequest.getMeetList(
-              sortBy,
-              position.coords.latitude,
-              position.coords.longitude,
-            );
-            setMeetings(response.data.content);
-          });
+          // 위치 권한 요청 및 에러 처리 추가
+          navigator.geolocation.getCurrentPosition(
+            async (position) => {
+              console.log('현재 위치:', position.coords.latitude, position.coords.longitude);
+              const response = await ReadMeetListRequest.getMeetList(
+                sortBy,
+                position.coords.latitude,
+                position.coords.longitude,
+              );
+              setMeetings(response.data.content);
+            },
+            async (error) => {     
+              console.error('위치 정보를 가져올 수 없습니다:', error);
+              // 위치 정보를 가져올 수 없을 때 기본 위치 사용
+              const response = await ReadMeetListRequest.getMeetList(sortBy);
+              setMeetings(response.data.content);
+            }
+          );
         } else {
           const response = await ReadMeetListRequest.getMeetList(sortBy);
           setMeetings(response.data.content);
@@ -33,7 +44,7 @@ const Meet: React.FC = () => {
         console.error('모임 목록 조회 실패:', error);
       }
     };
-
+  
     fetchMeetings();
   }, [sortBy]);
 
@@ -50,6 +61,10 @@ const Meet: React.FC = () => {
           <div key={meeting.id} className="border-b py-4 cursor-pointer" onClick={() => handleMeetingClick(meeting.id)}>
             <div className="flex justify-between items-start">
               <div>
+                {/* 작성자 정보 표시 추가 */}
+                <div className="text-xs text-gray-500 mb-1">
+                  {meeting.author.nickname} · {meeting.author.univName}
+                </div>
                 <div className="text-xs text-gray-500">{meeting.eupMyeonDong || '위치 미정'}</div>
                 <h2 className="font-bold text-lg">{meeting.title}</h2>
                 <div className="text-sm text-gray-600">{new Date(meeting.gatheringDateTime).toLocaleString()}</div>
@@ -62,8 +77,17 @@ const Meet: React.FC = () => {
                   </div>
                 </div>
               </div>
+              {/* 썸네일 이미지 처리 추가 */}
               <div className="w-16 h-16 rounded-md overflow-hidden">
-                <img alt={meeting.title} className="w-full h-full object-cover" />
+                {meeting.thumbnail ? (
+                  <img 
+                    src={meeting.thumbnail} 
+                    alt={meeting.title} 
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-200" />
+                )}
               </div>
             </div>
           </div>
