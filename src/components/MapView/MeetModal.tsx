@@ -41,7 +41,11 @@ const MeetModal = ({ modalContent }: Prop) => {
             </div>
           </div>
         </div>
-        <div className="w-28 h-28 bg-gray-300 rounded-md"></div>
+        {modalContent.thumbnail && (
+          <div className="w-28 h-28 rounded-md">
+            <img src={modalContent.thumbnail} />
+          </div>
+        )}
       </div>
     </div>
   );
