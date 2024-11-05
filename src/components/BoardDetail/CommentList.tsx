@@ -23,7 +23,7 @@ const CommentList = ({
 }: Props) => {
   return (
     <div className="min-h-80 pt-2 w-[90%]">
-      {comments ? (
+      {comments?.length !== 0 ? (
         comments?.map((comment, index) => (
           <div key={index}>
             <Comment
