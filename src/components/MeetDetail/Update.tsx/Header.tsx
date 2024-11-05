@@ -2,14 +2,14 @@ import { IoIosArrowBack } from 'react-icons/io';
 
 interface Prop {
   success: boolean;
-  setClick: React.Dispatch<React.SetStateAction<boolean>>;
   setModify: React.Dispatch<React.SetStateAction<boolean>>;
+  onUpdateMeet: () => void;
 }
 
-const Header = ({ success, setClick, setModify }: Prop) => {
+const Header = ({ success, onUpdateMeet, setModify }: Prop) => {
   const onClick = () => {
     if (success) {
-      setClick(true);
+      onUpdateMeet();
     }
   };
   return (

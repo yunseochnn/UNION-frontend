@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import '../../../style.css';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
@@ -24,13 +24,19 @@ export interface OptionType {
 export interface Props {
   setModify: React.Dispatch<React.SetStateAction<boolean>>;
   updateData: Response | null;
+  onReadMeet: () => void;
 }
 
-export default function Update({ updateData, setModify }: Props) {
+export default function Update({ updateData, setModify, onReadMeet }: Props) {
   const [open, setOpen] = useState(false);
   const [address, setAddress] = useState<IAddress | null>(
     updateData?.address
-      ? { positionX: updateData.longitude, positionY: updateData.latitude, name: updateData.address }
+      ? {
+          positionX: updateData.longitude,
+          positionY: updateData.latitude,
+          name: updateData.address,
+          address: updateData.address,
+        }
       : null,
   );
   const [success, setSuccess] = useState(false);
@@ -44,7 +50,6 @@ export default function Update({ updateData, setModify }: Props) {
   });
   const [title, setTitle] = useState(updateData?.title || '');
   const [text, setText] = useState(updateData?.content || '');
-  const [click, setClick] = useState(false);
   const { id } = useParams();
   const MeetId = Number(id);
   console.log(address);
@@ -77,7 +82,7 @@ export default function Update({ updateData, setModify }: Props) {
           text: text,
           maxMember: maxMember?.value ?? 2,
           selectedDate: selectedDate ? toCustomISOString(selectedDate) : '',
-          ...(address?.address && {
+          ...(address && {
             address: address.address,
             latitude: address.positionY,
             longitude: address.positionX,
@@ -93,24 +98,19 @@ export default function Update({ updateData, setModify }: Props) {
       }
 
       setModify(false);
+      onReadMeet();
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.response);
       }
     }
-  }, [MeetId, address, eupMyeonDong, maxMember?.value, selectedDate, setModify, text, title]);
-
-  useEffect(() => {
-    if (click) {
-      onUpdateMeet();
-    }
-  }, [click, onUpdateMeet]);
+  }, [MeetId, address, eupMyeonDong, maxMember?.value, onReadMeet, selectedDate, setModify, text, title]);
 
   return (
     <div className="absolute inset-0 bg-white z-20 flex justify-center items-center">
       <div className="w-full h-full overflow-hidden hidden-scrollbar flex flex-col pt-3 relative items-center">
         {open && <Post setOpen={setOpen} setAddress={setAddress} />}
-        <Header success={success} setClick={setClick} setModify={setModify} />
+        <Header success={success} onUpdateMeet={onUpdateMeet} setModify={setModify} />
         <Content
           address={address}
           setAddress={setAddress}

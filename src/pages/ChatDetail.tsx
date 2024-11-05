@@ -11,12 +11,18 @@ import UserBlock from '../common/UserBlock';
 
 const socketUrl = `${import.meta.env.VITE_API_BASE_URL.replace('https', 'wss')}/ws`;
 
-export interface IFChatInfo {
+export interface IFMessageInfo {
   senderName: string;
   senderToken: string;
-  senderProfileImage: string | null;
+  senderProfileImage: string;
   content: string;
   createdAt: string;
+}
+export interface IFChatInfo {
+  title: string;
+  chatroomId: number;
+  chatroomType: string;
+  messageInfoList: IFMessageInfo[];
 }
 
 export default function ChatDetail() {
@@ -25,12 +31,14 @@ export default function ChatDetail() {
   const uid = localStorage.getItem('userToken');
   console.log(uid);
   const [modal, setModal] = useState(false);
-  const [messages, setMessages] = useState<IFChatInfo[]>([]);
+  const [messages, setMessages] = useState<IFMessageInfo[]>([]);
   const client = useRef<Client | null>(null);
   const [input, setInput] = useState('');
   const name = localStorage.getItem('nickname') || '';
   const [myNickname, setMyNickname] = useState(name);
   const [userBlock, setUserBlock] = useState(false);
+  const [chatroomId, setChatroomId] = useState(-1);
+  const userToken = localStorage.getItem('userToken');
   console.log(myNickname);
 
   const getUserInfo = async () => {
@@ -58,16 +66,17 @@ export default function ChatDetail() {
 
   const privateChatHistory = useCallback(async () => {
     try {
-      const response = await apiClient.get(`/chat/private/${uid}`, {
+      const response = await apiClient.get(`/chat/private/${userToken}`, {
         headers: {
           Authorization: Cookies.get('Authorization'),
         },
       });
 
       if (response.data) {
-        console.log(response);
-        const ChatInfos = response.data;
-        const formattedMessages = ChatInfos.map((message: IFChatInfo) => ({
+        console.log(response.data);
+        setChatroomId(response.data.chatroomId);
+        const ChatInfos = response.data.messageInfoList;
+        const formattedMessages = ChatInfos.map((message: IFMessageInfo) => ({
           content: message.content,
           senderName: message.senderName,
           senderToken: message.senderToken,
@@ -80,11 +89,13 @@ export default function ChatDetail() {
     } catch {
       // 오류 무시
     }
-  }, [uid]);
+  }, [userToken]);
 
   useEffect(() => {
     privateChatHistory();
   }, [privateChatHistory]);
+
+  console.log(chatroomId);
 
   //소켓 연결
   useEffect(() => {
@@ -93,7 +104,7 @@ export default function ChatDetail() {
       reconnectDelay: 50000,
       onConnect: () => {
         //개인 메시지 구독
-        client.current?.subscribe(`/topic/private/${uid}`, message => {
+        client.current?.subscribe(`/topic/private/${chatroomId}`, message => {
           const chatResponse = JSON.parse(message.body);
           console.log(message.body);
           setMessages(prevMessages => [...prevMessages, chatResponse]);
@@ -112,12 +123,12 @@ export default function ChatDetail() {
       client.current?.deactivate();
       client.current = null;
     };
-  }, [uid]);
+  }, [chatroomId, uid]);
 
   const sendMessage = () => {
     if (client.current?.connected && input.trim()) {
       const privateChatRequest = {
-        receiverToken: uid,
+        chatroomId: chatroomId,
         content: input,
         senderNickname: myNickname,
       };
@@ -134,7 +145,7 @@ export default function ChatDetail() {
           content: input,
           senderName: myNickname,
           senderToken: 'me', // 내 토큰(임시)
-          senderProfileImage: null,
+          senderProfileImage: '',
           createdAt: new Date().toISOString(),
         },
       ]);
