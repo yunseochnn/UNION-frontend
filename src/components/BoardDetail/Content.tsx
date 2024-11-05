@@ -15,9 +15,8 @@ const Content = ({ boardContent }: Prop) => {
   const setUser = useSetRecoilState(selectedUserState);
   const navigate = useNavigate();
   const myNickname = localStorage.getItem('nickname');
-  const onClickeProfile = () => {
-    if (boardContent?.author.nickname === myNickname) return;
 
+  const onClickProfile = () => {
     if (boardContent?.author.token) {
       setUser(boardContent.author.token);
       localStorage.setItem('userToken', boardContent.author.token);
@@ -28,7 +27,12 @@ const Content = ({ boardContent }: Prop) => {
   return (
     <div className="flex flex-col w-[85%]">
       <div className="flex items-center mt-[20px] gap-3">
-        <div className="h-10 w-10 bg-gray-300 rounded-full cursor-pointer overflow-hidden" onClick={onClickeProfile}>
+        <div
+          className={`h-10 w-10 bg-gray-300 rounded-full overflow-hidden ${
+            boardContent?.author.nickname === myNickname ? 'cursor-default' : 'cursor-pointer'
+          }`}
+          onClick={boardContent?.author.nickname === myNickname ? undefined : onClickProfile}
+        >
           {boardContent?.author.profileImage ? (
             <img src={boardContent.author.profileImage} />
           ) : (
