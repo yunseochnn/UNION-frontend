@@ -74,8 +74,6 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
   };
 
   const onClickCommentProfile = () => {
-    if (comment.commenter.nickname === myNickname) return;
-
     if (comment.commenter.profileImage) {
       setUser(comment.commenter.token);
       localStorage.setItem('userToken', comment.commenter.token);
@@ -107,7 +105,12 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
         ref={commentRef}
       >
         <div className="flex gap-3 items-center">
-          <div className="h-12 w-12 rounded-full overflow-hidden cursor-pointer" onClick={onClickCommentProfile}>
+          <div
+            className={`h-12 w-12 rounded-full overflow-hidden ${
+              comment.commenter.nickname === myNickname ? 'cursor-default' : 'cursor-pointer'
+            }`}
+            onClick={comment.commenter.nickname === myNickname ? undefined : onClickCommentProfile}
+          >
             <img src={comment.commenter.profileImage || ''} />
           </div>
           <div className="flex flex-col ">
