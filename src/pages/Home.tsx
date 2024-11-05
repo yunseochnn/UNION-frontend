@@ -5,6 +5,7 @@ import SideBar from '../common/SideBar';
 import PostList from '../common/PostList';
 import '../style.css';
 import Cookies from 'js-cookie';
+import apiClient from '../api/apiClient';
 
 interface Post {
   profileImage: string;
@@ -24,6 +25,29 @@ const Home: React.FC = () => {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState<'posts' | 'meetings'>('posts');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  //유저 상세정보
+  const getUserInfo = async () => {
+    try {
+      const response = await apiClient.get('/user/my', {
+        headers: {
+          Authorization: Cookies.get('Authorization'),
+        },
+      });
+      console.log(response.data);
+      const data = response.data;
+      localStorage.setItem('nickname', data.nickname);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    if (!localStorage.get('nickname')) {
+      getUserInfo();
+    }
+  }, []);
 
   const posts: Post[] = [
     {

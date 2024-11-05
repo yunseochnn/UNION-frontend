@@ -3,17 +3,18 @@ import { IFChat } from './Lists';
 import dayjs from 'dayjs';
 
 interface Prop {
-  filter: string;
   chat: IFChat;
 }
 
-const List = ({ filter, chat }: Prop) => {
+const List = ({ chat }: Prop) => {
   const navigate = useNavigate();
 
   const onClickChat = () => {
-    if (filter === 'private') {
+    if (chat.chatroomType === 'PRIVATE') {
       localStorage.setItem('userToken', chat.userToken);
       navigate(`/chat/private?title=${chat.title}`);
+    } else if (chat.chatroomType === 'GATHERING') {
+      navigate(`/chat/gathering?title=${chat.title}&chatId=${chat.chatroomId}`);
     }
   };
 

@@ -24,6 +24,11 @@ export default function WithdrawBtn() {
         description: '',
         profileImage: '',
       });
+
+      Cookies.remove('Authorization', { path: '/' });
+      Cookies.remove('Refresh-Token', { path: '/' });
+      localStorage.removeItem('nickname');
+
       alert('탈퇴가 완료되었습니다.');
       navigate('/'); // 홈으로 이동
     } catch (error) {
