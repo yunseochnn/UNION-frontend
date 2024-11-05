@@ -88,7 +88,7 @@ export default function MeetDetail() {
             />
           </div>
 
-          <div className="overflow-y-auto hidden-scrollbar w-[85%] flex-1">
+          <div className="overflow-y-auto hidden-scrollbar flex-1">
             <Content
               gatheringData={gatheringData}
               setGatheringData={setGatheringData}
