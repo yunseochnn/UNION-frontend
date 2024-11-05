@@ -7,7 +7,7 @@ export interface UserProps {
   buttonLabel: string;
   buttonWidth: string;
   blocked?: boolean;
-
+  isBlockedUser?: boolean;
   onClick?: () => void; // 유저 정보 클릭 이벤트
   onButtonClick: (token?: string) => void; // 차단 버튼 클릭 이벤트
 }
@@ -20,12 +20,12 @@ export default function User({
   profileImage,
   buttonLabel,
   buttonWidth,
-
+  isBlockedUser = false,
   onClick,
   onButtonClick,
 }: UserProps) {
   return (
-    <div onClick={onClick} className="cursor-pointer">
+    <div onClick={isBlockedUser ? onClick : undefined} className={isBlockedUser ? 'cursor-pointer' : 'cursor-default'}>
       <div className="h-16 w-full flex justify-between items-center mt-2">
         <div className="flex items-center">
           <img src={profileImage} alt="프로필 이미지" className="h-14 w-14 rounded-full object-cover bg-gray-300" />
