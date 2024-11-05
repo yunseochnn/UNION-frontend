@@ -1,3 +1,4 @@
+// ReadMeetListRequest.ts
 import apiClient from './apiClient';
 import Cookies from 'js-cookie';
 
@@ -9,6 +10,16 @@ export interface Meeting {
   eupMyeonDong: string | null;
   gatheringDateTime: string;
   views: number;
+  // 이번에 추가된 필드들
+  latitude: number;
+  longitude: number;
+  author: {
+    token: string;
+    nickname: string;
+    profileImage: string;
+    univName: string;
+  };
+  thumbnail: string | null;
 }
 
 export const ReadMeetListRequest = {
