@@ -71,7 +71,7 @@ interface Post {
   type: string;
 }
 
-export const fetchBoardPosts = async ({ boardType, page = 0, size = 3 }: ReadBoardRequestParams): Promise<Post[]> => {
+export const fetchBoardPosts = async ({ boardType, page = 0, size = 6 }: ReadBoardRequestParams): Promise<Post[]> => {
   const url = `/board/${boardType.toUpperCase()}`;
 
   try {
