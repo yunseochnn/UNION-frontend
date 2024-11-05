@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import SideBar from '../../common/SideBar';
 import Header from '../../components/Board/Header';
@@ -34,40 +34,52 @@ const BOARD_TITLES = {
 const BoardList: React.FC = () => {
   const navigate = useNavigate();
   const { type } = useParams<{ type: string }>();
-  const [posts, setPosts] = useState<Post[]>([]); // Post[]로 타입 설정
+  const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const page = 0;
-  const size = 3;
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const observer = useRef<IntersectionObserver | null>(null);
+
+  const lastPostRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (isLoading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting && hasMore) {
+          setPage(prevPage => prevPage + 1);
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [isLoading, hasMore],
+  );
 
   useEffect(() => {
     const fetchPosts = async () => {
       if (!type) return;
       try {
         setIsLoading(true);
-        const response = await fetchBoardPosts({ boardType: type, page, size });
-        setPosts(response); // 이미 Post[] 타입의 response 사용
+        const response = await fetchBoardPosts({ boardType: type, page });
+        setPosts(prevPosts => [...prevPosts, ...response]); // 기존 포스트에 새 데이터 추가
+        setHasMore(response.length > 0); // 데이터가 있으면 hasMore를 true로 설정
       } catch (error) {
         console.error('게시글 조회 실패:', error);
-        setPosts([]); // 에러 발생 시 빈 배열로 설정
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchPosts();
-  }, [type]);
+  }, [type, page]);
 
   if (!type || !BOARD_TITLES[type as keyof typeof BOARD_TITLES]) return null;
 
   return (
     <div className="center-content flex flex-col bg-white relative">
       <Header title={BOARD_TITLES[type as keyof typeof BOARD_TITLES]} />
-      <main className="flex-1 overflow-y-auto ">
-        {isLoading ? (
-          <div>로딩 중...</div>
-        ) : (
-          <PostList posts={posts} /> // posts가 Post[]로 전달
-        )}
+      <main className="flex-1 overflow-y-auto">
+        <PostList posts={posts} lastPostRef={lastPostRef} />
+        {isLoading && <div>로딩 중...</div>}
       </main>
       <div className="right-8 bottom-24 absolute">
         <FloatingActionButton onClick={() => navigate(`/Board/write/${type}`)} />
