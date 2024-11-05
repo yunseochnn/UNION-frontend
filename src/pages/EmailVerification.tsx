@@ -16,6 +16,7 @@ export default function EmailVerification() {
   const setUser = useSetRecoilState(userState);
   const [isVerified, setIsVerified] = useState(false);
   const [univName, setUnivName] = useState('');
+  const [email, setEmail] = useState('');
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -44,15 +45,38 @@ export default function EmailVerification() {
     }
   }, [location, setUser, navigate]);
 
-  const handleVerificationComplete = (inputUnivName: string) => {
+  const handleVerificationComplete = (data: { university: string; email: string }) => {
     setIsVerified(true);
-    setUnivName(inputUnivName);
+    setUnivName(data.university);
+    setEmail(data.email);
   };
 
   const handleNextPage = () => {
     if (isVerified) {
       setUser(prevState => ({ ...prevState, univName }));
-      navigate('/profile');
+      // 특정 유저의 이메일 인증 초기화 요청
+      fetch(`https://univcert.com/api/v1/clear/${email}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          key: import.meta.env.VITE_UNIV_API_KEY,
+        }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('이메일 인증이 초기화되었습니다.');
+            navigate('/profile');
+          } else {
+            alert('이메일 인증 초기화에 실패했습니다.');
+          }
+        })
+        .catch(error => {
+          console.error('인증 초기화 오류:', error);
+          alert('서버와의 통신 중 오류가 발생했습니다.');
+        });
     }
   };
 

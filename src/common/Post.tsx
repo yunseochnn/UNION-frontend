@@ -9,7 +9,7 @@ interface PostProps {
   content: string;
   likes: number;
   comments: number;
-  thumbnail: string;
+  thumbnail?: string;
   type: string;
   id: number;
   isLast?: boolean;
@@ -27,7 +27,7 @@ export default function Post({
   isLast,
 }: PostProps) {
   return (
-    <button className="w-full bg-white px-[28px] text-left">
+    <button className="w-full bg-white px-[23px] text-left">
       <div className={`py-[15px] ${!isLast ? 'border-b-[1.5px] border-[#F2F3F6]' : ''}`}>
         <div className="flex justify-between items-center mx-[5px]">
           <div className="flex flex-col flex-grow mr-3">
@@ -56,13 +56,14 @@ export default function Post({
               </span>
             </div>
           </div>
-
-          <img
-            src={thumbnail}
-            alt="Thumbnail"
-            className="w-[90px] h-[90px] object-cover rounded-md flex-shrink-0"
-            style={{ aspectRatio: '1/1' }}
-          />
+          {thumbnail && (
+            <img
+              src={thumbnail}
+              alt="Thumbnail"
+              className="w-[90px] h-[90px] object-cover rounded-md flex-shrink-0"
+              style={{ aspectRatio: '1/1' }}
+            />
+          )}
         </div>
       </div>
     </button>
