@@ -23,7 +23,7 @@ export interface IFComment {
   parentId: number | null;
   parentNickname: string | null;
   createdAt: string;
-  commentLikes: number;
+  // commentLikes: number;
   commenter: {
     token: string;
     nickname: string;
@@ -148,10 +148,14 @@ export default function BoardDetail() {
           Authorization: Cookies.get('Authorization'),
         },
       });
-      return response.data.comments;
+      console.log(response.data);
+      console.log('댓글불러오기 성공');
+      return response.data;
     },
     retry: false,
   });
+
+  console.log(commentData);
 
   //게시글 좋아요 데이터 읽기
   const {
@@ -170,6 +174,7 @@ export default function BoardDetail() {
       });
       return response.data;
     },
+    retry: false,
   });
 
   // 댓글 또는 대댓글 추가 mutation
@@ -186,6 +191,7 @@ export default function BoardDetail() {
         },
       ),
     onSuccess: () => {
+      console.log('댓글 추가 완료');
       setParent({ id: null, nickname: null });
       queryClient.invalidateQueries({
         queryKey: ['commentDetail', BoardId],
@@ -196,6 +202,7 @@ export default function BoardDetail() {
     onError: (error: Error) => {
       console.log(`comment Error: ${error}`);
     },
+    retry: false,
   });
 
   //댓글 수정 mutation
@@ -271,7 +278,7 @@ export default function BoardDetail() {
     console.log(`댓글 read 에러 : ${commentError}`);
   }
   if (isLikeError) {
-    console.log(`댓글 read 에러 : ${LikeError}`);
+    console.log(`좋아요 read 에러 : ${LikeError.message}`);
   }
 
   const onClickLike = async () => {
