@@ -77,7 +77,7 @@ const BoardList: React.FC = () => {
   return (
     <div className="center-content flex flex-col bg-white relative">
       <Header title={BOARD_TITLES[type as keyof typeof BOARD_TITLES]} />
-      <main className="flex-1 overflow-y-auto">
+      <main className="flex-1 overflow-y-auto hidden-scrollbar">
         <PostList posts={posts} lastPostRef={lastPostRef} />
         {isLoading && <div>로딩 중...</div>}
       </main>
