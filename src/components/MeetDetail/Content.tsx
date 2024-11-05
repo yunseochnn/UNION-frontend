@@ -5,9 +5,8 @@ import Slide from '../../common/Slide';
 import Map from '../../common/Map';
 import { IoIosArrowForward } from 'react-icons/io';
 import { useNavigate, useParams } from 'react-router-dom';
-import { format } from 'date-fns';
-import { ko } from 'date-fns/locale';
 import { Response } from '../../pages/MeetDetail';
+import dayjs from 'dayjs';
 
 interface Prop {
   gatheringData: Response | null;
@@ -21,10 +20,6 @@ const Content = ({ gatheringData }: Prop) => {
   const { id } = useParams();
 
   const images = gatheringData?.photos || [];
-
-  const formattedDate = gatheringData?.gatheringDateTime
-    ? format(gatheringData.gatheringDateTime, 'yyyy년 MM월 dd일 a hh:mm', { locale: ko })
-    : '';
 
   return (
     <div className="flex flex-col">
@@ -64,7 +59,9 @@ const Content = ({ gatheringData }: Prop) => {
         <span>
           <FaRegCalendarCheck size={22} />
         </span>
-        <span className="text-[18px] font-semibold">{formattedDate}</span>
+        <span className="text-[18px] font-semibold">
+          {dayjs(gatheringData?.createdAt).format('YYYY년 MM월 DD일 H:mm')}
+        </span>
       </div>
 
       <div className="mt-5 text-base">

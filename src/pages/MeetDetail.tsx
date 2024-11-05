@@ -75,7 +75,7 @@ export default function MeetDetail() {
             ) : (
               <More setModal={setModal} setOutMeet={setOutMeet} setUserBlock={setUserBlock} />
             ))}
-          {modify && <Update updateData={gatheringData} setModify={setModify} />}
+          {modify && <Update updateData={gatheringData} setModify={setModify} onReadMeet={onReadMeet} />}
           {remove && <RemoveMeet setRemove={setRemove} />}
           {outMeet && <OutMeet setOutMeet={setOutMeet} />}
           {userBlock && <UserBlock setUserBlock={setUserBlock} token={gatheringData?.author.token || ''} />}
