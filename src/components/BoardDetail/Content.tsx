@@ -14,8 +14,10 @@ interface Prop {
 const Content = ({ boardContent }: Prop) => {
   const setUser = useSetRecoilState(selectedUserState);
   const navigate = useNavigate();
-
+  const myNickname = localStorage.getItem('nickname');
   const onClickeProfile = () => {
+    if (boardContent?.author.nickname === myNickname) return;
+
     if (boardContent?.author.token) {
       setUser(boardContent.author.token);
       localStorage.setItem('userToken', boardContent.author.token);
