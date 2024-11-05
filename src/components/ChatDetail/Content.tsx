@@ -3,7 +3,6 @@ import '../../style.css';
 import { IFMessageInfo } from '../../pages/ChatDetail';
 import dayjs from 'dayjs';
 import { useEffect, useRef } from 'react';
-import DefaultImage from '/default-profile-image.png';
 import { useNavigate } from 'react-router-dom';
 interface Props {
   messages: IFMessageInfo[] | undefined;
@@ -14,7 +13,8 @@ const Content = ({ messages }: Props) => {
   const navigate = useNavigate();
   const messageEndRef = useRef<HTMLDivElement | null>(null);
 
-  const onClickChatProfile = () => {
+  const onClickChatProfile = (token: string) => {
+    localStorage.setItem('userToken', token);
     navigate('/userinfo');
   };
 
@@ -64,14 +64,21 @@ const Content = ({ messages }: Props) => {
                 </div>
               ) : (
                 <div className="flex mt-4">
-                  <div className="h-10 w-10 rounded-full bg-gray-300 overflow-hidden" onClick={onClickChatProfile}>
-                    {message.senderProfileImage ? <img src={message.senderProfileImage} /> : <img src={DefaultImage} />}
+                  <div
+                    className="h-10 w-10 rounded-full bg-gray-300"
+                    onClick={() => onClickChatProfile(message.senderToken)}
+                  >
+                    {' '}
+                    <img src={message.senderProfileImage} />
                   </div>
-                  <div className="max-w-[60%] h-auto text-xs bg-gray-200 rounded-xl flex items-center justify-center ml-3 p-3 font-semibold">
-                    {message.content}
+                  <div className="ml-3 ">
+                    <div className="text-sm font-semibold">{message.senderName}</div>
+                    <div className="max-w-[60%] h-auto text-xs bg-gray-200 rounded-xl flex items-center justify-center p-3 font-semibold">
+                      {message.content}
+                    </div>
                   </div>
                   <div className="flex items-end ml-2">
-                    <div className="text-xs text-customGray2">{dayjs(message.createdAt).format('A h시 mm분')}</div>
+                    <div className="text-xs text-gray-400">{dayjs(message.createdAt).format('A h시 mm분')}</div>
                   </div>
                 </div>
               )}

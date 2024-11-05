@@ -4,7 +4,7 @@ import Footer from '../components/ChatDetail/Footer';
 import Header from '../components/ChatDetail/Header';
 import More from '../components/ChatDetail/More';
 import { Client } from '@stomp/stompjs';
-import { useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import apiClient from '../api/apiClient';
 import Cookies from 'js-cookie';
 import UserBlock from '../common/UserBlock';
@@ -26,6 +26,7 @@ export interface IFChatInfo {
 }
 
 export default function ChatDetail() {
+  const { option } = useParams();
   const [searchParams] = useSearchParams();
   const title = searchParams.get('title');
   const uid = localStorage.getItem('userToken');
@@ -37,7 +38,8 @@ export default function ChatDetail() {
   const name = localStorage.getItem('nickname') || '';
   const [myNickname, setMyNickname] = useState(name);
   const [userBlock, setUserBlock] = useState(false);
-  const [chatroomId, setChatroomId] = useState(-1);
+  const roomId = searchParams.get('chatId');
+  const [chatroomId, setChatroomId] = useState(roomId || -1);
   const userToken = localStorage.getItem('userToken');
   console.log(myNickname);
 
@@ -66,7 +68,7 @@ export default function ChatDetail() {
 
   const privateChatHistory = useCallback(async () => {
     try {
-      const response = await apiClient.get(`/chat/private/${userToken}`, {
+      const response = await apiClient.get(`/chat/${option}/${option === 'private' ? userToken : chatroomId}`, {
         headers: {
           Authorization: Cookies.get('Authorization'),
         },
@@ -89,7 +91,7 @@ export default function ChatDetail() {
     } catch {
       // 오류 무시
     }
-  }, [userToken]);
+  }, [chatroomId, option, userToken]);
 
   useEffect(() => {
     privateChatHistory();
@@ -104,7 +106,7 @@ export default function ChatDetail() {
       reconnectDelay: 50000,
       onConnect: () => {
         //개인 메시지 구독
-        client.current?.subscribe(`/topic/private/${chatroomId}`, message => {
+        client.current?.subscribe(`/topic/${option}/${chatroomId}`, message => {
           const chatResponse = JSON.parse(message.body);
           console.log(message.body);
           setMessages(prevMessages => [...prevMessages, chatResponse]);
@@ -123,7 +125,7 @@ export default function ChatDetail() {
       client.current?.deactivate();
       client.current = null;
     };
-  }, [chatroomId, uid]);
+  }, [chatroomId, option, uid]);
 
   const sendMessage = () => {
     if (client.current?.connected && input.trim()) {
@@ -133,9 +135,15 @@ export default function ChatDetail() {
         senderNickname: myNickname,
       };
 
+      const gatheringChatRequest = {
+        gatheringId: chatroomId,
+        content: input,
+        senderNickname: myNickname,
+      };
+
       client.current.publish({
-        destination: '/app/private',
-        body: JSON.stringify(privateChatRequest),
+        destination: `/app/${option}`,
+        body: option === 'private' ? JSON.stringify(privateChatRequest) : JSON.stringify(gatheringChatRequest),
       });
 
       // 메시지 상태에 새로운 메시지 추가
