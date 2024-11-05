@@ -213,7 +213,7 @@ export default function UserInfo() {
         commentCount={commentCount}
         meetingCount={meetingCount}
       />
-      <div className="mt-2 flex-grow overflow-y-auto">
+      <div className="mt-2 flex-grow overflow-y-auto flex-1">
         {activeTab === 'posts' && <PostList posts={posts} />}
         {activeTab === 'comments' && <PostList posts={comments} />}
         {activeTab === 'meetings' && <PostList posts={meetings} />}
