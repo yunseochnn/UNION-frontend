@@ -135,7 +135,7 @@ const Meet: React.FC = () => {
     <div className="relative center-content flex flex-col bg-white">
       <MeetHeader sortBy={sortBy} setSortBy={setSortBy} />
 
-      <main className="flex-1 overflow-y-auto relative flex flex-col px-[23px]">
+      <main className="flex-1 overflow-y-auto relative flex flex-col px-[23px] hidden-scrollbar">
         {meetings.map((meeting, index) => (
           <div
             ref={index === meetings.length - 1 ? lastMeetingRef : null}

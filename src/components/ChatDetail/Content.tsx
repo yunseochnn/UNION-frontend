@@ -49,7 +49,11 @@ const Content = ({ messages }: Props) => {
                 </div>
               )}
 
-              {message.senderName === myNickname ? (
+              {message.senderToken === '' ? (
+                <div className="w-full mt-4 flex justify-center items-center">
+                  <div className="text-gray-400 rounded-full px-11 text-sm font-medium">{message.content}</div>
+                </div>
+              ) : message.senderName === myNickname ? (
                 <div className="w-full flex justify-end mt-4">
                   <div className="flex items-end mr-2">
                     <div className="text-xs text-customGray2">{dayjs(message.createdAt).format('A h시 mm분')}</div>

@@ -76,7 +76,7 @@ export default function MeetDetail() {
           ))}
         {modify && <Update updateData={gatheringData} setModify={setModify} onReadMeet={onReadMeet} />}
         {remove && <RemoveMeet setRemove={setRemove} />}
-        {outMeet && <OutMeet setOutMeet={setOutMeet} />}
+        {outMeet && <OutMeet setOutMeet={setOutMeet} onReadMeet={onReadMeet} />}
         {userBlock && <UserBlock setUserBlock={setUserBlock} token={gatheringData?.author.token || ''} />}
         <div className="w-full">
           <Header
