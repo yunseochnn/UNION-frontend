@@ -1,9 +1,32 @@
+import { useNavigate } from 'react-router-dom';
+import apiClient from '../../api/apiClient';
+import Cookies from 'js-cookie';
+
 interface Prop {
   setOutChat: React.Dispatch<React.SetStateAction<boolean>>;
+  chatroomId: number;
 }
 
-const OutChatModal = ({ setOutChat }: Prop) => {
-  const onClickYes = () => {};
+const OutChatModal = ({ setOutChat, chatroomId }: Prop) => {
+  const navigate = useNavigate();
+  const onClickYes = async () => {
+    try {
+      const response = await apiClient.delete(`/chat/private/${chatroomId}`, {
+        headers: {
+          Authorization: Cookies.get('Authorization'),
+        },
+      });
+
+      if (!response) {
+        console.log('네트워크 이상입니다.');
+      }
+
+      console.log('채팅방 나가기 성공');
+      navigate('/chatList');
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const onClickNo = () => {
     setOutChat(false);
   };
