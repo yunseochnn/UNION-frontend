@@ -4,43 +4,85 @@ import Footer from '../components/ChatDetail/Footer';
 import Header from '../components/ChatDetail/Header';
 import More from '../components/ChatDetail/More';
 import { Client } from '@stomp/stompjs';
-import { useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import apiClient from '../api/apiClient';
 import Cookies from 'js-cookie';
+import UserBlock from '../common/UserBlock';
+import MeetMore from '../components/ChatDetail/MeetMore';
+import OutMeet from '../components/MeetDetail/OutMeet';
+import OutChatModal from '../components/ChatDetail/OutChatModal';
 
 const socketUrl = `${import.meta.env.VITE_API_BASE_URL.replace('https', 'wss')}/ws`;
 
-export interface IFChatInfo {
+export interface IFMessageInfo {
   senderName: string;
   senderToken: string;
-  senderProfileImage: string | null;
+  senderProfileImage: string;
   content: string;
   createdAt: string;
 }
+export interface IFChatInfo {
+  title: string;
+  chatroomId: number;
+  chatroomType: string;
+  messageInfoList: IFMessageInfo[];
+}
 
 export default function ChatDetail() {
+  const { option } = useParams();
   const [searchParams] = useSearchParams();
-  const uid = searchParams.get('uid');
   const title = searchParams.get('title');
-  console.log(uid);
+  const uid = localStorage.getItem('userToken');
   const [modal, setModal] = useState(false);
-  const [messages, setMessages] = useState<IFChatInfo[]>([]);
+  const [messages, setMessages] = useState<IFMessageInfo[]>([]);
   const client = useRef<Client | null>(null);
   const [input, setInput] = useState('');
-  const myNickname = localStorage.getItem('nickname') || '';
+  const name = localStorage.getItem('nickname') || '';
+  const [myNickname, setMyNickname] = useState(name);
+  const [userBlock, setUserBlock] = useState(false);
+  const roomId = searchParams.get('chatId');
+  const [chatroomId, setChatroomId] = useState(Number(roomId) || -1);
+  const userToken = localStorage.getItem('userToken');
+  const [outMeet, setOutMeet] = useState(false);
+  const [outChat, setOutChat] = useState(false);
+  console.log(myNickname);
+
+  const getUserInfo = async () => {
+    try {
+      const response = await apiClient.get('/user/my', {
+        headers: {
+          Authorization: Cookies.get('Authorization'),
+        },
+      });
+      console.log(response.data);
+      const data = response.data;
+      localStorage.setItem('nickname', data.nickname);
+      setMyNickname(data.nickname);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    if (myNickname === '') {
+      getUserInfo();
+    }
+  }, [myNickname]);
 
   const privateChatHistory = useCallback(async () => {
     try {
-      const response = await apiClient.get(`/chat/private/${uid}`, {
+      const response = await apiClient.get(`/chat/${option}/${option === 'private' ? userToken : chatroomId}`, {
         headers: {
           Authorization: Cookies.get('Authorization'),
         },
       });
 
       if (response.data) {
-        console.log(response);
-        const ChatInfos = response.data;
-        const formattedMessages = ChatInfos.map((message: IFChatInfo) => ({
+        console.log(response.data);
+        setChatroomId(response.data.chatroomId);
+        const ChatInfos = response.data.messageInfoList;
+        const formattedMessages = ChatInfos.map((message: IFMessageInfo) => ({
           content: message.content,
           senderName: message.senderName,
           senderToken: message.senderToken,
@@ -53,11 +95,13 @@ export default function ChatDetail() {
     } catch {
       // 오류 무시
     }
-  }, [uid]);
+  }, [chatroomId, option, userToken]);
 
   useEffect(() => {
     privateChatHistory();
   }, [privateChatHistory]);
+
+  console.log(chatroomId);
 
   //소켓 연결
   useEffect(() => {
@@ -66,7 +110,7 @@ export default function ChatDetail() {
       reconnectDelay: 50000,
       onConnect: () => {
         //개인 메시지 구독
-        client.current?.subscribe(`/topic/private/${uid}`, message => {
+        client.current?.subscribe(`/topic/${option}/${chatroomId}`, message => {
           const chatResponse = JSON.parse(message.body);
           console.log(message.body);
           setMessages(prevMessages => [...prevMessages, chatResponse]);
@@ -85,19 +129,25 @@ export default function ChatDetail() {
       client.current?.deactivate();
       client.current = null;
     };
-  }, [uid]);
+  }, [chatroomId, option, uid]);
 
   const sendMessage = () => {
     if (client.current?.connected && input.trim()) {
       const privateChatRequest = {
-        receiverToken: uid,
+        chatroomId: chatroomId,
+        content: input,
+        senderNickname: myNickname,
+      };
+
+      const gatheringChatRequest = {
+        gatheringId: chatroomId,
         content: input,
         senderNickname: myNickname,
       };
 
       client.current.publish({
-        destination: '/app/private',
-        body: JSON.stringify(privateChatRequest),
+        destination: `/app/${option}`,
+        body: option === 'private' ? JSON.stringify(privateChatRequest) : JSON.stringify(gatheringChatRequest),
       });
 
       // 메시지 상태에 새로운 메시지 추가
@@ -107,7 +157,7 @@ export default function ChatDetail() {
           content: input,
           senderName: myNickname,
           senderToken: 'me', // 내 토큰(임시)
-          senderProfileImage: null,
+          senderProfileImage: '',
           createdAt: new Date().toISOString(),
         },
       ]);
@@ -118,7 +168,15 @@ export default function ChatDetail() {
 
   return (
     <div className="flex flex-col w-full h-full pb-2 pt-1 relative items-center">
-      {modal && <More setModal={setModal} />}
+      {outMeet && <OutMeet setOutMeet={setOutMeet} />}
+      {outChat && <OutChatModal setOutChat={setOutChat} chatroomId={chatroomId} />}
+      {modal &&
+        (option === 'private' ? (
+          <More setModal={setModal} setUserBlock={setUserBlock} setOutChat={setOutChat} />
+        ) : (
+          <MeetMore setModal={setModal} setOutMeet={setOutMeet} />
+        ))}
+      {userBlock && <UserBlock setUserBlock={setUserBlock} token={uid || ''} />}
       <div className="w-[85%]">
         <Header setModal={setModal} title={title} />
       </div>

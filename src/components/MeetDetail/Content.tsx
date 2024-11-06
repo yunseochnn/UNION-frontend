@@ -1,16 +1,14 @@
 import { FaRegCalendarCheck } from 'react-icons/fa6';
 import { HiOutlineUserGroup } from 'react-icons/hi2';
 import '../../style.css';
-// import Slide from '../../common/Slide';
+import Slide from '../../common/Slide';
 import Map from '../../common/Map';
 import { IoIosArrowForward } from 'react-icons/io';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useCallback, useEffect } from 'react';
-import axios from 'axios';
-import ReadMeetRequest from '../../api/ReadMeetRequest';
-import { format } from 'date-fns';
-import { ko } from 'date-fns/locale';
 import { Response } from '../../pages/MeetDetail';
+import dayjs from 'dayjs';
+import { useSetRecoilState } from 'recoil';
+import { selectedUserState } from '../../recoil/selectedUserState';
 
 interface Prop {
   gatheringData: Response | null;
@@ -19,33 +17,20 @@ interface Prop {
   outMeet: boolean;
 }
 
-const Content = ({ gatheringData, setGatheringData, modify, outMeet }: Prop) => {
+const Content = ({ gatheringData }: Prop) => {
+  const setUser = useSetRecoilState(selectedUserState);
   const navigate = useNavigate();
   const { id } = useParams();
-  const MeetId = Number(id);
 
-  const onReadMeet = useCallback(async () => {
-    try {
-      const response = await ReadMeetRequest(MeetId);
-      const data = response.data;
-      setGatheringData(data);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          console.log(error.response.data);
-        }
-      }
+  const onClickProfile = () => {
+    if (gatheringData?.author.token) {
+      setUser(gatheringData.author.token);
+      localStorage.setItem('userToken', gatheringData.author.token);
+      navigate('/userinfo');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [MeetId, setGatheringData, modify, outMeet]);
+  };
 
-  useEffect(() => {
-    onReadMeet();
-  }, [onReadMeet]);
-
-  const formattedDate = gatheringData?.gatheringDateTime
-    ? format(gatheringData.gatheringDateTime, 'yyyy년 MM월 dd일 a hh:mm', { locale: ko })
-    : '';
+  const images = gatheringData?.photos || [];
 
   return (
     <div className="flex flex-col">
@@ -62,34 +47,47 @@ const Content = ({ gatheringData, setGatheringData, modify, outMeet }: Prop) => 
       </div>
 
       <div className="flex items-center mt-[30px] gap-3">
-        <div className="h-10 w-10 bg-gray-300 rounded-full cursor-pointer"></div>
+        <div className="h-10 w-10 bg-gray-300 rounded-full cursor-pointer overflow-hidden" onClick={onClickProfile}>
+          <img src={gatheringData?.author.profileImage} />
+        </div>
         <div>
-          <div className="font-semibold text-sm">{gatheringData?.userNickname}</div>
-          <div className="font-semibold text-sm text-gray-400">{gatheringData?.createdAt}</div>
+          <div className="font-semibold text-sm">{gatheringData?.author.nickname}</div>
+          <div className="font-semibold text-sm text-gray-400">
+            {dayjs(gatheringData?.createdAt).format('YYYY년 MM월 DD일 H:mm')}
+          </div>
         </div>
       </div>
 
       <div className="mt-5 text-[22px]">
-        <span className="font-bold" style={{ color: '#FF4A4D' }}>
-          모집중
-        </span>
-        <span className="font-bold">{gatheringData?.title}</span>
+        {gatheringData?.recruited ? (
+          <span className="font-bold text-customGray1">모집완료</span>
+        ) : (
+          <span className="font-bold" style={{ color: '#FF4A4D' }}>
+            모집중
+          </span>
+        )}
+
+        <span className="font-bold ml-2">{gatheringData?.title}</span>
       </div>
 
       <div className="flex items-center gap-2 mt-5">
         <span>
           <FaRegCalendarCheck size={22} />
         </span>
-        <span className="text-[18px] font-semibold">{formattedDate}</span>
+        <span className="text-[18px] font-semibold">
+          {dayjs(gatheringData?.gatheringDateTime).format('YYYY년 MM월 DD일 H:mm')}
+        </span>
       </div>
 
       <div className="mt-5 text-base">
         <div>{gatheringData?.content}</div>
       </div>
 
-      <div className="mt-4">
-        <div className="h-auto w-full cursor-pointer">{/* <Slide /> */}</div>
-      </div>
+      {images?.length > 0 && (
+        <div className="mt-4">
+          <div className="h-auto w-full cursor-pointer">{<Slide images={images} />}</div>
+        </div>
+      )}
 
       {gatheringData?.address && (
         <div className="mt-4 flex flex-col">

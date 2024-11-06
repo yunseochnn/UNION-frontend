@@ -1,10 +1,9 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CommentList from '../components/BoardDetail/CommentList';
 import Content from '../components/BoardDetail/Content';
 import Footer from '../components/BoardDetail/Footer';
 import Header from '../components/BoardDetail/Header';
 import '../style.css';
-// import More from '../components/BoardDetail/More';
 import UserBlock from '../common/UserBlock';
 import UserMore from '../common/UserMore';
 import Update from '../components/BoardDetail/Update.tsx/Update';
@@ -34,6 +33,11 @@ export interface IFComment {
   children: IFComment[];
 }
 
+export interface CommentData {
+  comments: IFComment[];
+  commentCount: number;
+}
+
 export interface BoardInfo {
   id: number;
   title: string;
@@ -58,6 +62,7 @@ export interface UpComment {
 
 interface Like {
   postLikes: number;
+  liked: boolean;
 }
 
 export interface ParentInfo {
@@ -70,7 +75,6 @@ export default function BoardDetail() {
   const [userBlock, setUserBlock] = useState(false);
   const [modify, setModify] = useState(false);
   const [remove, setRemove] = useState(false);
-  const [like, setLike] = useState(false);
   const [parent, setParent] = useState<ParentInfo>({ id: null, nickname: null });
   const [updateComment, setUpdateComment] = useState<UpComment | null>(null);
   const { type, id } = useParams();
@@ -78,14 +82,35 @@ export default function BoardDetail() {
   const BoardId = Number(id);
   const queryClient = useQueryClient();
   const commentListRef = useRef<HTMLDivElement>(null);
-  const myNickname = localStorage.getItem('nickname');
   const footerRef = useRef<HTMLDivElement | null>(null);
-
+  const name = localStorage.getItem('nickname') || '';
+  const [myNickname, setMyNickname] = useState(name);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   console.log(myNickname);
 
-  const onClickLikeHandler = () => {
-    setLike(!like);
+  //유저 상세정보
+  const getUserInfo = async () => {
+    try {
+      const response = await apiClient.get('/user/my', {
+        headers: {
+          Authorization: Cookies.get('Authorization'),
+        },
+      });
+      console.log(response.data);
+      const data = response.data;
+      localStorage.setItem('nickname', data.nickname);
+      setMyNickname(data.nickname);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   };
+
+  useEffect(() => {
+    if (myNickname === '') {
+      getUserInfo();
+    }
+  }, [myNickname]);
 
   //게시물 상세 데이터 가져오기
   const {
@@ -114,7 +139,7 @@ export default function BoardDetail() {
     data: commentData,
     isError: isCommentError,
     error: commentError,
-  } = useQuery<IFComment[]>({
+  } = useQuery<CommentData>({
     queryKey: ['commentDetail', BoardId],
     queryFn: async () => {
       const response = await apiClient.get(`/comments/${BoardId}`, {
@@ -123,20 +148,25 @@ export default function BoardDetail() {
           Authorization: Cookies.get('Authorization'),
         },
       });
-      return response.data.comments;
+      console.log(response.data);
+      console.log('댓글불러오기 성공');
+      return response.data;
     },
     retry: false,
   });
+
+  console.log(commentData);
 
   //게시글 좋아요 데이터 읽기
   const {
     data: Like,
     isError: isLikeError,
     error: LikeError,
+    refetch: refetchLike,
   } = useQuery<Like>({
     queryKey: ['like', BoardId],
     queryFn: async () => {
-      const response = await apiClient.get(`/${BoardId}/likes`, {
+      const response = await apiClient.get(`/board/likes/${BoardId}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: Cookies.get('Authorization'),
@@ -144,6 +174,7 @@ export default function BoardDetail() {
       });
       return response.data;
     },
+    retry: false,
   });
 
   // 댓글 또는 대댓글 추가 mutation
@@ -160,6 +191,7 @@ export default function BoardDetail() {
         },
       ),
     onSuccess: () => {
+      console.log('댓글 추가 완료');
       setParent({ id: null, nickname: null });
       queryClient.invalidateQueries({
         queryKey: ['commentDetail', BoardId],
@@ -170,6 +202,7 @@ export default function BoardDetail() {
     onError: (error: Error) => {
       console.log(`comment Error: ${error}`);
     },
+    retry: false,
   });
 
   //댓글 수정 mutation
@@ -245,11 +278,30 @@ export default function BoardDetail() {
     console.log(`댓글 read 에러 : ${commentError}`);
   }
   if (isLikeError) {
-    console.log(`댓글 read 에러 : ${LikeError}`);
+    console.log(`좋아요 read 에러 : ${LikeError.message}`);
   }
 
+  const onClickLike = async () => {
+    try {
+      const response = await apiClient.post(
+        `/board/like/${BoardId}`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: Cookies.get('Authorization'),
+          },
+        },
+      );
+      console.log(response);
+      refetchLike();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <div className="h-full w-full flex flex-col items-center pt-1 pb-2 relative">
+    <div className="h-full w-full flex flex-col items-center relative">
       {Modal &&
         (boardInfo?.author.nickname === myNickname ? (
           <UserMore setModal={setModal} setModify={setModify} setRemove={setRemove} />
@@ -261,7 +313,7 @@ export default function BoardDetail() {
           />
         ))}
 
-      {userBlock && <UserBlock setUserBlock={setUserBlock} />}
+      {userBlock && <UserBlock setUserBlock={setUserBlock} token={boardInfo?.author.token || ''} />}
       {modify && (
         <Update
           updateData={updateData}
@@ -270,34 +322,38 @@ export default function BoardDetail() {
         />
       )}
       {remove && <RemoveBoard setRemove={setRemove} />}
-      <div className="w-[85%]">
+      <div className="w-full">
         <Header setModal={setModal} />
       </div>
 
       <div className="flex flex-col overflow-y-auto flex-1 hidden-scrollbar relative w-full items-center">
         <Content boardContent={boardInfo} />
+
         <div className="flex gap-3 my-3 w-[85%] border-b border-gray-300 pb-3">
-          <div className="flex items-center gap-1 font-semibold cursor-pointer" onClick={onClickLikeHandler}>
-            {like ? <FaHeart size={18} color="#ff4a4d" /> : <FaRegHeart size={18} />}{' '}
+          <div className="flex items-center gap-1 font-semibold cursor-pointer" onClick={onClickLike}>
+            {Like?.liked ? <FaHeart size={18} color="#ff4a4d" /> : <FaRegHeart size={18} />}{' '}
             <span className="text-xs">{Like?.postLikes || 0}</span>
           </div>
           <div className="flex items-center gap-1 font-semibold">
             <HiOutlineChatBubbleOvalLeft size={20} />
-            <span className="text-xs">{commentData?.length}</span>
+            <span className="text-xs">{commentData?.commentCount}</span>
           </div>
         </div>
+
         <CommentList
-          comments={commentData}
+          comments={commentData?.comments}
           setUpdateComment={setUpdateComment}
           handleDeleteComment={handleDeleteComment}
           parent={parent}
           setParent={setParent}
           footerRef={footerRef}
+          inputRef={inputRef}
         />
       </div>
 
       <div className="w-[90%]" ref={footerRef}>
         <Footer
+          inputRef={inputRef}
           handleAddComment={handleAddComment}
           handleUpdateComment={handleUpdateComment}
           updateComment={updateComment}

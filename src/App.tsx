@@ -42,7 +42,7 @@ function App() {
         <Route path="/meet/write" element={<MeetWrite />} />
         <Route path="/meet/participants/:id" element={<MeetParticipants />} />
         <Route path="/chatList" element={<ChatList />} />
-        <Route path="/chat/private" element={<ChatDetail />} />
+        <Route path="/chat/:option" element={<ChatDetail />} />
         <Route path="/map" element={<MapView />} />
         <Route path="/notification" element={<Notification />} />
         <Route path="/board" element={<Board />} />
