@@ -117,7 +117,7 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
               }`}
               onClick={comment.commenter.nickname === myNickname ? undefined : onClickCommentProfile}
             >
-              {/* <img src={comment.commenter.profileImage || ''} /> */}
+              <img src={comment.commenter.profileImage || ''} />
             </div>
           </div>
 
