@@ -88,6 +88,7 @@ export default function BlockedUserList() {
             buttonLabel="차단 해제"
             buttonWidth="84px"
             blocked={user.blocked}
+            isBlockedUser={true}
             onClick={() => handleUserClick(user.token)}
             onButtonClick={() => handleBlockToggle(user.token)}
           />
