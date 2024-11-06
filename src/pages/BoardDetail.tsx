@@ -172,6 +172,7 @@ export default function BoardDetail() {
           Authorization: Cookies.get('Authorization'),
         },
       });
+      console.log(response.data);
       return response.data;
     },
     retry: false,
@@ -293,7 +294,8 @@ export default function BoardDetail() {
           },
         },
       );
-      console.log(response);
+
+      console.log(response.data);
       refetchLike();
     } catch (error) {
       console.log(error);
