@@ -2,7 +2,13 @@ import { IoIosArrowBack } from 'react-icons/io';
 import SearchInput from './SearchInput';
 import { useNavigate } from 'react-router-dom';
 
-const Header = () => {
+interface HeaderProps {
+  onSearch: (keyword: string) => void;
+  onFocus?: () => void;
+  onInputChange: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ onSearch, onFocus, onInputChange }) => {
   const navigate = useNavigate();
 
   const handleBackClick = () => {
@@ -14,7 +20,7 @@ const Header = () => {
       <div className="ml-5 cursor-pointer font-black mr-[15px]" onClick={handleBackClick}>
         <IoIosArrowBack size={32} />
       </div>
-      <SearchInput />
+      <SearchInput onSearch={onSearch} onFocus={onFocus} onInputChange={onInputChange} />
     </div>
   );
 };
