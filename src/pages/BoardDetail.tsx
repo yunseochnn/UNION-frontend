@@ -11,10 +11,10 @@ import { useParams } from 'react-router-dom';
 import RemoveBoard from '../components/BoardDetail/RemoveBoard';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import apiClient from '../api/apiClient';
-import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 import { HiOutlineChatBubbleOvalLeft } from 'react-icons/hi2';
 import Cookies from 'js-cookie';
 import More from '../components/BoardDetail/More';
+import { IoIosHeartEmpty, IoMdHeart } from 'react-icons/io';
 
 export interface IFComment {
   id: number;
@@ -329,9 +329,9 @@ export default function BoardDetail() {
       <div className="flex flex-col overflow-y-auto flex-1 hidden-scrollbar relative w-full items-center">
         <Content boardContent={boardInfo} />
 
-        <div className="flex gap-3 my-3 w-[85%] border-b border-gray-300 pb-3">
+        <div className="flex gap-3 w-[85%] border-b border-gray-300 pb-3 items-center">
           <div className="flex items-center gap-1 font-semibold cursor-pointer" onClick={onClickLike}>
-            {Like?.liked ? <FaHeart size={18} color="#ff4a4d" /> : <FaRegHeart size={18} />}{' '}
+            {Like?.liked ? <IoMdHeart size={20} color="#ff4a4d" /> : <IoIosHeartEmpty size={20} />}{' '}
             <span className="text-xs">{Like?.postLikes || 0}</span>
           </div>
           <div className="flex items-center gap-1 font-semibold">
@@ -351,7 +351,7 @@ export default function BoardDetail() {
         />
       </div>
 
-      <div className="w-[90%]" ref={footerRef}>
+      <div className="w-[90%] pb-1" ref={footerRef}>
         <Footer
           inputRef={inputRef}
           handleAddComment={handleAddComment}

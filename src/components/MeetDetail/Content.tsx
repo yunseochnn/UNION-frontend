@@ -53,7 +53,7 @@ const Content = ({ gatheringData }: Prop) => {
         <div>
           <div className="font-semibold text-sm">{gatheringData?.author.nickname}</div>
           <div className="font-semibold text-sm text-gray-400">
-            {dayjs(gatheringData?.createdAt).format('YYYY년 MM월 DD일 H:mm')}
+            {dayjs(gatheringData?.createdAt).format('MM월 DD일 H:mm')}
           </div>
         </div>
       </div>
@@ -75,7 +75,7 @@ const Content = ({ gatheringData }: Prop) => {
           <FaRegCalendarCheck size={22} />
         </span>
         <span className="text-[18px] font-semibold">
-          {dayjs(gatheringData?.gatheringDateTime).format('YYYY년 MM월 DD일 H:mm')}
+          {dayjs(gatheringData?.gatheringDateTime).format('MM/DD H:mm')}
         </span>
       </div>
 
@@ -101,14 +101,17 @@ const Content = ({ gatheringData }: Prop) => {
         <div className="font-semibold text-gray-500 text-sm">{`관심 ${gatheringData?.likes} · 조회 ${gatheringData?.views}`}</div>
       </div>
 
-      <div className="mt-5 border-t border-gray-150 pt-6 mb-2 flex justify-between items-center">
+      <div className="mt-3 border-t border-gray-150 pt-4 mb-2 flex justify-between items-center">
         <div className="font-bold text-xl">
           <span>{`참여 중인 이웃 `}</span>
           <span style={{ color: '#FF4A4D' }}>{gatheringData?.currentMember}</span>
           <span>{`/${gatheringData?.maxMember}`}</span>
         </div>
 
-        <div onClick={() => navigate(`/meet/participants/${id}`)} className="cursor-pointer">
+        <div
+          onClick={() => navigate(`/meet/participants/${id}?ownerNic=${gatheringData?.author.nickname}`)}
+          className="cursor-pointer"
+        >
           <IoIosArrowForward size={24} />
         </div>
       </div>
