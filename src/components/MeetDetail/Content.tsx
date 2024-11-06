@@ -7,6 +7,8 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Response } from '../../pages/MeetDetail';
 import dayjs from 'dayjs';
+import { useSetRecoilState } from 'recoil';
+import { selectedUserState } from '../../recoil/selectedUserState';
 
 interface Prop {
   gatheringData: Response | null;
@@ -16,8 +18,17 @@ interface Prop {
 }
 
 const Content = ({ gatheringData }: Prop) => {
+  const setUser = useSetRecoilState(selectedUserState);
   const navigate = useNavigate();
   const { id } = useParams();
+
+  const onClickProfile = () => {
+    if (gatheringData?.author.token) {
+      setUser(gatheringData.author.token);
+      localStorage.setItem('userToken', gatheringData.author.token);
+      navigate('/userinfo');
+    }
+  };
 
   const images = gatheringData?.photos || [];
 
@@ -36,10 +47,14 @@ const Content = ({ gatheringData }: Prop) => {
       </div>
 
       <div className="flex items-center mt-[30px] gap-3">
-        <div className="h-10 w-10 bg-gray-300 rounded-full cursor-pointer">{gatheringData?.author.profileImage}</div>
+        <div className="h-10 w-10 bg-gray-300 rounded-full cursor-pointer overflow-hidden" onClick={onClickProfile}>
+          <img src={gatheringData?.author.profileImage} />
+        </div>
         <div>
           <div className="font-semibold text-sm">{gatheringData?.author.nickname}</div>
-          <div className="font-semibold text-sm text-gray-400">{gatheringData?.createdAt}</div>
+          <div className="font-semibold text-sm text-gray-400">
+            {dayjs(gatheringData?.createdAt).format('YYYY년 MM월 DD일 H:mm')}
+          </div>
         </div>
       </div>
 
@@ -60,7 +75,7 @@ const Content = ({ gatheringData }: Prop) => {
           <FaRegCalendarCheck size={22} />
         </span>
         <span className="text-[18px] font-semibold">
-          {dayjs(gatheringData?.createdAt).format('YYYY년 MM월 DD일 H:mm')}
+          {dayjs(gatheringData?.gatheringDateTime).format('YYYY년 MM월 DD일 H:mm')}
         </span>
       </div>
 

@@ -76,11 +76,12 @@ const Content = ({ latitude, setLatitude, longitude, setLongitude, setModalConte
       // 드래그 가능 여부를 명시적으로 설정(안해주면 모바일에서 지도뷰가 안움직임)
       mapInstance.setDraggable(true);
 
-      // 지도가 이동될 때마다 API 호출
-      kakao.maps.event.addListener(mapInstance, 'dragend', () => {
-        const center = mapInstance.getCenter();
-        getMeetList(center.getLat(), center.getLng());
-      });
+      //고민 => 현재 위치 버튼으로 가져오기 vs 이동할때마다(너무 요청 보낼까봐...)
+      // // 지도가 이동될 때마다 API 호출
+      // kakao.maps.event.addListener(mapInstance, 'dragend', () => {
+      //   const center = mapInstance.getCenter();
+      //   getMeetList(center.getLat(), center.getLng());
+      // });
 
       setMap(mapInstance);
 
