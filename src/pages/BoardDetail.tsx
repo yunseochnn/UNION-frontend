@@ -86,7 +86,6 @@ export default function BoardDetail() {
   const name = localStorage.getItem('nickname') || '';
   const [myNickname, setMyNickname] = useState(name);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  console.log(myNickname);
 
   //유저 상세정보
   const getUserInfo = async () => {
@@ -131,7 +130,6 @@ export default function BoardDetail() {
     retry: false,
   });
 
-  console.log(myNickname);
   console.log(boardInfo);
 
   //댓글 목록 read
