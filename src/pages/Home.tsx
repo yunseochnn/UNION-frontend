@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FiSearch, FiBell } from 'react-icons/fi';
+import { FiBell } from 'react-icons/fi';
 import SideBar from '../common/SideBar';
 import PostList from '../common/PostList';
 import '../style.css';
@@ -145,7 +145,6 @@ const Home: React.FC = () => {
           <header className="flex justify-between items-center p-4">
             <img src="/Logo.svg" alt="UNION" className="h-8" />
             <div className="flex space-x-4">
-              <FiSearch size={24} />
               <FiBell size={24} />
             </div>
           </header>
