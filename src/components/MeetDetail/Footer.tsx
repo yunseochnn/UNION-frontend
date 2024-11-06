@@ -4,6 +4,8 @@ import { IoIosHeart, IoIosHeartEmpty } from 'react-icons/io';
 import JoinMeetRequest from '../../api/JoinMeetRequest';
 import { useParams } from 'react-router-dom';
 import { Response } from '../../pages/MeetDetail';
+import apiClient from '../../api/apiClient';
+import Cookies from 'js-cookie';
 
 interface Props {
   gatheringData: Response | null;
@@ -14,6 +16,7 @@ const Footer = ({ gatheringData }: Props) => {
   const [like, setLike] = useState(gatheringData?.liked);
   const [participation, setParticipation] = useState(gatheringData?.joined);
   const [isPassDate, setIsPassDate] = useState(false);
+  const [recruited, setRecruited] = useState(gatheringData?.recruited);
   const { id } = useParams();
   const MeetId = Number(id);
 
@@ -22,6 +25,7 @@ const Footer = ({ gatheringData }: Props) => {
       setParticipation(gatheringData.joined);
       setLike(gatheringData.liked);
       setIsPassDate(new Date() > new Date(gatheringData.gatheringDateTime));
+      setRecruited(gatheringData.recruited);
       console.log(isPassDate);
     }
   }, [gatheringData, isPassDate]);
@@ -53,10 +57,22 @@ const Footer = ({ gatheringData }: Props) => {
     }
   };
 
-  const onClickOwner = () => {
-    if (!gatheringData?.recruited) {
-      //모집 마감 api 연결
-      setParticipation(true);
+  const onClickOwner = async () => {
+    try {
+      const response = await apiClient.post(
+        `/gatherings/${gatheringData?.id}/recruited`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: Cookies.get('Authorization'),
+          },
+        },
+      );
+      console.log('모집 마감 성공');
+      setRecruited(response.data.recruited);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -73,7 +89,7 @@ const Footer = ({ gatheringData }: Props) => {
         <div
           className="w-[80%] h-[53px] rounded-md flex items-center justify-center text-xl text-white font-semibold cursor-pointer mr-2"
           style={{
-            backgroundColor: `${gatheringData.recruited ? 'gray' : '#ff4a4d'}`,
+            backgroundColor: `${recruited ? 'gray' : '#ff4a4d'}`,
           }}
           onClick={onClickOwner}
         >
@@ -83,13 +99,11 @@ const Footer = ({ gatheringData }: Props) => {
         <div
           className="w-[80%] h-[53px] rounded-md flex items-center justify-center text-xl text-white font-semibold cursor-pointer mr-2"
           style={{
-            backgroundColor: `${
-              participation ? 'gray' : fullMember || isPassDate || gatheringData?.recruited ? 'gray ' : '#ff4a4d'
-            }`,
+            backgroundColor: `${participation ? 'gray' : fullMember || isPassDate || recruited ? 'gray ' : '#ff4a4d'}`,
           }}
           onClick={onClickParticipationHandler}
         >
-          {participation ? '참여완료' : fullMember || isPassDate || gatheringData?.recruited ? '모집완료' : '참여하기'}
+          {participation ? '참여완료' : fullMember || isPassDate || recruited ? '모집완료' : '참여하기'}
         </div>
       )}
     </div>

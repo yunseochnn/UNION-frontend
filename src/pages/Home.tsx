@@ -43,12 +43,6 @@ const Home: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    if (!localStorage.getItem('nickname')) {
-      getUserInfo();
-    }
-  }, []);
-
   const posts: Post[] = [
     {
       profileImage: '/path/to/profile',
@@ -135,6 +129,7 @@ const Home: React.FC = () => {
     if (accessToken && refreshToken) {
       Cookies.set('Authorization', `Bearer ${accessToken}`, { path: '/' });
       Cookies.set('Refresh-Token', refreshToken, { path: '/' });
+      getUserInfo();
       setIsAuthenticated(true);
     } else if (!Cookies.get('Authorization')) {
       navigate('/');
