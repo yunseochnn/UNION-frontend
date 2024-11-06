@@ -58,23 +58,21 @@ const Footer = ({ gatheringData }: Props) => {
   };
 
   const onClickOwner = async () => {
-    if (!gatheringData?.recruited) {
-      try {
-        const response = await apiClient.post(
-          `/gatherings/${gatheringData?.id}/recruited`,
-          {},
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: Cookies.get('Authorization'),
-            },
+    try {
+      const response = await apiClient.post(
+        `/gatherings/${gatheringData?.id}/recruited`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: Cookies.get('Authorization'),
           },
-        );
-        console.log('모집 마감 성공');
-        setRecruited(response.data.recruited);
-      } catch (error) {
-        console.log(error);
-      }
+        },
+      );
+      console.log('모집 마감 성공');
+      setRecruited(response.data.recruited);
+    } catch (error) {
+      console.log(error);
     }
   };
 
