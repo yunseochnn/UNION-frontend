@@ -13,11 +13,7 @@ interface Prop {
 const Calendar = ({ selectedDate, setSelectedDate }: Prop) => {
   // 날짜 형식 변환
   const isoDate = selectedDate?.toISOString();
-  console.log(isoDate);
   const formattedDate = isoDate ? format(isoDate, 'yyyy년 MM월 dd일 a hh:mm', { locale: ko }) : '';
-  console.log(formattedDate);
-
-  console.log(selectedDate);
 
   const now = new Date();
   const add30Minutes = new Date(now.getTime() + 30 * 60000); //현재 시간 + 30분

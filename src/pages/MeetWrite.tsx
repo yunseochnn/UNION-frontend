@@ -33,8 +33,6 @@ export default function MeetWrite() {
   const [click, setClick] = useState(false);
   const navigate = useNavigate();
 
-  console.log(address);
-
   const onSaveImage = useCallback(
     async (id: number) => {
       try {

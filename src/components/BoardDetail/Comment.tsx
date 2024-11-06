@@ -81,6 +81,11 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
     }
   };
 
+  const onClickPrivateChat = (token: string, name: string) => {
+    localStorage.setItem('userToken', token);
+    navigate(`/chat/private?title=${name}`);
+  };
+
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutSide);
 
@@ -134,20 +139,27 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
           <div className="flex relative cursor-pointer" onClick={onClickMoreHandler} ref={ref}>
             {more && (
               <div className="bg-white font-medium shadow-lg rounded-md absolute w-28 h-auto right-1 bottom-4 py-1 z-40">
-                <div className="border-b border-gray-300 px-2" onClick={onAddComment}>
+                <div className="border-b border-gray-300 px-2 text-center" onClick={onAddComment}>
                   대댓글 달기
                 </div>
                 {comment.commenter.nickname === myNickname && (
                   <>
-                    <div className="border-b border-gray-300 px-2" onClick={onUpdateComment}>
+                    <div className="border-b border-gray-300 px-2 text-center" onClick={onUpdateComment}>
                       수정하기
                     </div>
-                    <div className="border-b border-gray-300 px-2" onClick={onDeleteComment}>
+                    <div className=" border-gray-300 px-2 text-center" onClick={onDeleteComment}>
                       삭제하기
                     </div>
                   </>
                 )}
-                {comment.commenter.nickname !== myNickname && <div className="px-2">채팅보내기</div>}
+                {comment.commenter.nickname !== myNickname && (
+                  <div
+                    className="px-2 text-center"
+                    onClick={() => onClickPrivateChat(comment.commenter.token, comment.commenter.nickname)}
+                  >
+                    채팅보내기
+                  </div>
+                )}
               </div>
             )}
             <MdOutlineMoreHoriz size={25} />

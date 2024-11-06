@@ -150,18 +150,6 @@ export default function ChatDetail() {
         body: option === 'private' ? JSON.stringify(privateChatRequest) : JSON.stringify(gatheringChatRequest),
       });
 
-      // 메시지 상태에 새로운 메시지 추가
-      setMessages(prevMessages => [
-        ...prevMessages,
-        {
-          content: input,
-          senderName: myNickname,
-          senderToken: 'me', // 내 토큰(임시)
-          senderProfileImage: '',
-          createdAt: new Date().toISOString(),
-        },
-      ]);
-
       setInput('');
     }
   };

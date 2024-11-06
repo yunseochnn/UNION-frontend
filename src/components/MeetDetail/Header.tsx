@@ -14,6 +14,7 @@ const Header = ({ setModal, title, token, authorNickname }: Props) => {
   const [searchParams] = useSearchParams();
   const from = searchParams.get('from');
   const navigate = useNavigate();
+  const myNickname = localStorage.getItem('nickname');
 
   const onClickBack = () => {
     if (from === 'write') {
@@ -35,9 +36,12 @@ const Header = ({ setModal, title, token, authorNickname }: Props) => {
       </div>
       <div className="font-semibold text-lg">{title}</div>
       <div className="flex gap-[20px]">
-        <div className="cursor-pointer" onClick={onClickChat}>
-          <LuSendHorizonal size={20} />
-        </div>
+        {myNickname !== authorNickname && (
+          <div className="cursor-pointer" onClick={onClickChat}>
+            <LuSendHorizonal size={20} />
+          </div>
+        )}
+
         <div className="cursor-pointer" onClick={() => setModal(true)}>
           <FaEllipsisVertical size={20} />
         </div>
