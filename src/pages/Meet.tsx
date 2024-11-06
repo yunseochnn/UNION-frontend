@@ -145,30 +145,39 @@ const Meet: React.FC = () => {
           >
             <div className="flex justify-between items-start">
               <div>
-                <div className="text-xs text-gray-500 mb-1">
-                  {meeting.author.nickname} · {meeting.author.univName}
-                </div>
-                <div className="text-xs text-gray-500">{meeting.eupMyeonDong || '위치 미정'}</div>
-                <h2 className="font-bold text-lg">{meeting.title}</h2>
-                <div className="text-sm text-gray-600">{new Date(meeting.gatheringDateTime).toLocaleString()}</div>
-                <div className="mt-1 text-sm text-gray-500 flex items-center">
-                  <BsFillPeopleFill size={12} className="mr-1" />
-                  <span>{`${meeting.currentMember}/${meeting.maxMember}`}</span>
-                  <div className="flex items-center ml-2">
-                    <IoMdEye size={14} className="mr-1" />
-                    <span>{meeting.views}</span>
-                  </div>
-                </div>
-              </div>
-              <div className="w-16 h-16 rounded-md overflow-hidden">
-                {meeting.thumbnail ? (
-                  <img src={meeting.thumbnail} alt={meeting.title} className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full bg-gray-200" />
-                )}
-              </div>
-            </div>
+
+                {/* author 정보에 옵셔널 체이닝 적용 */}
+        <div className="text-xs text-gray-500 mb-1">
+          {meeting.author?.nickname} · {meeting.author?.univName}
+        </div>
+        <div className="text-xs text-gray-500">{meeting.eupMyeonDong || '위치 미정'}</div>
+        <h2 className="font-bold text-lg">{meeting.title}</h2>
+        <div className="text-sm text-gray-600">
+          {new Date(meeting.gatheringDateTime).toLocaleString()}
+        </div>
+        <div className="mt-1 text-sm text-gray-500 flex items-center">
+          <BsFillPeopleFill size={12} className="mr-1" />
+          <span>{`${meeting.currentMember}/${meeting.maxMember}`}</span>
+          <div className="flex items-center ml-2">
+            <IoMdEye size={14} className="mr-1" />
+            <span>{meeting.views}</span>
+
           </div>
+        </div>
+      </div>
+      <div className="w-16 h-16 rounded-md overflow-hidden">
+        {meeting.thumbnail ? (
+          <img 
+            src={meeting.thumbnail} 
+            alt={meeting.title} 
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-200" />
+        )}
+      </div>
+    </div>
+  </div>
         ))}
         {isLoading && <div className="text-center py-4">Loading...</div>}
       </main>
