@@ -72,17 +72,16 @@ const Content = ({ messages }: Props) => {
                     className="h-10 w-10 rounded-full bg-gray-300"
                     onClick={() => onClickChatProfile(message.senderToken)}
                   >
-                    {' '}
                     <img src={message.senderProfileImage} />
                   </div>
-                  <div className="ml-3 ">
+                  <div className="max-w-[60%] ml-3 ">
                     <div className="text-sm font-semibold">{message.senderName}</div>
-                    <div className="max-w-[60%] h-auto text-xs bg-gray-200 rounded-xl flex items-center justify-center p-3 font-semibold">
+                    <div className=" h-auto text-xs bg-gray-200 rounded-xl flex items-center justify-center p-3 font-semibold">
                       {message.content}
                     </div>
                   </div>
                   <div className="flex items-end ml-2">
-                    <div className="text-xs text-gray-400">{dayjs(message.createdAt).format('A h시 mm분')}</div>
+                    <div className="text-xs text-gray-400">{dayjs(message.createdAt).format('A h시 m분')}</div>
                   </div>
                 </div>
               )}
