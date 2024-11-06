@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoIosHeart, IoIosHeartEmpty } from 'react-icons/io';
 import JoinMeetRequest from '../../api/JoinMeetRequest';
 import { useParams } from 'react-router-dom';
@@ -13,9 +13,18 @@ const Footer = ({ gatheringData }: Props) => {
   const fullMember = gatheringData?.maxMember === gatheringData?.currentMember;
   const [like, setLike] = useState(gatheringData?.liked);
   const [participation, setParticipation] = useState(gatheringData?.joined);
-  const isPassDate = new Date() > new Date(gatheringData?.gatheringDateTime || '');
+  const [isPassDate, setIsPassDate] = useState(false);
   const { id } = useParams();
   const MeetId = Number(id);
+
+  useEffect(() => {
+    if (gatheringData) {
+      setParticipation(gatheringData.joined);
+      setLike(gatheringData.liked);
+      setIsPassDate(new Date() > new Date(gatheringData.gatheringDateTime));
+      console.log(isPassDate);
+    }
+  }, [gatheringData, isPassDate]);
 
   const onClickLikeHandler = () => {
     //모임 좋아요 api 연결

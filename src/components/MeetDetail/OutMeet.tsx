@@ -4,9 +4,10 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 interface Props {
   setOutMeet: React.Dispatch<React.SetStateAction<boolean>>;
+  onReadMeet?: () => void;
 }
 
-const OutMeet = ({ setOutMeet }: Props) => {
+const OutMeet = ({ setOutMeet, onReadMeet }: Props) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const MeetId = Number(id);
@@ -25,9 +26,12 @@ const OutMeet = ({ setOutMeet }: Props) => {
       if (status === 200) {
         console.log('모임 나가기 성공');
         if (pathname.includes('chat')) {
+          setOutMeet(false);
           navigate('/chatList');
+        } else if (onReadMeet) {
+          setOutMeet(false);
+          onReadMeet();
         }
-        setOutMeet(false);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
