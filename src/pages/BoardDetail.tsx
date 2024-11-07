@@ -69,6 +69,7 @@ interface Like {
 export interface ParentInfo {
   id: number | null;
   nickname: string | null;
+  token: string | null;
 }
 
 export default function BoardDetail() {
@@ -76,7 +77,7 @@ export default function BoardDetail() {
   const [userBlock, setUserBlock] = useState(false);
   const [modify, setModify] = useState(false);
   const [remove, setRemove] = useState(false);
-  const [parent, setParent] = useState<ParentInfo>({ id: null, nickname: null });
+  const [parent, setParent] = useState<ParentInfo>({ id: null, nickname: null, token: null });
   const [updateComment, setUpdateComment] = useState<UpComment | null>(null);
   const { type, id } = useParams();
   const Type = type?.toUpperCase() || '';
@@ -155,7 +156,53 @@ export default function BoardDetail() {
     retry: false,
   });
 
-  console.log(commentData);
+  // //게시글에 댓글 생성 시 알람 create
+  // const CommentAlarm = async () => {
+  //   try {
+  //     const response = await apiClient.post(
+  //       '/notification/post',
+  //       {
+  //         user_token: boardInfo?.author.token,
+  //         type_id: BoardId,
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: Cookies.get('Authorization'),
+  //           'Content-Type': 'application/json',
+  //         },
+  //       },
+  //     );
+
+  //     console.log('댓글 알람 완료');
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // //내 댓글에 타인이 대댓글 입력시 알람
+  // const putCommentAlarm = async () => {
+  //   try {
+  //     const response = await apiClient.post(
+  //       '/notification/comment',
+  //       {
+  //         user_token: parent.token,
+  //         type_id: parent.id,
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: Cookies.get('Authorization'),
+  //           'Content-Type': 'application/json',
+  //         },
+  //       },
+  //     );
+
+  //     console.log('대댓글 알람 완료');
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   //게시글 좋아요 데이터 읽기
   const {
@@ -193,7 +240,7 @@ export default function BoardDetail() {
       ),
     onSuccess: () => {
       console.log('댓글 추가 완료');
-      setParent({ id: null, nickname: null });
+      setParent({ id: null, nickname: null, token: null });
       queryClient.invalidateQueries({
         queryKey: ['commentDetail', BoardId],
       }); //리패칭하여 댓글 목록 최신화

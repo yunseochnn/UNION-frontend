@@ -34,6 +34,30 @@ const Footer = ({ gatheringData, onReadMeet }: Props) => {
     setLike(!like);
   };
 
+  // //모임글 참여 시 알람 create
+  // const MeetAlarm = async () => {
+  //   try {
+  //     const response = await apiClient.post(
+  //       '/notification/gathering',
+  //       {
+  //         user_token: `${gatheringData?.author.token}`,
+  //         type_id: MeetId,
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: Cookies.get('Authorization'),
+  //           'Content-Type': 'application/json',
+  //         },
+  //       },
+  //     );
+
+  //     console.log(response.data);
+  //     console.log('모임 알림 보내기 완료');
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   const onClickParticipationHandler = async () => {
     if (!gatheringData?.joined && !fullMember && !isPassDate && !gatheringData?.recruited) {
       try {

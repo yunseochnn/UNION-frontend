@@ -51,7 +51,7 @@ const Comment = ({
         !commentRef.current.contains(e.target as Node) &&
         !footerRef.current.contains(e.target as Node)
       ) {
-        setParent({ id: null, nickname: null });
+        setParent({ id: null, nickname: null, token: null });
       }
     },
     [footerRef, setParent],
@@ -63,7 +63,7 @@ const Comment = ({
 
   const onAddComment = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    setParent({ id: comment.id, nickname: comment.commenter.nickname });
+    setParent({ id: comment.id, nickname: comment.commenter.nickname, token: comment.commenter.token });
     inputRef.current?.focus();
     setMore(false);
   };
