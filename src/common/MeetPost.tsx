@@ -1,60 +1,63 @@
-import { BiComment } from 'react-icons/bi';
-import { LuHeart } from 'react-icons/lu';
+import { BsFillPeopleFill } from 'react-icons/bs';
+import { IoMdEye } from 'react-icons/io';
 
-interface PostProps {
-  profileImage: string;
+interface MeetPostProps {
+  profileImage?: string;
   nickname: string;
-  university: string;
+  eupMyeonDong?: string;
   title: string;
-  content: string;
-  likes: number;
-  comments: number;
+  gatheringDateTime: string;
+  currentMember: number;
+  maxMember: number;
+  views: number;
   thumbnail?: string;
-  type: string;
-  id: number;
-  isLast?: boolean;
 }
 
-export default function Post({
+export default function MeetPost({
   profileImage,
   nickname,
-  university,
+  eupMyeonDong,
   title,
-  content,
-  likes,
-  comments,
+  gatheringDateTime,
+  currentMember,
+  maxMember,
+  views,
   thumbnail,
-}: PostProps) {
+}: MeetPostProps) {
   return (
     <button className="w-full bg-white px-[23px] text-left">
       <div className="py-[15px] border-b-[1.5px] border-[#F2F3F6]">
         <div className="flex justify-between items-center mx-[5px]">
           <div className="flex flex-col flex-grow mr-3">
+            {/* 프로필 이미지, 닉네임, 위치 정보 */}
             <div className="flex items-center text-[12px]">
               <img src={profileImage} alt="Profile" className="w-[20px] h-[20px] rounded-full mr-[5px]" />
               <div className="flex items-center">
                 <span className="text-customGray1">{nickname}</span>
                 <span className="mx-[3px] text-customGray">·</span>
-                <span className="text-customGray2 truncate ">{university}</span>
+                <span className="text-customGray2">{eupMyeonDong || '위치 미정'}</span>
               </div>
             </div>
-            <p className="mt-2 text-[17px] text-customBlack font-semibold truncate max-w-[200px] lg:max-w-[240px]">
+
+            {/* 모임 제목과 날짜 */}
+            <h2 className="mt-2 text-[17px] text-customBlack font-semibold truncate max-w-[200px] lg:max-w-[240px]">
               {title}
-            </p>
+            </h2>
+            <div className="text-[14px] text-customGray2">{new Date(gatheringDateTime).toLocaleString()}</div>
 
-            <p className="text-[14px] text-customGray2 truncate max-w-[200px] lg:max-w-[240px]">{content}</p>
-
+            {/* 인원수와 조회수 */}
             <div className="mt-1 flex space-x-2 text-customBlack text-[11px]">
               <span className="flex items-center space-x-1">
-                <LuHeart className="text-customGray2" />
-                <span>{likes}</span>
+                <BsFillPeopleFill className="text-customGray2" />
+                <span>{`${currentMember}/${maxMember}`}</span>
               </span>
               <span className="flex items-center space-x-1">
-                <BiComment className="text-customGray2" />
-                <span>{comments}</span>
+                <IoMdEye className="text-customGray2" />
+                <span>{views}</span>
               </span>
             </div>
           </div>
+
           {thumbnail && (
             <img
               src={thumbnail}
