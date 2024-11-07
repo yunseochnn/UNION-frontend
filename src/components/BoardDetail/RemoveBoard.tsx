@@ -23,7 +23,6 @@ const RemoveBoard = ({ setRemove }: Prop) => {
         return;
       }
 
-      console.log(response);
       const { status } = response;
       if (status === 204) {
         console.log('게시물 삭제 성공');

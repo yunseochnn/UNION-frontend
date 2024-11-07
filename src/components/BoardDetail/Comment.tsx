@@ -6,6 +6,8 @@ import dayjs from 'dayjs';
 import { useSetRecoilState } from 'recoil';
 import { selectedUserState } from '../../recoil/selectedUserState';
 import { useNavigate } from 'react-router-dom';
+import apiClient from '../../api/apiClient';
+import Cookies from 'js-cookie';
 
 interface Prop {
   comment: IFComment;
@@ -15,10 +17,19 @@ interface Prop {
   parent: ParentInfo;
   footerRef: React.RefObject<HTMLDivElement>;
   inputRef: React.RefObject<HTMLInputElement>;
+  refetchComment: () => void;
 }
 
-const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, parent, footerRef, inputRef }: Prop) => {
-  const [like, setLike] = useState(false);
+const Comment = ({
+  comment,
+  setUpdateComment,
+  setParent,
+  handleDeleteComment,
+  parent,
+  footerRef,
+  inputRef,
+  refetchComment,
+}: Prop) => {
   const [more, setMore] = useState(false);
   const setUser = useSetRecoilState(selectedUserState);
   const navigate = useNavigate();
@@ -45,10 +56,6 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
     },
     [footerRef, setParent],
   );
-
-  const onClickLikeHandler = () => {
-    setLike(!like);
-  };
 
   const onClickMoreHandler = () => {
     setMore(true);
@@ -100,6 +107,25 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
 
     return () => document.removeEventListener('mousedown', handleClickCommentOutSide);
   }, [handleClickCommentOutSide]);
+
+  const onClickLike = async () => {
+    try {
+      const response = await apiClient.post(
+        `/comment/like/${comment.id}`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: Cookies.get('Authorization'),
+          },
+        },
+      );
+      refetchComment();
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -181,8 +207,8 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
           </div>
 
           <div className={`flex items-center gap-1 ${comment.parentId ? 'pl-1' : ''}`}>
-            <span onClick={onClickLikeHandler} className="cursor-pointer">
-              {like ? <FaHeart size={14} color="#ff4a4d" /> : <FaRegHeart size={14} />}{' '}
+            <span onClick={onClickLike} className="cursor-pointer">
+              {comment.liked ? <FaHeart size={14} color="#ff4a4d" /> : <FaRegHeart size={14} />}{' '}
             </span>
             <span className="text-sm font-semibold">{comment.commentLikes}</span>
           </div>
@@ -201,6 +227,7 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
                 setParent={setParent}
                 handleDeleteComment={handleDeleteComment}
                 inputRef={inputRef}
+                refetchComment={refetchComment}
               />
             </div>
           ))}

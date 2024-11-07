@@ -37,11 +37,12 @@ const Content = () => {
   useEffect(() => {
     MeetMember();
   }, [MeetMember]);
+
   return (
     <div className="mt-2 flex flex-col px-[33px] w-full">
       {Members.map((member, index) => (
         <div key={index}>
-          <ProfileList member={member} />
+          <ProfileList member={member} MeetMember={MeetMember} />
         </div>
       ))}
     </div>

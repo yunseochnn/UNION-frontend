@@ -30,7 +30,8 @@ export interface IFComment {
     profileImage: string | null;
     univName: string;
   };
-  children: IFComment[];
+  children?: IFComment[];
+  liked: boolean;
 }
 
 export interface CommentData {
@@ -137,6 +138,7 @@ export default function BoardDetail() {
     data: commentData,
     isError: isCommentError,
     error: commentError,
+    refetch: refetchComment,
   } = useQuery<CommentData>({
     queryKey: ['commentDetail', BoardId],
     queryFn: async () => {
@@ -348,6 +350,7 @@ export default function BoardDetail() {
           setParent={setParent}
           footerRef={footerRef}
           inputRef={inputRef}
+          refetchComment={refetchComment}
         />
       </div>
 

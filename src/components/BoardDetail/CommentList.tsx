@@ -1,6 +1,11 @@
+import { useParams } from 'react-router-dom';
+import apiClient from '../../api/apiClient';
 import { IFComment, ParentInfo, UpComment } from '../../pages/BoardDetail';
 import Comment from './Comment';
 import EmptyComment from './EmptyComment';
+import Cookies from 'js-cookie';
+import { useCallback, useEffect, useState } from 'react';
+import BestComment from './BestComment';
 
 interface Props {
   comments: IFComment[] | undefined;
@@ -10,6 +15,7 @@ interface Props {
   parent: ParentInfo;
   footerRef: React.RefObject<HTMLDivElement>;
   inputRef: React.RefObject<HTMLInputElement>;
+  refetchComment: () => void;
 }
 
 const CommentList = ({
@@ -20,9 +26,37 @@ const CommentList = ({
   parent,
   footerRef,
   inputRef,
+  refetchComment,
 }: Props) => {
+  const { id } = useParams();
+  const BoardId = Number(id);
+  const [bestComment, setBestComment] = useState<IFComment | null>(null);
+
+  const getBestComment = useCallback(async () => {
+    try {
+      const response = await apiClient.get(`/comment/best/${BoardId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: Cookies.get('Authorization'),
+        },
+      });
+      console.log('베스트 댓글 불러오기 성공');
+      if (response.data === '') {
+        setBestComment(null);
+      } else {
+        setBestComment(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [BoardId]);
+
+  useEffect(() => {
+    getBestComment();
+  }, [getBestComment]);
   return (
     <div className="min-h-80 w-[90%]">
+      {bestComment && <BestComment comment={bestComment} />}
       {comments?.length !== 0 ? (
         comments?.map((comment, index) => (
           <div key={index}>
@@ -34,6 +68,7 @@ const CommentList = ({
               parent={parent}
               footerRef={footerRef}
               inputRef={inputRef}
+              refetchComment={refetchComment}
             />
           </div>
         ))

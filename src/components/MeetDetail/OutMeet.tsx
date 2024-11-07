@@ -10,12 +10,11 @@ interface Props {
 
 const OutMeet = ({ setOutMeet, onReadMeet }: Props) => {
   const navigate = useNavigate();
+  const pathname = useLocation().pathname;
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const MeetId = Number(id || searchParams.get('chatId'));
   console.log(MeetId);
-
-  const pathname = useLocation().pathname;
 
   const DeleteMeet = async () => {
     try {
@@ -71,7 +70,9 @@ const OutMeet = ({ setOutMeet, onReadMeet }: Props) => {
         <div className="font-semibold text-lg flex flex-col justify-center items-center">
           <span>해당 모임을 나가시겠습니까?</span>
           <span className="text-sm text-red-500">모임과 모임채팅 모두 나가게 됩니다</span>
-          <span className="text-sm text-red-500">(모임 생성자인 경우 모임이 삭제됩니다.)</span>
+          {pathname.includes('chat') && (
+            <span className="text-sm text-red-500">(모임 생성자인 경우 모임이 삭제됩니다.)</span>
+          )}
         </div>
         <div className="flex gap-8">
           <div

@@ -1,15 +1,40 @@
-import { useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { IFMember } from './Content';
+import apiClient from '../../api/apiClient';
+import Cookies from 'js-cookie';
 
 interface Prop {
   member: IFMember;
+  MeetMember: () => void;
 }
 
-const ProfileList = ({ member }: Prop) => {
+const ProfileList = ({ member, MeetMember }: Prop) => {
   const myNickname = localStorage.getItem('nickname');
   const [searchParams] = useSearchParams();
   const ownerNic = searchParams.get('ownerNic');
   const owner = myNickname === ownerNic;
+  const { id } = useParams();
+  const MeetId = Number(id);
+
+  const onClickOutMember = async () => {
+    try {
+      await apiClient.post(
+        `/gatherings/${MeetId}/${member.token}/kick-out`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: Cookies.get('Authorization'),
+          },
+        },
+      );
+
+      console.log('강퇴 완료');
+      MeetMember();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="h-16 w-full flex justify-between items-center mt-2">
@@ -29,6 +54,7 @@ const ProfileList = ({ member }: Prop) => {
         <div
           className="w-[22%] h-7 rounded-full text-white flex items-center justify-center font-semibold text-sm cursor-pointer"
           style={{ backgroundColor: '#ff4a4d' }}
+          onClick={onClickOutMember}
         >
           강퇴하기
         </div>
