@@ -5,7 +5,7 @@ interface Props {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
   setOutMeet: React.Dispatch<React.SetStateAction<boolean>>;
   setUserBlock: React.Dispatch<React.SetStateAction<boolean>>;
-  join: boolean | null;
+  join: boolean | undefined;
 }
 
 const More = ({ setModal, setOutMeet, setUserBlock, join }: Props) => {
