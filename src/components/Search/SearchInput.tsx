@@ -17,7 +17,7 @@ export default function SearchInput({ onSearch, onFocus, onInputChange }: Search
   };
 
   return (
-    <div className="flex items-center bg-[#F2F4F8] rounded-lg p-2 w-[319px] h-[41px] ">
+    <div className="flex items-center bg-[#F2F4F8] rounded-lg p-2 w-[75%] h-[41px] ">
       <IoSearch className="text-[#697077] text-[24px] ml-[8px]" onClick={() => onSearch(keyword)} />
       <input
         type="text"
