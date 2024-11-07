@@ -97,7 +97,7 @@ export default function MeetDetail() {
         </div>
 
         <div className="w-[90%]">
-          <Footer gatheringData={gatheringData} />
+          <Footer gatheringData={gatheringData} onReadMeet={onReadMeet} />
         </div>
       </div>
     </>

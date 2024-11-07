@@ -9,12 +9,12 @@ import Cookies from 'js-cookie';
 
 interface Props {
   gatheringData: Response | null;
+  onReadMeet: () => void;
 }
 
-const Footer = ({ gatheringData }: Props) => {
+const Footer = ({ gatheringData, onReadMeet }: Props) => {
   const fullMember = gatheringData?.maxMember === gatheringData?.currentMember;
   const [like, setLike] = useState(gatheringData?.liked);
-  const [participation, setParticipation] = useState(gatheringData?.joined);
   const [isPassDate, setIsPassDate] = useState(false);
   const [recruited, setRecruited] = useState(gatheringData?.recruited);
   const { id } = useParams();
@@ -22,7 +22,6 @@ const Footer = ({ gatheringData }: Props) => {
 
   useEffect(() => {
     if (gatheringData) {
-      setParticipation(gatheringData.joined);
       setLike(gatheringData.liked);
       setIsPassDate(new Date() > new Date(gatheringData.gatheringDateTime));
       setRecruited(gatheringData.recruited);
@@ -36,7 +35,7 @@ const Footer = ({ gatheringData }: Props) => {
   };
 
   const onClickParticipationHandler = async () => {
-    if (!participation && !fullMember && !isPassDate && !gatheringData?.recruited) {
+    if (!gatheringData?.joined && !fullMember && !isPassDate && !gatheringData?.recruited) {
       try {
         const response = await JoinMeetRequest(MeetId);
 
@@ -46,7 +45,7 @@ const Footer = ({ gatheringData }: Props) => {
         }
 
         console.log('모임 참여 완료');
-        setParticipation(true);
+        onReadMeet();
       } catch (error) {
         if (axios.isAxiosError(error)) {
           if (error.response) {
@@ -99,11 +98,13 @@ const Footer = ({ gatheringData }: Props) => {
         <div
           className="w-[80%] h-[53px] rounded-md flex items-center justify-center text-xl text-white font-semibold cursor-pointer mr-2"
           style={{
-            backgroundColor: `${participation ? 'gray' : fullMember || isPassDate || recruited ? 'gray ' : '#ff4a4d'}`,
+            backgroundColor: `${
+              gatheringData?.joined ? 'gray' : fullMember || isPassDate || recruited ? 'gray ' : '#ff4a4d'
+            }`,
           }}
           onClick={onClickParticipationHandler}
         >
-          {participation ? '참여완료' : fullMember || isPassDate || recruited ? '모집완료' : '참여하기'}
+          {gatheringData?.joined ? '참여완료' : fullMember || isPassDate || recruited ? '모집완료' : '참여하기'}
         </div>
       )}
     </div>

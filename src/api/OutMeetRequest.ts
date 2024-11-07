@@ -12,7 +12,7 @@ const OutMeetRequest = async (gatheringId: number) => {
     return response;
   } catch (error) {
     console.log(error);
-    throw error;
+    return null;
   }
 };
 

@@ -47,7 +47,7 @@ const Footer = ({ handleAddComment, handleUpdateComment, updateComment, setUpdat
   return (
     <>
       {updateComment ? (
-        <form className="h-14 flex items-center justify-between" onSubmit={onUpdateComment}>
+        <form className="h-14 flex items-center justify-between " onSubmit={onUpdateComment}>
           <div onClick={handleCancleUpdate} className="cursor-pointer">
             <IoClose size={20} />
           </div>

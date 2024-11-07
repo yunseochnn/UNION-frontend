@@ -6,6 +6,8 @@ import dayjs from 'dayjs';
 import { useSetRecoilState } from 'recoil';
 import { selectedUserState } from '../../recoil/selectedUserState';
 import { useNavigate } from 'react-router-dom';
+import apiClient from '../../api/apiClient';
+import Cookies from 'js-cookie';
 
 interface Prop {
   comment: IFComment;
@@ -15,10 +17,19 @@ interface Prop {
   parent: ParentInfo;
   footerRef: React.RefObject<HTMLDivElement>;
   inputRef: React.RefObject<HTMLInputElement>;
+  refetchComment: () => void;
 }
 
-const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, parent, footerRef, inputRef }: Prop) => {
-  const [like, setLike] = useState(false);
+const Comment = ({
+  comment,
+  setUpdateComment,
+  setParent,
+  handleDeleteComment,
+  parent,
+  footerRef,
+  inputRef,
+  refetchComment,
+}: Prop) => {
   const [more, setMore] = useState(false);
   const setUser = useSetRecoilState(selectedUserState);
   const navigate = useNavigate();
@@ -45,10 +56,6 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
     },
     [footerRef, setParent],
   );
-
-  const onClickLikeHandler = () => {
-    setLike(!like);
-  };
 
   const onClickMoreHandler = () => {
     setMore(true);
@@ -101,36 +108,70 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
     return () => document.removeEventListener('mousedown', handleClickCommentOutSide);
   }, [handleClickCommentOutSide]);
 
+  const onClickLike = async () => {
+    try {
+      const response = await apiClient.post(
+        `/comment/like/${comment.id}`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: Cookies.get('Authorization'),
+          },
+        },
+      );
+      refetchComment();
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div
-        className={`px-2 h-[70px] flex justify-between items-center ${comment.parentId ? 'pl-12' : ''} ${
+        className={`px-2 mt-2 h-auto flex justify-between items-center ${comment.parentId ? 'pl-12' : ''} ${
           parent.id === comment.id ? 'bg-red-100' : ''
         }`}
         ref={commentRef}
       >
-        <div className="flex gap-3 items-center">
-          <div
-            className={`h-12 w-12 rounded-full overflow-hidden ${
-              comment.commenter.nickname === myNickname ? 'cursor-default' : 'cursor-pointer'
-            }`}
-            onClick={comment.commenter.nickname === myNickname ? undefined : onClickCommentProfile}
-          >
-            <img src={comment.commenter.profileImage || ''} />
-          </div>
-          <div className="flex flex-col ">
-            <div className="flex gap-1 items-center">
-              <div className="font-bold text-base">{comment.commenter.nickname}</div>
-              <div className="text-gray-400 font-semibold text-xs">{comment.commenter.univName}</div>
+        <div className="flex gap-3 w-full">
+          <div className="flex mt-2">
+            <div
+              className={`h-12 w-12 rounded-full overflow-hidden bg-gray-300 flex-shrink-0 ${
+                comment.commenter.nickname === myNickname ? 'cursor-default' : 'cursor-pointer'
+              }`}
+              onClick={comment.commenter.nickname === myNickname ? undefined : onClickCommentProfile}
+            >
+              <img src={comment.commenter.profileImage || ''} />
             </div>
+          </div>
 
-            <div className="text-[10px] text-gray-400">{`${dayjs(comment.createdAt).format('MM월 DD일 H:mm')}`}</div>
+          <div className="flex items-center w-full">
+            <div className="flex flex-col w-[90%] justify-start">
+              <div style={{ lineHeight: 0.8 }}>
+                <div className="flex gap-1 items-center">
+                  <div className="font-bold text-base">{comment.commenter.nickname}</div>
+                  <div className="text-customGray2 font-semibold text-xs">{comment.commenter.univName}</div>
+                </div>
 
-            <div className="text-sm font-semibold flex">
-              {comment.parentNickname && comment.parentNickname !== comment.commenter.nickname && (
-                <span className="font-bold mr-1" style={{ color: '#ff4a4d' }}>{`@${comment.parentNickname} `}</span>
-              )}
-              <span>{comment.content}</span>
+                <div className="text-[10px] text-customGray2 font-medium">{`${dayjs(comment.createdAt).format(
+                  'MM/DD H:mm',
+                )}`}</div>
+              </div>
+
+              <div className="text-sm font-semibold flex mt-1">
+                {comment.parentNickname && comment.parentNickname !== comment.commenter.nickname ? (
+                  <span className="">
+                    <span className="font-bold" style={{ color: '#ff4a4d' }}>
+                      @{comment.parentNickname}
+                    </span>
+                    {comment.content}
+                  </span>
+                ) : (
+                  <span className="">{comment.content}</span>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -166,8 +207,8 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
           </div>
 
           <div className={`flex items-center gap-1 ${comment.parentId ? 'pl-1' : ''}`}>
-            <span onClick={onClickLikeHandler} className="cursor-pointer">
-              {like ? <FaHeart size={14} color="#ff4a4d" /> : <FaRegHeart size={14} />}{' '}
+            <span onClick={onClickLike} className="cursor-pointer">
+              {comment.liked ? <FaHeart size={14} color="#ff4a4d" /> : <FaRegHeart size={14} />}{' '}
             </span>
             <span className="text-sm font-semibold">{comment.commentLikes}</span>
           </div>
@@ -186,6 +227,7 @@ const Comment = ({ comment, setUpdateComment, setParent, handleDeleteComment, pa
                 setParent={setParent}
                 handleDeleteComment={handleDeleteComment}
                 inputRef={inputRef}
+                refetchComment={refetchComment}
               />
             </div>
           ))}
