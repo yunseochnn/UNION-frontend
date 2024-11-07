@@ -19,7 +19,7 @@ const Header = ({ success, setClick }: Prop) => {
     navigate(`/board/${type}`);
   };
   return (
-    <div className="flex items-center justify-between w-full h-[60px] border-b border-gray-200 ">
+    <div className="flex items-center justify-between w-full h-[62px] border-b border-gray-200 ">
       <div className="cursor-pointer font-black" onClick={onClickBack}>
         <IoIosArrowBack size={32} />
       </div>

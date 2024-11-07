@@ -5,7 +5,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex items-center justify-between w-full h-16 px-[30px] border-b border-gray-300">
+    <div className="flex items-center justify-between w-full h-[62px] px-5 border-b border-gray-300">
       <div className="cursor-pointer font-black" onClick={() => navigate(-1)}>
         <IoIosArrowBack size={32} />
       </div>

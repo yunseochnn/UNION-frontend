@@ -113,9 +113,13 @@ export default function MeetWrite() {
   }, [click, onCreateMeet]);
 
   return (
-    <div className="w-full h-full overflow-hidden hidden-scrollbar flex flex-col pt-3 relative items-center">
+    <div className="w-full h-full overflow-hidden hidden-scrollbar flex flex-col pt-1 relative items-center">
       {open && <Post setOpen={setOpen} setAddress={setAddress} />}
-      <Header success={success} setClick={setClick} />
+      <div className="w-full px-5">
+        {' '}
+        <Header success={success} setClick={setClick} />
+      </div>
+
       <Content
         address={address}
         setAddress={setAddress}

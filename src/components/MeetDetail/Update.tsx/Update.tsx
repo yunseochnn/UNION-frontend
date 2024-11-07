@@ -108,9 +108,12 @@ export default function Update({ updateData, setModify, onReadMeet }: Props) {
 
   return (
     <div className="absolute inset-0 bg-white z-20 flex justify-center items-center">
-      <div className="w-full h-full overflow-hidden hidden-scrollbar flex flex-col pt-3 relative items-center">
+      <div className="w-full h-full overflow-hidden hidden-scrollbar flex flex-col pt-1 relative items-center">
         {open && <Post setOpen={setOpen} setAddress={setAddress} />}
-        <Header success={success} onUpdateMeet={onUpdateMeet} setModify={setModify} />
+        <div className="w-full px-5">
+          <Header success={success} onUpdateMeet={onUpdateMeet} setModify={setModify} />
+        </div>
+
         <Content
           address={address}
           setAddress={setAddress}
@@ -126,7 +129,7 @@ export default function Update({ updateData, setModify, onReadMeet }: Props) {
           maxMember={maxMember}
           setMaxMember={setMaxMember}
         />
-        <Footer setOpen={setOpen} setImages={setImages} />
+        <Footer setOpen={setOpen} />
       </div>
     </div>
   );

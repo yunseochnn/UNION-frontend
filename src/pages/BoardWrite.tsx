@@ -76,11 +76,14 @@ export default function BoardWrite() {
   }, [click, onCreateBoard]);
 
   return (
-    <div className="flex flex-col w-full h-full px-[30px] pt-3 relative">
+    <div className="flex flex-col w-full h-full relative">
       {open && (
         <Vote items={items} setItems={setItems} setOpen={setOpen} voteTitle={voteTitle} setVoteTitle={setVoteTitle} />
       )}
-      <Header success={success} setClick={setClick} />
+      <div className="w-full px-5">
+        <Header success={success} setClick={setClick} />
+      </div>
+
       <Content
         items={items}
         setItems={setItems}
@@ -93,7 +96,9 @@ export default function BoardWrite() {
         content={content}
         setContent={setContent}
       />
-      <Footer setOpen={setOpen} setImages={setImages} />
+      <div className="px-5">
+        <Footer setOpen={setOpen} setImages={setImages} />
+      </div>
     </div>
   );
 }
