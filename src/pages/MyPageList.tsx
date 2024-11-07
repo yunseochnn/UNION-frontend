@@ -44,7 +44,7 @@ export default function MyPageList({ posts, pageTitle, lastPostRef }: MyPageList
         {posts.length > 0 ? (
           <PostList posts={posts} lastPostRef={lastPostRef} />
         ) : (
-          <div className="flex flex-col items-center h-full text-customGray2 mt-[170px] text-[18px]">
+          <div className="flex flex-col items-center mt-[50%] text-customGray2  text-[18px] flex-grow flex-1">
             <HiOutlinePencilSquare size={50} className="mb-1" />
             {emptyMessage}
           </div>
