@@ -20,11 +20,9 @@ export default function BoardWrite() {
   const { type } = useParams();
   const Type = type?.toUpperCase();
   const navigate = useNavigate();
-  console.log(items);
 
   const onSaveImage = useCallback(
     async (id: number) => {
-      console.log(images);
       try {
         const response = await SaveImageRequest(id, 'POST', images);
         if (!response) {

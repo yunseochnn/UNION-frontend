@@ -25,23 +25,38 @@ const Content = ({ latitude, setLatitude, longitude, setLongitude, setModalConte
 
   console.log(map);
 
-  const getMeetList = useCallback(async (lat: number, lng: number) => {
+  const getMeetList = useCallback(async () => {
     try {
-      const response = await apiClient.get(
-        `/gatherings?sortType=DISTANCE&latitude=${lat}&longitude=${lng}&page=0&size=15`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: Cookies.get('Authorization'),
-          },
-        },
-      );
+      // const response = await apiClient.get(
+      //   `/gatherings?sortType=DISTANCE&latitude=${latitude}&longitude=${longitude}&page=0&size=15`,
+      //   {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       Authorization: Cookies.get('Authorization'),
+      //     },
+      //   },
+      // );
 
+      const response = await apiClient.get('/gatherings', {
+        params: {
+          sortType: 'DISTANCE',
+          latitude,
+          longitude,
+          page: 0,
+          size: 15,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: Cookies.get('Authorization'),
+        },
+      });
+
+      console.log(response);
       setMeetList(response.data.content);
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [latitude, longitude]);
 
   //Geolocation을 직접 가져오는 함수
   useEffect(() => {
@@ -86,7 +101,7 @@ const Content = ({ latitude, setLatitude, longitude, setLongitude, setModalConte
       setMap(mapInstance);
 
       //초기 지도 로드시 모임 데이터 가져오기
-      getMeetList(latitude, longitude);
+      getMeetList();
     });
   }, [getMeetList, latitude, longitude]);
 

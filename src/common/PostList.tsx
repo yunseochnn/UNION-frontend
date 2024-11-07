@@ -9,7 +9,7 @@ interface Post {
   content: string;
   likes: number;
   comments: number;
-  thumbnail: string;
+  thumbnail?: string;
   type: string;
   id: number;
 }
