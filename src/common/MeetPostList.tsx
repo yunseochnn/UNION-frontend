@@ -1,29 +1,30 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import MeetPost from './MeetPost';
 
-interface Meeting {
-  profileImage?: string;
-  nickname: string;
-  eupMyeonDong?: string;
-  title: string;
-  gatheringDateTime: string;
-  currentMember: number;
-  maxMember: number;
-  views: number;
-  thumbnail?: string;
-  id: number;
-}
-
 interface MeetPostListProps {
-  meetings: Meeting[];
+  meetings: {
+    id: number;
+    title: string;
+    eupMyeonDong: string;
+    gatheringDateTime: string;
+    currentMember: number;
+    maxMember: number;
+    views: number;
+    thumbnail?: string;
+    author: {
+      profileImage: string;
+      nickname: string;
+    };
+  }[];
   lastMeetingRef?: (node: HTMLDivElement | null) => void;
 }
 
-export default function MeetPostList({ meetings, lastMeetingRef }: MeetPostListProps) {
+const MeetPostList: React.FC<MeetPostListProps> = ({ meetings, lastMeetingRef }) => {
   const navigate = useNavigate();
 
-  const handleMeetingClick = (meeting: Meeting) => {
-    navigate(`/meet/${meeting.id}`);
+  const handlePostClick = (id: number) => {
+    navigate(`/meet/${id}`);
   };
 
   return (
@@ -32,22 +33,14 @@ export default function MeetPostList({ meetings, lastMeetingRef }: MeetPostListP
         <div
           key={meeting.id}
           ref={index === meetings.length - 1 ? lastMeetingRef : null}
-          onClick={() => handleMeetingClick(meeting)}
+          onClick={() => handlePostClick(meeting.id)}
         >
-          <MeetPost
-            profileImage={meeting.profileImage}
-            nickname={meeting.nickname}
-            eupMyeonDong={meeting.eupMyeonDong}
-            title={meeting.title}
-            gatheringDateTime={meeting.gatheringDateTime}
-            currentMember={meeting.currentMember}
-            maxMember={meeting.maxMember}
-            views={meeting.views}
-            thumbnail={meeting.thumbnail}
-          />
+          <MeetPost meeting={meeting} />
         </div>
       ))}
       {meetings.length > 0 && <div className="h-7" />}
     </div>
   );
-}
+};
+
+export default MeetPostList;

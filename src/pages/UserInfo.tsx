@@ -32,17 +32,18 @@ interface PostType {
 }
 
 interface MeetingType {
-  profileImage: string;
-  nickname: string;
-  university: string;
+  id: number;
   title: string;
-  maxMember: number;
-  currentMember: number;
   eupMyeonDong: string;
   gatheringDateTime: string;
+  currentMember: number;
+  maxMember: number;
   views: number;
-  thumbnail: string;
-  id: number;
+  thumbnail?: string;
+  author: {
+    profileImage: string;
+    nickname: string;
+  };
 }
 
 export default function UserInfo() {
@@ -149,15 +150,16 @@ export default function UserInfo() {
         response.data.content.map((meeting: any) => ({
           id: meeting.id,
           title: meeting.title,
-          profileImage: meeting.author.profileImage,
-          nickname: meeting.author.nickname,
-          university: meeting.author.univName,
-          maxMember: meeting.maxMember,
-          currentMember: meeting.currentMember,
           eupMyeonDong: meeting.eupMyeonDong,
           gatheringDateTime: meeting.gatheringDateTime,
+          currentMember: meeting.currentMember,
+          maxMember: meeting.maxMember,
           views: meeting.views,
           thumbnail: meeting.thumbnail,
+          author: {
+            profileImage: meeting.author.profileImage,
+            nickname: meeting.author.nickname,
+          },
         })),
       );
       setMeetingCount(response.data.totalElements);
@@ -226,7 +228,7 @@ export default function UserInfo() {
       <div className="mt-2 flex-grow overflow-y-auto hidden-scrollbar flex-1">
         {activeTab === 'posts' && <PostList posts={posts} />}
         {activeTab === 'comments' && <PostList posts={comments} />}
-        {activeTab === 'meetings' && <MeetPostList meetings={meetings} />}
+        {activeTab === 'meetings' && <MeetPostList meetings={meetings} lastMeetingRef={() => {}} />}
       </div>
     </div>
   );
