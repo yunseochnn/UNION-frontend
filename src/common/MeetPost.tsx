@@ -48,11 +48,11 @@ export default function MeetPost({
             {/* 인원수와 조회수 */}
             <div className="mt-1 flex space-x-2 text-customBlack text-[11px]">
               <span className="flex items-center space-x-1">
-                <BsFillPeopleFill className="text-customGray2" />
+                <BsFillPeopleFill size={12} className="text-customGray2" />
                 <span>{`${currentMember}/${maxMember}`}</span>
               </span>
               <span className="flex items-center space-x-1">
-                <IoMdEye className="text-customGray2" />
+                <IoMdEye size={12} className="text-customGray2" />
                 <span>{views}</span>
               </span>
             </div>

@@ -6,6 +6,7 @@ import Header from '../common/Header';
 import User from '../common/User';
 import UserTabs from '../components/UserInfo/UserTabs';
 import PostList from '../common/PostList';
+import MeetPostList from '../common/MeetPostList';
 import Cookies from 'js-cookie';
 
 interface UserInfoType {
@@ -30,6 +31,20 @@ interface PostType {
   id: number;
 }
 
+interface MeetingType {
+  profileImage: string;
+  nickname: string;
+  university: string;
+  title: string;
+  maxMember: number;
+  currentMember: number;
+  eupMyeonDong: string;
+  gatheringDateTime: string;
+  views: number;
+  thumbnail: string;
+  id: number;
+}
+
 export default function UserInfo() {
   const recoilUserToken = useRecoilValue(selectedUserState);
   const userToken = recoilUserToken || localStorage.getItem('userToken') || '';
@@ -37,7 +52,7 @@ export default function UserInfo() {
   const [userInfo, setUserInfo] = useState<UserInfoType | null>(null);
   const [posts, setPosts] = useState<PostType[]>([]);
   const [comments, setComments] = useState<PostType[]>([]);
-  const [meetings, setMeetings] = useState<PostType[]>([]);
+  const [meetings, setMeetings] = useState<MeetingType[]>([]);
   const [postCount, setPostCount] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
   const [meetingCount, setMeetingCount] = useState(0);
@@ -132,13 +147,16 @@ export default function UserInfo() {
       });
       setMeetings(
         response.data.content.map((meeting: any) => ({
+          id: meeting.id,
+          title: meeting.title,
           profileImage: meeting.author.profileImage,
           nickname: meeting.author.nickname,
           university: meeting.author.univName,
-          title: meeting.title,
-          content: meeting.contentPreview,
-          likes: meeting.postLikes,
-          comments: meeting.commentCount,
+          maxMember: meeting.maxMember,
+          currentMember: meeting.currentMember,
+          eupMyeonDong: meeting.eupMyeonDong,
+          gatheringDateTime: meeting.gatheringDateTime,
+          views: meeting.views,
           thumbnail: meeting.thumbnail,
         })),
       );
@@ -171,15 +189,12 @@ export default function UserInfo() {
             headers: { Authorization: Cookies.get('Authorization') },
           },
         );
-        console.log('차단 요청 응답: 차단됨');
       } else {
         await apiClient.delete(`/user/block/${userInfo.token}`, {
           headers: { Authorization: Cookies.get('Authorization') },
         });
-        console.log('차단 해제 응답: 해제됨');
       }
       setUserInfo(prevInfo => ({ ...prevInfo!, blocked: updatedBlocked }));
-      console.log('업데이트된 userInfo:', { ...userInfo, blocked: updatedBlocked });
     } catch (error) {
       console.error('차단/차단 해제 실패:', error);
     }
@@ -211,7 +226,7 @@ export default function UserInfo() {
       <div className="mt-2 flex-grow overflow-y-auto hidden-scrollbar flex-1">
         {activeTab === 'posts' && <PostList posts={posts} />}
         {activeTab === 'comments' && <PostList posts={comments} />}
-        {activeTab === 'meetings' && <PostList posts={meetings} />}
+        {activeTab === 'meetings' && <MeetPostList meetings={meetings} />}
       </div>
     </div>
   );
