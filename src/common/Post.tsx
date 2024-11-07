@@ -24,11 +24,10 @@ export default function Post({
   likes,
   comments,
   thumbnail,
-  isLast,
 }: PostProps) {
   return (
     <button className="w-full bg-white px-[23px] text-left">
-      <div className={`py-[15px] ${!isLast ? 'border-b-[1.5px] border-[#F2F3F6]' : ''}`}>
+      <div className="py-[15px] border-b-[1.5px] border-[#F2F3F6]">
         <div className="flex justify-between items-center mx-[5px]">
           <div className="flex flex-col flex-grow mr-3">
             <div className="flex items-center text-[12px]">
