@@ -331,7 +331,7 @@ export default function BoardDetail() {
       <div className="flex flex-col overflow-y-auto flex-1 hidden-scrollbar relative w-full items-center">
         <Content boardContent={boardInfo} />
 
-        <div className="flex gap-3 w-[85%] border-b border-gray-300 pb-3 items-center">
+        <div className="flex gap-3 w-[85%] border-b border-gray-300 pb-3 items-center mt-2">
           <div className="flex items-center gap-1 font-semibold cursor-pointer" onClick={onClickLike}>
             {Like?.liked ? <IoMdHeart size={20} color="#ff4a4d" /> : <IoIosHeartEmpty size={20} />}{' '}
             <span className="text-xs">{Like?.postLikes || 0}</span>
