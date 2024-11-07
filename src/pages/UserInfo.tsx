@@ -59,6 +59,23 @@ export default function UserInfo() {
   const [meetingCount, setMeetingCount] = useState(0);
   const [activeTab, setActiveTab] = useState('posts');
 
+  // 개수만 불러오기
+  const fetchCounts = useCallback(async () => {
+    if (!userToken) return;
+    try {
+      const response = await apiClient.get(`/user/stats/${userToken}`, {
+        headers: { Authorization: Cookies.get('Authorization') },
+      });
+      const { postCount, commentCount, gatheringCount } = response.data;
+      setPostCount(postCount);
+      setCommentCount(commentCount);
+      setMeetingCount(gatheringCount);
+    } catch (error) {
+      console.error('개수 불러오기 실패:', error);
+    }
+  }, [userToken]);
+
+  // 사용자 정보 불러오기
   const fetchUserInfo = useCallback(async () => {
     if (!userToken) return;
     try {
@@ -71,108 +88,82 @@ export default function UserInfo() {
     }
   }, [userToken]);
 
+  // 탭 클릭 시 데이터 불러오기
+  const fetchDataByTab = useCallback(
+    async (tab: string) => {
+      if (!userToken) return;
+      try {
+        const headers = {
+          Authorization: Cookies.get('Authorization'),
+          'Content-Type': 'application/json',
+        };
+        const params = { page: 0, size: 10 };
+        if (tab === 'posts') {
+          const response = await apiClient.get(`/user/${userToken}/posts`, { headers, params });
+          setPosts(
+            response.data.content.map((post: any) => ({
+              id: post.id,
+              type: post.type,
+              profileImage: post.author.profileImage,
+              nickname: post.author.nickname,
+              university: post.author.univName,
+              title: post.title,
+              content: post.contentPreview,
+              likes: post.postLikes,
+              comments: post.commentCount,
+              thumbnail: post.thumbnail,
+            })),
+          );
+        } else if (tab === 'comments') {
+          const response = await apiClient.get(`/user/${userToken}/comments`, { headers, params });
+          setComments(
+            response.data.content.map((comment: any) => ({
+              profileImage: comment.author.profileImage,
+              nickname: comment.author.nickname,
+              university: comment.author.univName,
+              title: comment.title,
+              content: comment.contentPreview,
+              likes: comment.postLikes,
+              comments: comment.commentCount,
+              thumbnail: comment.thumbnail,
+            })),
+          );
+        } else if (tab === 'meetings') {
+          const response = await apiClient.get(`/gatherings/user/${userToken}`, { headers, params });
+          setMeetings(
+            response.data.content.map((meeting: any) => ({
+              id: meeting.id,
+              title: meeting.title,
+              eupMyeonDong: meeting.eupMyeonDong,
+              gatheringDateTime: meeting.gatheringDateTime,
+              currentMember: meeting.currentMember,
+              maxMember: meeting.maxMember,
+              views: meeting.views,
+              thumbnail: meeting.thumbnail,
+              author: {
+                profileImage: meeting.author.profileImage,
+                nickname: meeting.author.nickname,
+              },
+            })),
+          );
+        }
+      } catch (error) {
+        console.error(`${tab} 불러오기 실패:`, error);
+      }
+    },
+    [userToken],
+  );
+
   useEffect(() => {
     if (userToken) {
-      localStorage.setItem('userToken', userToken);
-      fetchUserInfo();
+      fetchCounts(); // 개수만 먼저 불러옴
+      fetchUserInfo(); // 사용자 정보 불러옴
     }
-  }, [userToken, fetchUserInfo]);
-
-  const fetchPosts = useCallback(async () => {
-    if (!userToken) return;
-    try {
-      const response = await apiClient.get(`/user/${userToken}/posts`, {
-        headers: {
-          Authorization: Cookies.get('Authorization'),
-          'Content-Type': 'application/json',
-        },
-        params: { page: 0, size: 10 },
-      });
-      setPosts(
-        response.data.content.map((post: any) => ({
-          id: post.id,
-          type: post.type,
-          profileImage: post.author.profileImage,
-          nickname: post.author.nickname,
-          university: post.author.univName,
-          title: post.title,
-          content: post.contentPreview,
-          likes: post.postLikes,
-          comments: post.commentCount,
-          thumbnail: post.thumbnail,
-        })),
-      );
-      setPostCount(response.data.totalElements);
-    } catch (error) {
-      console.error('게시물 목록 불러오기 실패:', error);
-    }
-  }, [userToken]);
-
-  const fetchComments = useCallback(async () => {
-    if (!userToken) return;
-    try {
-      const response = await apiClient.get(`/user/${userToken}/comments`, {
-        headers: {
-          Authorization: Cookies.get('Authorization'),
-          'Content-Type': 'application/json',
-        },
-        params: { page: 0, size: 10 },
-      });
-      setComments(
-        response.data.content.map((comment: any) => ({
-          profileImage: comment.author.profileImage,
-          nickname: comment.author.nickname,
-          university: comment.author.univName,
-          title: comment.title,
-          content: comment.contentPreview,
-          likes: comment.postLikes,
-          comments: comment.commentCount,
-          thumbnail: comment.thumbnail,
-        })),
-      );
-      setCommentCount(response.data.totalElements);
-    } catch (error) {
-      console.error('댓글 목록 불러오기 실패:', error);
-    }
-  }, [userToken]);
-
-  const fetchMeetings = useCallback(async () => {
-    if (!userToken) return;
-    try {
-      const response = await apiClient.get(`/gatherings/user/${userToken}`, {
-        headers: {
-          Authorization: Cookies.get('Authorization'),
-          'Content-Type': 'application/json',
-        },
-        params: { page: 0, size: 10 },
-      });
-      setMeetings(
-        response.data.content.map((meeting: any) => ({
-          id: meeting.id,
-          title: meeting.title,
-          eupMyeonDong: meeting.eupMyeonDong,
-          gatheringDateTime: meeting.gatheringDateTime,
-          currentMember: meeting.currentMember,
-          maxMember: meeting.maxMember,
-          views: meeting.views,
-          thumbnail: meeting.thumbnail,
-          author: {
-            profileImage: meeting.author.profileImage,
-            nickname: meeting.author.nickname,
-          },
-        })),
-      );
-      setMeetingCount(response.data.totalElements);
-    } catch (error) {
-      console.error('모임글 목록 불러오기 실패:', error);
-    }
-  }, [userToken]);
+  }, [userToken, fetchCounts, fetchUserInfo]);
 
   useEffect(() => {
-    if (activeTab === 'posts') fetchPosts();
-    if (activeTab === 'comments') fetchComments();
-    if (activeTab === 'meetings') fetchMeetings();
-  }, [activeTab, fetchPosts, fetchComments, fetchMeetings]);
+    fetchDataByTab(activeTab); // 각 탭 클릭 시 데이터를 불러옴
+  }, [activeTab, fetchDataByTab]);
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -180,16 +171,13 @@ export default function UserInfo() {
 
   const handleBlockToggle = async () => {
     if (!userInfo) return;
-
     try {
       const updatedBlocked = !userInfo.blocked;
       if (updatedBlocked) {
         await apiClient.post(
           `/user/block/${userInfo.token}`,
           {},
-          {
-            headers: { Authorization: Cookies.get('Authorization') },
-          },
+          { headers: { Authorization: Cookies.get('Authorization') } },
         );
       } else {
         await apiClient.delete(`/user/block/${userInfo.token}`, {
@@ -202,7 +190,7 @@ export default function UserInfo() {
     }
   };
 
-  if (!userInfo) return <div></div>;
+  if (!userInfo) return <div>Loading...</div>;
 
   return (
     <div className="h-screen flex flex-col">
