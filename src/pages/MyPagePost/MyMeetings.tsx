@@ -1,32 +1,91 @@
-import MyPageList from '../../pages/MyPageList';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import Cookies from 'js-cookie';
+import apiClient from '../../api/apiClient';
+import MyPageMeetList from '../MyPageMeetList';
+
+interface Meeting {
+  id: number;
+  profileImage?: string;
+  nickname: string;
+  eupMyeonDong?: string;
+  title: string;
+  gatheringDateTime: string;
+  currentMember: number;
+  maxMember: number;
+  views: number;
+  thumbnail?: string;
+}
 
 export default function MyMeetings() {
-  const meetings = [
-    {
-      id: 1,
-      type: 'FREE',
-      profileImage: '/Logo.svg',
-      nickname: '찐 감자',
-      university: '구름대학교',
-      title: '코딩 스터디 모집',
-      content: '매주 토요일 진행하는 코딩 스터디입니다.',
-      likes: 98,
-      comments: 20,
-      thumbnail: '/Logo.svg',
-    },
-    {
-      id: 2,
-      type: 'FREE',
-      profileImage: '/Logo.svg',
-      nickname: '찐 감자',
-      university: '구름대학교',
-      title: '알고리즘 스터디 모집',
-      content: '매주 화요일 진행하는 알고리즘 스터디입니다.',
-      likes: 102,
-      comments: 17,
-      thumbnail: '/Logo.svg',
-    },
-  ];
+  const [meetings, setMeetings] = useState<Meeting[]>([]);
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
-  return <MyPageList posts={meetings} pageTitle="내가 작성한 모임글" />;
+  const observer = useRef<IntersectionObserver | null>(null);
+
+  // 마지막 요소를 감지
+  const lastMeetingRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (isLoading || !hasMore) return;
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) {
+          setPage(prevPage => prevPage + 1);
+        }
+      });
+
+      if (node) observer.current.observe(node);
+    },
+    [isLoading, hasMore],
+  );
+
+  // 모임글 불러오기
+  const fetchMeetings = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const response = await apiClient.get('/gatherings/my', {
+        params: { page, size: 5 },
+        headers: {
+          Authorization: Cookies.get('Authorization') ?? '',
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const content = response.data?.content;
+      if (content && Array.isArray(content)) {
+        const newMeetings = content.map((item: any) => ({
+          id: item.id,
+          title: item.title,
+          maxMember: item.maxMember,
+          currentMember: item.currentMember,
+          eupMyeonDong: item.eupMyeonDong,
+          gatheringDateTime: item.gatheringDateTime,
+          views: item.views,
+          profileImage: item.author?.profileImage,
+          nickname: item.author?.nickname,
+          thumbnail: item.thumbnail,
+        }));
+
+        setMeetings(prevMeetings => [...prevMeetings, ...newMeetings]);
+        setHasMore(!response.data.last);
+      }
+    } catch (error) {
+      console.error('모임글 불러오기 실패:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [page]);
+
+  useEffect(() => {
+    fetchMeetings();
+  }, [fetchMeetings]);
+
+  return (
+    <div>
+      <MyPageMeetList meetings={meetings} pageTitle="내가 작성한 모임글" lastMeetingRef={lastMeetingRef} />
+      {isLoading && <div></div>}
+    </div>
+  );
 }

@@ -132,86 +132,85 @@ const Meet: React.FC = () => {
   };
 
   return (
-<div className="relative center-content flex flex-col bg-white">
-   <MeetHeader sortBy={sortBy} setSortBy={setSortBy} />
+    <div className="relative center-content flex flex-col bg-white">
+      <MeetHeader sortBy={sortBy} setSortBy={setSortBy} />
 
-   <main className="flex-1 overflow-y-auto relative flex flex-col px-[23px] hidden-scrollbar">
-     {meetings.map((meeting, index) => (
-       <div
-         ref={index === meetings.length - 1 ? lastMeetingRef : null}
-         key={meeting.id}
-         className="border-b py-4 cursor-pointer w-full bg-white"
-         onClick={() => handleMeetingClick(meeting.id)}
-       >
-         <div className="flex justify-between items-center mx-[5px]">
-           <div className="flex flex-col flex-grow mr-3">
-             {/* 프로필 이미지, 닉네임, 위치 정보 */}
-             <div className="flex items-center text-[12px]">
-               <img 
-                 src={meeting.author?.profileImage} 
-                 alt="Profile" 
-                 className="w-[20px] h-[20px] rounded-full mr-[5px]" 
-               />
-               <div className="flex items-center">
-                 <span className="text-customGray1">{meeting.author?.nickname}</span>
-                 <span className="mx-[3px] text-customGray">·</span>
-                 <span className="text-customGray2">{meeting.eupMyeonDong || '위치 미정'}</span>
-               </div>
-             </div>
+      <main className="flex-1 overflow-y-auto relative flex flex-col px-[23px] hidden-scrollbar">
+        {meetings.map((meeting, index) => (
+          <div
+            ref={index === meetings.length - 1 ? lastMeetingRef : null}
+            key={meeting.id}
+            className="border-b py-4 cursor-pointer w-full bg-white"
+            onClick={() => handleMeetingClick(meeting.id)}
+          >
+            <div className="flex justify-between items-center mx-[5px]">
+              <div className="flex flex-col flex-grow mr-3">
+                {/* 프로필 이미지, 닉네임, 위치 정보 */}
+                <div className="flex items-center text-[12px]">
+                  <img
+                    src={meeting.author?.profileImage}
+                    alt="Profile"
+                    className="w-[20px] h-[20px] rounded-full mr-[5px]"
+                  />
+                  <div className="flex items-center">
+                    <span className="text-customGray1">{meeting.author?.nickname}</span>
+                    <span className="mx-[3px] text-customGray">·</span>
+                    <span className="text-customGray2">{meeting.eupMyeonDong || '위치 미정'}</span>
+                  </div>
+                </div>
 
-             {/* 모임 제목과 날짜 */}
-             <h2 className="mt-2 text-[16px] text-customBlack font-semibold truncate max-w-[200px] lg:max-w-[240px]">
-               {meeting.title}
-             </h2>
-             <div className="text-[14px] text-customGray2">
-               {new Date(meeting.gatheringDateTime).toLocaleString()}
-             </div>
+                {/* 모임 제목과 날짜 */}
+                <h2 className="mt-2 text-[17px] text-customBlack font-semibold truncate max-w-[200px] lg:max-w-[240px]">
+                  {meeting.title}
+                </h2>
+                <div className="text-[14px] text-customGray2">
+                  {new Date(meeting.gatheringDateTime).toLocaleString()}
+                </div>
 
-             {/* 인원수와 조회수 */}
-             <div className="mt-1 flex space-x-2 text-customBlack text-[11px]">
-               <span className="flex items-center space-x-1">
-                 <BsFillPeopleFill className="text-customGray2" />
-                 <span>{`${meeting.currentMember}/${meeting.maxMember}`}</span>
-               </span>
-               <span className="flex items-center space-x-1">
-                 <IoMdEye className="text-customGray2" />
-                 <span>{meeting.views}</span>
-               </span>
-             </div>
-           </div>
+                {/* 인원수와 조회수 */}
+                <div className="mt-1 flex space-x-2 text-customBlack text-[11px]">
+                  <span className="flex items-center space-x-1">
+                    <BsFillPeopleFill className="text-customGray2" />
+                    <span>{`${meeting.currentMember}/${meeting.maxMember}`}</span>
+                  </span>
+                  <span className="flex items-center space-x-1">
+                    <IoMdEye className="text-customGray2" />
+                    <span>{meeting.views}</span>
+                  </span>
+                </div>
+              </div>
 
-           {/* 썸네일 */}
-           {meeting.thumbnail ? (
-             <img
-               src={meeting.thumbnail}
-               alt={meeting.title}
-               className="w-[90px] h-[90px] object-cover rounded-md flex-shrink-0"
-               style={{ aspectRatio: '1/1' }}
-             />
-           ) : (
-             <div 
-               className="w-[90px] h-[90px] bg-gray-200 rounded-md flex-shrink-0" 
-               style={{ aspectRatio: '1/1' }}
-             />
-           )}
-         </div>
-       </div>
-     ))}
-     {isLoading && <div className="text-center py-4">Loading...</div>}
-   </main>
+              {/* 썸네일 */}
+              {meeting.thumbnail ? (
+                <img
+                  src={meeting.thumbnail}
+                  alt={meeting.title}
+                  className="w-[90px] h-[90px] object-cover rounded-md flex-shrink-0"
+                  style={{ aspectRatio: '1/1' }}
+                />
+              ) : (
+                <div
+                  className="w-[90px] h-[90px] bg-gray-200 rounded-md flex-shrink-0"
+                  style={{ aspectRatio: '1/1' }}
+                />
+              )}
+            </div>
+          </div>
+        ))}
+        {isLoading && <div className="text-center py-4">Loading...</div>}
+      </main>
 
-   <div className="right-8 bottom-24 absolute">
-     <FloatingActionButton onClick={() => navigate('/meet/write')} />
-   </div>
+      <div className="right-8 bottom-24 absolute">
+        <FloatingActionButton onClick={() => navigate('/meet/write')} />
+      </div>
 
-   <footer className="h-14 w-full flex justify-center">
-     <div className="w-[90%]">
-       <SideBar />
-     </div>
-   </footer>
- </div>
-);
-}
-
+      <footer className="h-14 w-full flex justify-center">
+        <div className="w-[90%]">
+          <SideBar />
+        </div>
+      </footer>
+    </div>
+  );
+};
 
 export default Meet;
