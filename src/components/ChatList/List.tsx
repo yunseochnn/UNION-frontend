@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { IFChat } from './Lists';
 import dayjs from 'dayjs';
 import { FaUsers } from 'react-icons/fa6';
+import 'dayjs/locale/ko';
+dayjs.locale('ko');
 
 interface Prop {
   chat: IFChat;

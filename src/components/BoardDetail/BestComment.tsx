@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { IFComment } from '../../pages/BoardDetail';
 import { FaRegHeart } from 'react-icons/fa6';
 import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+dayjs.locale('ko');
 
 interface Prop {
   comment: IFComment;
@@ -52,7 +54,7 @@ const BestComment = ({ comment }: Prop) => {
               </div>
 
               <div className="text-[10px] text-customGray2 font-medium">{`${dayjs(comment.createdAt).format(
-                'MM/DD H:mm',
+                'MM/DD A H:mm',
               )}`}</div>
             </div>
 

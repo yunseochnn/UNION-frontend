@@ -10,6 +10,8 @@ import dayjs from 'dayjs';
 import { useSetRecoilState } from 'recoil';
 import { selectedUserState } from '../../recoil/selectedUserState';
 import { useEffect, useState } from 'react';
+import 'dayjs/locale/ko';
+dayjs.locale('ko');
 
 interface Prop {
   gatheringData: Response | null;
@@ -62,7 +64,7 @@ const Content = ({ gatheringData }: Prop) => {
         <div>
           <div className="font-semibold text-sm">{gatheringData?.author.nickname}</div>
           <div className="font-semibold text-sm text-gray-400">
-            {dayjs(gatheringData?.createdAt).format('MM월 DD일 H:mm')}
+            {dayjs(gatheringData?.createdAt).format('MM월 DD일 A H:mm')}
           </div>
         </div>
       </div>
@@ -84,7 +86,7 @@ const Content = ({ gatheringData }: Prop) => {
           <FaRegCalendarCheck size={22} />
         </span>
         <span className="text-[18px] font-semibold">
-          {dayjs(gatheringData?.gatheringDateTime).format('MM/DD H:mm')}
+          {dayjs(gatheringData?.gatheringDateTime).format('MM/DD A H:mm')}
         </span>
       </div>
 

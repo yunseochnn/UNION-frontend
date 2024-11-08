@@ -8,6 +8,8 @@ import { selectedUserState } from '../../recoil/selectedUserState';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '../../api/apiClient';
 import Cookies from 'js-cookie';
+import 'dayjs/locale/ko';
+dayjs.locale('ko');
 
 interface Prop {
   comment: IFComment;
@@ -158,7 +160,7 @@ const Comment = ({
                 </div>
 
                 <div className="text-[10px] text-customGray2 font-medium">{`${dayjs(comment.createdAt).format(
-                  'MM/DD H:mm',
+                  'MM/DD A H:mm',
                 )}`}</div>
               </div>
 

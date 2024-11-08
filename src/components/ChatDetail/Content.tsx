@@ -4,6 +4,8 @@ import { IFMessageInfo } from '../../pages/ChatDetail';
 import dayjs from 'dayjs';
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import 'dayjs/locale/ko';
+dayjs.locale('ko');
 interface Props {
   messages: IFMessageInfo[] | undefined;
 }
