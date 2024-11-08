@@ -44,9 +44,6 @@ const Home: React.FC = () => {
   });
   const [loading, setLoading] = useState(false);
 
-
-
-
   const meetings: Post[] = [
     {
       profileImage: '/path/to/profile',
@@ -63,30 +60,28 @@ const Home: React.FC = () => {
     // ... 나머지 모임 데이터
   ];
 
+  const fetchPopularPosts = React.useCallback(
+    async (page: number = 0) => {
+      try {
+        setLoading(true);
+        const response = await getPopularPosts(page, pageInfo.pageSize);
 
-
-
-
-  
-  const fetchPopularPosts = React.useCallback(async (page: number = 0) => {
-    try {
-      setLoading(true);
-      const response = await getPopularPosts(page, pageInfo.pageSize);
-      
-      setPopularPosts(response.content);
-      setPageInfo({
-        pageNumber: response.number,
-        pageSize: response.size,
-        totalElements: response.totalElements,
-        totalPages: response.totalPages,
-        last: response.last,
-      });
-    } catch (error) {
-      console.error('인기 게시글 로딩 중 오류 발생:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, [pageInfo.pageSize]);
+        setPopularPosts(response.content);
+        setPageInfo({
+          pageNumber: response.number,
+          pageSize: response.size,
+          totalElements: response.totalElements,
+          totalPages: response.totalPages,
+          last: response.last,
+        });
+      } catch (error) {
+        console.error('인기 게시글 로딩 중 오류 발생:', error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [pageInfo.pageSize],
+  );
 
   // 유저 정보 가져오기
   const getUserInfo = async () => {
@@ -182,9 +177,7 @@ const Home: React.FC = () => {
               <div className="flex justify-center items-center h-32">로딩 중...</div>
             ) : (
               <div onClick={() => navigate(activeTab === 'posts' ? '/boarddetail' : '/meetdetail')}>
-                <PostList
-                  posts={activeTab === 'posts' ? transformPosts(popularPosts) : meetings}
-                />
+                <PostList posts={activeTab === 'posts' ? transformPosts(popularPosts) : meetings} />
               </div>
             )}
           </main>

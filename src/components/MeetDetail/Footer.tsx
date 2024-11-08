@@ -14,7 +14,6 @@ interface Props {
 
 const Footer = ({ gatheringData, onReadMeet }: Props) => {
   const fullMember = gatheringData?.maxMember === gatheringData?.currentMember;
-  const [like, setLike] = useState(gatheringData?.liked);
   const [isPassDate, setIsPassDate] = useState(false);
   const [recruited, setRecruited] = useState(gatheringData?.recruited);
   const { id } = useParams();
@@ -22,15 +21,28 @@ const Footer = ({ gatheringData, onReadMeet }: Props) => {
 
   useEffect(() => {
     if (gatheringData) {
-      setLike(gatheringData.liked);
       setIsPassDate(new Date() > new Date(gatheringData.gatheringDateTime));
       setRecruited(gatheringData.recruited);
     }
   }, [gatheringData, isPassDate]);
 
-  const onClickLikeHandler = () => {
-    //모임 좋아요 api 연결
-    setLike(!like);
+  const onClickLikeHandler = async () => {
+    try {
+      const response = await apiClient.post(
+        `/gatherings/like/${MeetId}`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: Cookies.get('Authorization'),
+          },
+        },
+      );
+      console.log(response.data);
+      onReadMeet();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   //모임글 참여 시 알람 create
@@ -103,7 +115,7 @@ const Footer = ({ gatheringData, onReadMeet }: Props) => {
   return (
     <div className="h-[70px] border-t border-gray-150 flex items-center justify-between mt-4 cursor-pointer">
       <div className="ml-2" onClick={onClickLikeHandler}>
-        {like ? (
+        {gatheringData?.liked ? (
           <IoIosHeart size={24} style={{ color: '#ff4a4d' }} />
         ) : (
           <IoIosHeartEmpty size={24} style={{ strokeWidth: 7 }} />

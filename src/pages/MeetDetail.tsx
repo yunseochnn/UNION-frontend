@@ -14,7 +14,7 @@ import { useParams } from 'react-router-dom';
 export interface Response {
   id: number;
   title: string;
-  content: string;
+  content?: string;
   maxMember: number;
   currentMember: number;
   address?: string;

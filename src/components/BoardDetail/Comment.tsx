@@ -18,6 +18,7 @@ interface Prop {
   footerRef: React.RefObject<HTMLDivElement>;
   inputRef: React.RefObject<HTMLInputElement>;
   refetchComment: () => void;
+  getBestComment: () => void;
 }
 
 const Comment = ({
@@ -29,6 +30,7 @@ const Comment = ({
   footerRef,
   inputRef,
   refetchComment,
+  getBestComment,
 }: Prop) => {
   const [more, setMore] = useState(false);
   const setUser = useSetRecoilState(selectedUserState);
@@ -121,6 +123,7 @@ const Comment = ({
         },
       );
       refetchComment();
+      getBestComment();
     } catch (error) {
       console.log(error);
     }
@@ -227,6 +230,7 @@ const Comment = ({
                 handleDeleteComment={handleDeleteComment}
                 inputRef={inputRef}
                 refetchComment={refetchComment}
+                getBestComment={getBestComment}
               />
             </div>
           ))}
