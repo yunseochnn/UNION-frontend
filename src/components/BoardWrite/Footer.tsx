@@ -1,4 +1,4 @@
-import { HiOutlineArchiveBox } from 'react-icons/hi2';
+// import { HiOutlineArchiveBox } from 'react-icons/hi2';
 import PlusImage from '../../common/PlusImage';
 
 interface Prop {
@@ -16,10 +16,10 @@ const Footer = ({ setOpen, setImages }: Prop) => {
       <div className="flex gap-7 mt-4 text-gray-400">
         <PlusImage setImages={setImages} />
         <div className="flex items-center gap-2 cursor-pointer" onClick={onClickVoteHandler}>
-          <span>
+          {/* <span>
             <HiOutlineArchiveBox size={20} />
           </span>
-          <span className="text-sm">투표</span>
+          <span className="text-sm">투표</span> */}
         </div>
       </div>
     </div>

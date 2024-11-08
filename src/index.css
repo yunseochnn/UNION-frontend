@@ -32,6 +32,7 @@ body {
   align-items: center;
   background-color: lightgray;
   overscroll-behavior: none; /*pull-to-refresh 제스쳐 방지*/
+  overflow: hidden;
 }
 
 #root {

@@ -3,9 +3,13 @@ import Header from '../components/MeetParticipants/Header';
 
 const MeetParticipants = () => {
   return (
-    <div className="w-full h-full flex flex-col px-[30px] py-3">
-      <Header />
-      <Content />
+    <div className="w-full h-full flex flex-col items-center pt-1">
+      <div className="w-full">
+        <Header />
+      </div>
+      <div className="flex w-full">
+        <Content />
+      </div>
     </div>
   );
 };
