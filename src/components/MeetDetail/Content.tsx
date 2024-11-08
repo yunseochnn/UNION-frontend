@@ -21,6 +21,7 @@ const Content = ({ gatheringData }: Prop) => {
   const setUser = useSetRecoilState(selectedUserState);
   const navigate = useNavigate();
   const { id } = useParams();
+  const myNickname = localStorage.getItem('nickname');
 
   const onClickProfile = () => {
     if (gatheringData?.author.token) {
@@ -47,7 +48,12 @@ const Content = ({ gatheringData }: Prop) => {
       </div>
 
       <div className="flex items-center mt-[30px] gap-3">
-        <div className="h-10 w-10 bg-gray-300 rounded-full cursor-pointer overflow-hidden" onClick={onClickProfile}>
+        <div
+          className={`h-10 w-10 bg-gray-300 rounded-full overflow-hidden ${
+            gatheringData?.author.nickname === myNickname ? 'cursor-default' : 'cursor-pointer'
+          }`}
+          onClick={gatheringData?.author.nickname === myNickname ? undefined : onClickProfile}
+        >
           <img src={gatheringData?.author.profileImage} />
         </div>
         <div>
