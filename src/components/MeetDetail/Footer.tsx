@@ -25,7 +25,6 @@ const Footer = ({ gatheringData, onReadMeet }: Props) => {
       setLike(gatheringData.liked);
       setIsPassDate(new Date() > new Date(gatheringData.gatheringDateTime));
       setRecruited(gatheringData.recruited);
-      console.log(isPassDate);
     }
   }, [gatheringData, isPassDate]);
 

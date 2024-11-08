@@ -48,13 +48,10 @@ export default function MeetDetail() {
   const { id } = useParams();
   const MeetId = Number(id);
 
-  console.log(gatheringData);
-
   const onReadMeet = useCallback(async () => {
     try {
       const response = await ReadMeetRequest(MeetId);
       const data = response.data;
-      console.log(data);
       setGatheringData(data);
     } catch (error) {
       console.log(error);

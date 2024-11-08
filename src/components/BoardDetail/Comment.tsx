@@ -110,7 +110,7 @@ const Comment = ({
 
   const onClickLike = async () => {
     try {
-      const response = await apiClient.post(
+      await apiClient.post(
         `/comment/like/${comment.id}`,
         {},
         {
@@ -121,7 +121,6 @@ const Comment = ({
         },
       );
       refetchComment();
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }

@@ -22,9 +22,6 @@ interface Prop {
 const Content = ({ latitude, setLatitude, longitude, setLongitude, setModalContent }: Prop) => {
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
   const [MeetList, setMeetList] = useState<List[] | null>(null);
-  console.log(MeetList);
-
-  console.log(map);
 
   const getMeetList = useCallback(async () => {
     try {
@@ -42,7 +39,6 @@ const Content = ({ latitude, setLatitude, longitude, setLongitude, setModalConte
         },
       });
 
-      console.log(response);
       setMeetList(response.data.content);
     } catch (error) {
       console.log(error);

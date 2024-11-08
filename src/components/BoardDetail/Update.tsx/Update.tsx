@@ -30,8 +30,6 @@ const Update = ({ updateData, setModify, onSuccessfulUpdate }: Prop) => {
         console.log('네트워크 오류입니다.');
       }
 
-      console.log(response);
-
       const { status } = response;
       if (status === 200) {
         console.log('수정 완료');

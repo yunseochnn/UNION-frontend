@@ -52,7 +52,6 @@ export default function Update({ updateData, setModify, onReadMeet }: Props) {
   const [text, setText] = useState(updateData?.content || '');
   const { id } = useParams();
   const MeetId = Number(id);
-  console.log(address);
 
   function toCustomISOString(date: Date): string {
     const year = date.getFullYear();

@@ -29,7 +29,6 @@ export default function BoardWrite() {
           alert('네트워크 이상입니다!');
           return;
         }
-        console.log(response);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.log(error.response);

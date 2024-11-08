@@ -27,7 +27,6 @@ export default function MapView() {
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
   const [modalContent, setModalContent] = useState<List | null>(null);
-  console.log(modalContent);
   return (
     <div className="flex flex-col w-full h-full py-1 relative">
       <div className="w-full">

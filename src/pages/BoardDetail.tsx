@@ -97,7 +97,6 @@ export default function BoardDetail() {
           Authorization: Cookies.get('Authorization'),
         },
       });
-      console.log(response.data);
       const data = response.data;
       localStorage.setItem('nickname', data.nickname);
       setMyNickname(data.nickname);
@@ -132,8 +131,6 @@ export default function BoardDetail() {
     retry: false,
   });
 
-  console.log(boardInfo);
-
   //댓글 목록 read
   const {
     data: commentData,
@@ -149,7 +146,6 @@ export default function BoardDetail() {
           Authorization: Cookies.get('Authorization'),
         },
       });
-      console.log(response.data);
       console.log('댓글불러오기 성공');
       return response.data;
     },
@@ -171,7 +167,6 @@ export default function BoardDetail() {
           Authorization: Cookies.get('Authorization'),
         },
       });
-      console.log(response.data);
       return response.data;
     },
     retry: false,
@@ -338,7 +333,7 @@ export default function BoardDetail() {
 
   const onClickLike = async () => {
     try {
-      const response = await apiClient.post(
+      await apiClient.post(
         `/board/like/${BoardId}`,
         {},
         {
@@ -349,7 +344,6 @@ export default function BoardDetail() {
         },
       );
 
-      console.log(response.data);
       refetchLike();
     } catch (error) {
       console.log(error);
