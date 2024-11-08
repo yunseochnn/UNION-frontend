@@ -25,7 +25,7 @@ const More = ({ setModal, setUserBlock, author }: Prop) => {
             <span>메시지 보내기</span>
           </div>
           <div
-            className="flex h-14 border-b border-gray-200 items-center gap-2"
+            className="flex h-14 items-center gap-2"
             onClick={() => {
               setModal(false);
               setUserBlock(true);

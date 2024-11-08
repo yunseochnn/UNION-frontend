@@ -150,7 +150,7 @@ const Comment = ({
           </div>
 
           <div className="flex items-center w-full">
-            <div className="flex flex-col w-[90%] justify-start">
+            <div className="flex flex-col justify-start w-[90%]">
               <div style={{ lineHeight: 0.8 }}>
                 <div className="flex gap-1 items-center">
                   <div className="font-bold text-base">{comment.commenter.nickname}</div>
@@ -171,7 +171,7 @@ const Comment = ({
                     {comment.content}
                   </span>
                 ) : (
-                  <span className="">{comment.content}</span>
+                  <span>{comment.content}</span>
                 )}
               </div>
             </div>
@@ -208,11 +208,11 @@ const Comment = ({
             <MdOutlineMoreHoriz size={25} />
           </div>
 
-          <div className={`flex items-center gap-1 ${comment.parentId ? 'pl-1' : ''}`}>
+          <div className={`flex items-center gap-1 ${comment.parentId ? 'pl-1' : ''} justify-center`}>
             <span onClick={onClickLike} className="cursor-pointer">
               {comment.liked ? <FaHeart size={14} color="#ff4a4d" /> : <FaRegHeart size={14} />}{' '}
             </span>
-            <span className="text-sm font-semibold">{comment.commentLikes}</span>
+            <span className="text-sm font-semibold w-2">{comment.commentLikes}</span>
           </div>
         </div>
       </div>
