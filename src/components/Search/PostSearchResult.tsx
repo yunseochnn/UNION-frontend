@@ -18,7 +18,7 @@ interface Post {
   comments: number;
 }
 
-export default function SearchResults() {
+export default function PostSearchResult() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(0);

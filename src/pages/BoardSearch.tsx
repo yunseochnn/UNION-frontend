@@ -3,10 +3,10 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { boardTypeState, searchKeywordState } from '../recoil/searchState';
 import Header from '../components/Search/Header';
 import Title from '../components/Search/Title';
-import SearchResults from '../components/Search/SearchResult';
 import { useParams } from 'react-router-dom';
+import PostSearchResult from '../components/Search/PostSearchResult';
 
-export default function Search() {
+export default function BoardSearch() {
   const { boardType } = useParams<{ boardType: string }>();
   const [isSearching, setIsSearching] = useState(false);
   const searchKeyword = useRecoilValue(searchKeywordState);
@@ -33,7 +33,7 @@ export default function Search() {
       <div className="sticky top-0 z-10">
         <Header onSearch={handleSearch} onInputChange={handleInputChange} />
       </div>
-      {isSearching && searchKeyword ? <SearchResults /> : <Title />}
+      {isSearching && searchKeyword ? <PostSearchResult /> : <Title />}
     </div>
   );
 }

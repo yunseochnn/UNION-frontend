@@ -5,7 +5,7 @@ import Home from './pages/Home';
 import SocialLogin from './pages/SocialLogin';
 import EmailVerification from './pages/EmailVerification';
 import Profile from './pages/Profile';
-import Search from './pages/Search';
+import BoardSearch from './pages/BoardSearch';
 import Mypage from './pages/Mypage';
 import EditProfile from './pages/EditProfile';
 import Meet from './pages/Meet';
@@ -25,6 +25,7 @@ import BlockedUser from './pages/BlockedUserList';
 import MyPosts from './pages/MyPagePost/MyPosts';
 import MyMeetings from './pages/MyPagePost/MyMeetings';
 import MyComments from './pages/MyPagePost/MyComments';
+import MeetSearch from './pages/MeetSearch';
 
 function App() {
   return (
@@ -34,7 +35,8 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/emailverification" element={<EmailVerification />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/search/:type" element={<Search />} />
+        <Route path="/search/:type" element={<BoardSearch />} />
+        <Route path="/search/meet" element={<MeetSearch />} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/editprofile" element={<EditProfile />} />
         <Route path="/meet" element={<Meet />} />

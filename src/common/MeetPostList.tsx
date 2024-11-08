@@ -18,6 +18,7 @@ interface MeetPostListProps {
     };
   }[];
   lastMeetingRef?: (node: HTMLDivElement | null) => void;
+  sortType?: 'LATEST' | 'DISTANCE' | 'GATHERING_DATE';
 }
 
 const MeetPostList: React.FC<MeetPostListProps> = ({ meetings, lastMeetingRef }) => {
@@ -35,7 +36,7 @@ const MeetPostList: React.FC<MeetPostListProps> = ({ meetings, lastMeetingRef })
           ref={index === meetings.length - 1 ? lastMeetingRef : null}
           onClick={() => handlePostClick(meeting.id)}
         >
-          <MeetPost meeting={meeting} />
+          <MeetPost meeting={meeting} /> {/* sortType 전달 */}
         </div>
       ))}
       {meetings.length > 0 && <div className="h-7" />}
