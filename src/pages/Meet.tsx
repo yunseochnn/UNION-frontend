@@ -131,6 +131,21 @@ const Meet: React.FC = () => {
     navigate(`/meet/${id}`);
   };
 
+  useEffect(() => {
+    // 현재 위치를 로컬 스토리지에 저장
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          localStorage.setItem('latitude', position.coords.latitude.toString());
+          localStorage.setItem('longitude', position.coords.longitude.toString());
+        },
+        error => {
+          console.error('위치를 가져오는 데 실패했습니다:', error);
+        },
+      );
+    }
+  }, []);
+
   return (
     <div className="relative center-content flex flex-col bg-white">
       <MeetHeader sortBy={sortBy} setSortBy={setSortBy} />
