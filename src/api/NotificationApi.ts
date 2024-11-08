@@ -1,4 +1,3 @@
-// NotificationAPI.ts
 import axios, { AxiosError } from 'axios';
 
 // 에러 응답 타입 정의
@@ -9,8 +8,12 @@ interface ApiError {
 }
 
 // 요청 파라미터 타입 정의
-interface NotificationCreateParams {
-  user_token: string;
+interface PostCommentNotificationParams {
+  type_id: number;
+  comment_id: number;
+}
+
+interface GatheringNotificationParams {
   type_id: number;
 }
 
@@ -23,17 +26,19 @@ export interface NotificationItem {
   content: string | null;
   createdAt: string;
   isRead: boolean;
-  typeId: string;  // typeId 추가
+  typeId: string;
+}
+
+// 알림 생성 응답 타입
+interface NotificationCreateResponse {
+  id: number;
+  createdAt: string;
+  isRead: boolean;
 }
 
 // 알림 목록 조회 응답 타입
 interface NotificationResponse {
   notifications: NotificationItem[];
-}
-
-// gathering 알림 생성 응답 타입
-interface GatheringNotificationResponse {
-  id: number;
 }
 
 // 공통으로 사용할 헤더 설정 함수
@@ -61,9 +66,10 @@ const handleApiError = (error: AxiosError<ApiError>) => {
 
 // notification 관련 API 모음
 export const notificationApi = {
-  createPostNotification: async (params: NotificationCreateParams) => {
+  // 게시글 알림 생성
+  createPostNotification: async (params: PostCommentNotificationParams) => {
     try {
-      const response = await axios.post<NotificationResponse>(
+      const response = await axios.post<NotificationCreateResponse>(
         '/notification/post',
         params,
         { headers: getHeaders() }
@@ -74,9 +80,10 @@ export const notificationApi = {
     }
   },
 
-  createCommentNotification: async (params: NotificationCreateParams) => {
+  // 댓글 알림 생성
+  createCommentNotification: async (params: PostCommentNotificationParams) => {
     try {
-      const response = await axios.post<NotificationResponse>(
+      const response = await axios.post<NotificationCreateResponse>(
         '/notification/comment',
         params,
         { headers: getHeaders() }
@@ -87,9 +94,10 @@ export const notificationApi = {
     }
   },
 
-  createGatheringNotification: async (params: NotificationCreateParams) => {
+  // 모임 알림 생성
+  createGatheringNotification: async (params: GatheringNotificationParams) => {
     try {
-      const response = await axios.post<GatheringNotificationResponse>(
+      const response = await axios.post<NotificationCreateResponse>(
         '/notification/gathering',
         params,
         { headers: getHeaders() }
@@ -100,6 +108,7 @@ export const notificationApi = {
     }
   },
 
+  // 알림 목록 조회
   getNotifications: async (page: number, size: number) => {
     try {
       if (size > 20) {
@@ -117,6 +126,7 @@ export const notificationApi = {
     }
   },
 
+  // 알림 읽음 처리
   markAsRead: async (page: number, size: number) => {
     try {
       if (size > 20) {
