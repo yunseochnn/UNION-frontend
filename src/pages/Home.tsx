@@ -6,15 +6,7 @@ import PostList from '../common/PostList';
 import '../style.css';
 import Cookies from 'js-cookie';
 import apiClient from '../api/apiClient';
-import { getPopularPosts, PopularPost } from '../api/HomePopularBoard';
-
-interface PageInfo {
-  pageNumber: number;
-  pageSize: number;
-  totalElements: number;
-  totalPages: number;
-  last: boolean;
-}
+import { PopularPost, getPopularPosts } from '../api/HomePopularBoard';
 
 interface Post {
   profileImage: string;
@@ -24,7 +16,7 @@ interface Post {
   content: string;
   likes: number;
   comments: number;
-  thumbnail: string;
+  thumbnail?: string;
   type: string;
   id: number;
 }
@@ -35,14 +27,14 @@ const Home: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'posts' | 'meetings'>('posts');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [popularPosts, setPopularPosts] = useState<PopularPost[]>([]);
-  const [pageInfo, setPageInfo] = useState<PageInfo>({
+  const [loading, setLoading] = useState(false);
+  const [pageInfo, setPageInfo] = useState({
     pageNumber: 0,
     pageSize: 3,
     totalElements: 0,
     totalPages: 0,
     last: false,
   });
-  const [loading, setLoading] = useState(false);
 
   const meetings: Post[] = [
     {
@@ -57,7 +49,6 @@ const Home: React.FC = () => {
       type: 'FREE',
       id: 2,
     },
-    // ... 나머지 모임 데이터
   ];
 
   const fetchPopularPosts = React.useCallback(
@@ -65,7 +56,7 @@ const Home: React.FC = () => {
       try {
         setLoading(true);
         const response = await getPopularPosts(page, pageInfo.pageSize);
-
+        
         setPopularPosts(response.content);
         setPageInfo({
           pageNumber: response.number,
@@ -83,7 +74,6 @@ const Home: React.FC = () => {
     [pageInfo.pageSize],
   );
 
-  // 유저 정보 가져오기
   const getUserInfo = async () => {
     try {
       const response = await apiClient.get('/user/my', {
@@ -119,7 +109,7 @@ const Home: React.FC = () => {
     if (isAuthenticated && activeTab === 'posts') {
       fetchPopularPosts();
     }
-  }, [isAuthenticated, activeTab, pageInfo.pageSize, fetchPopularPosts]);
+  }, [isAuthenticated, activeTab, fetchPopularPosts]);
 
   const transformPosts = (posts: PopularPost[]): Post[] => {
     return posts.map(post => ({
@@ -176,9 +166,9 @@ const Home: React.FC = () => {
             {loading ? (
               <div className="flex justify-center items-center h-32">로딩 중...</div>
             ) : (
-              <div onClick={() => navigate(activeTab === 'posts' ? '/boarddetail' : '/meetdetail')}>
-                <PostList posts={activeTab === 'posts' ? transformPosts(popularPosts) : meetings} />
-              </div>
+              <PostList 
+                posts={activeTab === 'posts' ? transformPosts(popularPosts) : meetings}
+              />
             )}
           </main>
 
