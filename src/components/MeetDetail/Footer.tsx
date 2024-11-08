@@ -105,6 +105,7 @@ const Footer = ({ gatheringData, onReadMeet }: Props) => {
           },
         );
         console.log('모집 마감 변경 성공');
+        onReadMeet();
         setRecruited(response.data.recruited);
       } catch (error) {
         console.log(error);
