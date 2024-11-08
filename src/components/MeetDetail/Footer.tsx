@@ -81,21 +81,23 @@ const Footer = ({ gatheringData, onReadMeet }: Props) => {
   };
 
   const onClickOwner = async () => {
-    try {
-      const response = await apiClient.post(
-        `/gatherings/${gatheringData?.id}/recruited`,
-        {},
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: Cookies.get('Authorization'),
+    if (!isPassDate && !fullMember) {
+      try {
+        const response = await apiClient.post(
+          `/gatherings/${gatheringData?.id}/recruited`,
+          {},
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: Cookies.get('Authorization'),
+            },
           },
-        },
-      );
-      console.log('모집 마감 성공');
-      setRecruited(response.data.recruited);
-    } catch (error) {
-      console.log(error);
+        );
+        console.log('모집 마감 변경 성공');
+        setRecruited(response.data.recruited);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -112,7 +114,7 @@ const Footer = ({ gatheringData, onReadMeet }: Props) => {
         <div
           className="w-[80%] h-[53px] rounded-md flex items-center justify-center text-xl text-white font-semibold cursor-pointer mr-2"
           style={{
-            backgroundColor: `${recruited ? 'gray' : '#ff4a4d'}`,
+            backgroundColor: `${recruited || isPassDate || fullMember ? 'gray' : '#ff4a4d'}`,
           }}
           onClick={onClickOwner}
         >

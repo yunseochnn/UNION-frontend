@@ -6,6 +6,7 @@ import MeetModal from '../components/MapView/MeetModal';
 export interface List {
   id: number;
   title: string;
+  content: string;
   maxMember: number;
   currentMember: number;
   eupMyeonDong: string;

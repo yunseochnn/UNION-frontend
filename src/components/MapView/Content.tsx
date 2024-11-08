@@ -28,16 +28,6 @@ const Content = ({ latitude, setLatitude, longitude, setLongitude, setModalConte
 
   const getMeetList = useCallback(async () => {
     try {
-      // const response = await apiClient.get(
-      //   `/gatherings?sortType=DISTANCE&latitude=${latitude}&longitude=${longitude}&page=0&size=15`,
-      //   {
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //       Authorization: Cookies.get('Authorization'),
-      //     },
-      //   },
-      // );
-
       const response = await apiClient.get('/gatherings', {
         params: {
           sortType: 'DISTANCE',
