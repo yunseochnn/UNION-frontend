@@ -9,6 +9,7 @@ import { Response } from '../../pages/MeetDetail';
 import dayjs from 'dayjs';
 import { useSetRecoilState } from 'recoil';
 import { selectedUserState } from '../../recoil/selectedUserState';
+import { useEffect, useState } from 'react';
 
 interface Prop {
   gatheringData: Response | null;
@@ -18,10 +19,18 @@ interface Prop {
 }
 
 const Content = ({ gatheringData }: Prop) => {
+  const fullMember = gatheringData?.maxMember === gatheringData?.currentMember;
   const setUser = useSetRecoilState(selectedUserState);
+  const [isPassDate, setIsPassDate] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
   const myNickname = localStorage.getItem('nickname');
+
+  useEffect(() => {
+    if (gatheringData) {
+      setIsPassDate(new Date() > new Date(gatheringData.gatheringDateTime));
+    }
+  }, [gatheringData, isPassDate]);
 
   const onClickProfile = () => {
     if (gatheringData?.author.token) {
@@ -65,8 +74,8 @@ const Content = ({ gatheringData }: Prop) => {
       </div>
 
       <div className="mt-5 text-[22px]">
-        {gatheringData?.recruited ? (
-          <span className="font-bold text-customGray1">모집완료</span>
+        {gatheringData?.recruited || fullMember || isPassDate ? (
+          <span className="font-bold text-customGray2">모집완료</span>
         ) : (
           <span className="font-bold" style={{ color: '#FF4A4D' }}>
             모집중

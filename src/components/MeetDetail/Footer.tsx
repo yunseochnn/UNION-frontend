@@ -14,7 +14,6 @@ interface Props {
 
 const Footer = ({ gatheringData, onReadMeet }: Props) => {
   const fullMember = gatheringData?.maxMember === gatheringData?.currentMember;
-  const [like, setLike] = useState(gatheringData?.liked);
   const [isPassDate, setIsPassDate] = useState(false);
   const [recruited, setRecruited] = useState(gatheringData?.recruited);
   const { id } = useParams();
@@ -22,16 +21,51 @@ const Footer = ({ gatheringData, onReadMeet }: Props) => {
 
   useEffect(() => {
     if (gatheringData) {
-      setLike(gatheringData.liked);
       setIsPassDate(new Date() > new Date(gatheringData.gatheringDateTime));
       setRecruited(gatheringData.recruited);
-      console.log(isPassDate);
     }
   }, [gatheringData, isPassDate]);
 
-  const onClickLikeHandler = () => {
-    //모임 좋아요 api 연결
-    setLike(!like);
+  const onClickLikeHandler = async () => {
+    try {
+      const response = await apiClient.post(
+        `/gatherings/like/${MeetId}`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: Cookies.get('Authorization'),
+          },
+        },
+      );
+      console.log(response.data);
+      onReadMeet();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //모임글 참여 시 알람 create
+  const MeetAlarm = async () => {
+    try {
+      const response = await apiClient.post(
+        '/notification/gathering',
+        {
+          type_id: MeetId,
+        },
+        {
+          headers: {
+            Authorization: Cookies.get('Authorization'),
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      console.log(response.data);
+      console.log('모임 알림 보내기 완료');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onClickParticipationHandler = async () => {
@@ -45,6 +79,7 @@ const Footer = ({ gatheringData, onReadMeet }: Props) => {
         }
 
         console.log('모임 참여 완료');
+        await MeetAlarm();
         onReadMeet();
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -57,28 +92,31 @@ const Footer = ({ gatheringData, onReadMeet }: Props) => {
   };
 
   const onClickOwner = async () => {
-    try {
-      const response = await apiClient.post(
-        `/gatherings/${gatheringData?.id}/recruited`,
-        {},
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: Cookies.get('Authorization'),
+    if (!isPassDate && !fullMember) {
+      try {
+        const response = await apiClient.post(
+          `/gatherings/${gatheringData?.id}/recruited`,
+          {},
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: Cookies.get('Authorization'),
+            },
           },
-        },
-      );
-      console.log('모집 마감 성공');
-      setRecruited(response.data.recruited);
-    } catch (error) {
-      console.log(error);
+        );
+        console.log('모집 마감 변경 성공');
+        onReadMeet();
+        setRecruited(response.data.recruited);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
   return (
     <div className="h-[70px] border-t border-gray-150 flex items-center justify-between mt-4 cursor-pointer">
       <div className="ml-2" onClick={onClickLikeHandler}>
-        {like ? (
+        {gatheringData?.liked ? (
           <IoIosHeart size={24} style={{ color: '#ff4a4d' }} />
         ) : (
           <IoIosHeartEmpty size={24} style={{ strokeWidth: 7 }} />
@@ -88,7 +126,7 @@ const Footer = ({ gatheringData, onReadMeet }: Props) => {
         <div
           className="w-[80%] h-[53px] rounded-md flex items-center justify-center text-xl text-white font-semibold cursor-pointer mr-2"
           style={{
-            backgroundColor: `${recruited ? 'gray' : '#ff4a4d'}`,
+            backgroundColor: `${recruited || isPassDate || fullMember ? 'gray' : '#ff4a4d'}`,
           }}
           onClick={onClickOwner}
         >

@@ -14,7 +14,6 @@ const OutMeet = ({ setOutMeet, onReadMeet }: Props) => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const MeetId = Number(id || searchParams.get('chatId'));
-  console.log(MeetId);
 
   const DeleteMeet = async () => {
     try {
@@ -40,7 +39,6 @@ const OutMeet = ({ setOutMeet, onReadMeet }: Props) => {
       });
 
       if (response) {
-        console.log(response);
         const { status } = response;
         if (status === 200) {
           console.log('모임 나가기 성공');

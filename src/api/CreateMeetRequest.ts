@@ -17,7 +17,6 @@ interface Prop {
 }
 
 const CreateMeetRequest = async ({ info }: Prop) => {
-  console.log(info);
   try {
     const response = await apiClient.post(
       '/gatherings',

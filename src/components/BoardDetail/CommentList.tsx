@@ -56,7 +56,7 @@ const CommentList = ({
   }, [getBestComment]);
   return (
     <div className="min-h-80 w-[90%]">
-      {bestComment && <BestComment comment={bestComment} />}
+      {bestComment && bestComment.commentLikes > 0 && <BestComment comment={bestComment} />}
       {comments?.length !== 0 ? (
         comments?.map((comment, index) => (
           <div key={index}>
@@ -69,6 +69,7 @@ const CommentList = ({
               footerRef={footerRef}
               inputRef={inputRef}
               refetchComment={refetchComment}
+              getBestComment={getBestComment}
             />
           </div>
         ))

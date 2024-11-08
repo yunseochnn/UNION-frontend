@@ -3,6 +3,7 @@ import EmptyMap from './EmptyMap';
 import { List } from '../../pages/MapView';
 import apiClient from '../../api/apiClient';
 import Cookies from 'js-cookie';
+import Pin from '/Pin.png';
 
 declare global {
   interface Window {
@@ -21,22 +22,9 @@ interface Prop {
 const Content = ({ latitude, setLatitude, longitude, setLongitude, setModalContent }: Prop) => {
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
   const [MeetList, setMeetList] = useState<List[] | null>(null);
-  console.log(MeetList);
-
-  console.log(map);
 
   const getMeetList = useCallback(async () => {
     try {
-      // const response = await apiClient.get(
-      //   `/gatherings?sortType=DISTANCE&latitude=${latitude}&longitude=${longitude}&page=0&size=15`,
-      //   {
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //       Authorization: Cookies.get('Authorization'),
-      //     },
-      //   },
-      // );
-
       const response = await apiClient.get('/gatherings', {
         params: {
           sortType: 'DISTANCE',
@@ -51,7 +39,6 @@ const Content = ({ latitude, setLatitude, longitude, setLongitude, setModalConte
         },
       });
 
-      console.log(response);
       setMeetList(response.data.content);
     } catch (error) {
       console.log(error);
@@ -116,8 +103,13 @@ const Content = ({ latitude, setLatitude, longitude, setLongitude, setModalConte
 
     MeetList?.forEach(meet => {
       const markerPosition = new kakao.maps.LatLng(meet.latitude, meet.longitude);
+
+      const imageSize = new kakao.maps.Size(15, 20);
+      const markerImage = new kakao.maps.MarkerImage(Pin, imageSize);
+
       const marker = new kakao.maps.Marker({
         position: markerPosition,
+        image: markerImage,
       });
       marker.setMap(map);
 

@@ -2,10 +2,9 @@ import { HiOutlinePencilSquare, HiPencilSquare } from 'react-icons/hi2';
 import { IoChatbubbles, IoChatbubblesOutline, IoHome } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import HomeOutline from '/sidebar/home-outline.svg';
-import MeetOuline from '/sidebar/location-outline.svg';
-import FillOutline from '/sidebar/Vector.svg';
 import PersonOutline from '/sidebar/person-outline.svg';
 import PersonFill from '/sidebar/People.svg';
+import { PiMapPin, PiMapPinFill } from 'react-icons/pi';
 
 const SideBar = () => {
   const navigate = useNavigate();
@@ -35,13 +34,7 @@ const SideBar = () => {
         </div>
 
         <div className="flex flex-col justify-center items-center cursor-pointer" onClick={() => navigate('/meet')}>
-          <div>
-            {pathname.includes('meet') ? (
-              <img src={FillOutline} width={15} height={15} />
-            ) : (
-              <img src={MeetOuline} width={25} height={25} />
-            )}
-          </div>
+          <div>{pathname.includes('meet') ? <PiMapPinFill size={22} /> : <PiMapPin size={22} />}</div>
           <div className="text-xs">모임</div>
         </div>
 

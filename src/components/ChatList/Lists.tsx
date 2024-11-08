@@ -31,8 +31,7 @@ const Lists = () => {
           Authorization: Cookies.get('Authorization'),
         },
       });
-      console.log(response);
-      console.log(response.data);
+
       console.log('목록 조회 완료');
       return response.data;
     },

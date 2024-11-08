@@ -14,7 +14,7 @@ import { useParams } from 'react-router-dom';
 export interface Response {
   id: number;
   title: string;
-  content: string;
+  content?: string;
   maxMember: number;
   currentMember: number;
   address?: string;
@@ -48,13 +48,10 @@ export default function MeetDetail() {
   const { id } = useParams();
   const MeetId = Number(id);
 
-  console.log(gatheringData);
-
   const onReadMeet = useCallback(async () => {
     try {
       const response = await ReadMeetRequest(MeetId);
       const data = response.data;
-      console.log(data);
       setGatheringData(data);
     } catch (error) {
       console.log(error);
@@ -72,7 +69,12 @@ export default function MeetDetail() {
           (gatheringData?.owner ? (
             <UserMore setModal={setModal} setModify={setModify} setRemove={setRemove} />
           ) : (
-            <More setModal={setModal} setOutMeet={setOutMeet} setUserBlock={setUserBlock} />
+            <More
+              setModal={setModal}
+              setOutMeet={setOutMeet}
+              setUserBlock={setUserBlock}
+              join={gatheringData?.joined}
+            />
           ))}
         {modify && <Update updateData={gatheringData} setModify={setModify} onReadMeet={onReadMeet} />}
         {remove && <RemoveMeet setRemove={setRemove} />}

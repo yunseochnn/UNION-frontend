@@ -18,6 +18,7 @@ interface Prop {
   footerRef: React.RefObject<HTMLDivElement>;
   inputRef: React.RefObject<HTMLInputElement>;
   refetchComment: () => void;
+  getBestComment: () => void;
 }
 
 const Comment = ({
@@ -29,6 +30,7 @@ const Comment = ({
   footerRef,
   inputRef,
   refetchComment,
+  getBestComment,
 }: Prop) => {
   const [more, setMore] = useState(false);
   const setUser = useSetRecoilState(selectedUserState);
@@ -51,7 +53,7 @@ const Comment = ({
         !commentRef.current.contains(e.target as Node) &&
         !footerRef.current.contains(e.target as Node)
       ) {
-        setParent({ id: null, nickname: null });
+        setParent({ id: null, nickname: null, token: null });
       }
     },
     [footerRef, setParent],
@@ -63,7 +65,7 @@ const Comment = ({
 
   const onAddComment = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    setParent({ id: comment.id, nickname: comment.commenter.nickname });
+    setParent({ id: comment.id, nickname: comment.commenter.nickname, token: comment.commenter.token });
     inputRef.current?.focus();
     setMore(false);
   };
@@ -110,7 +112,7 @@ const Comment = ({
 
   const onClickLike = async () => {
     try {
-      const response = await apiClient.post(
+      await apiClient.post(
         `/comment/like/${comment.id}`,
         {},
         {
@@ -121,7 +123,7 @@ const Comment = ({
         },
       );
       refetchComment();
-      console.log(response.data);
+      getBestComment();
     } catch (error) {
       console.log(error);
     }
@@ -228,6 +230,7 @@ const Comment = ({
                 handleDeleteComment={handleDeleteComment}
                 inputRef={inputRef}
                 refetchComment={refetchComment}
+                getBestComment={getBestComment}
               />
             </div>
           ))}

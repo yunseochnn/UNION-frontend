@@ -40,10 +40,8 @@ const Map = ({ x, y, name }: Prop) => {
         //1. 좌표 -> 주소 변환 요청 (Reverse Geocoding)
         geocoder.coord2Address(markerPosition.getLng(), markerPosition.getLat(), (result: any[], status: string) => {
           if (status === window.kakao.maps.services.Status.OK) {
-            console.log(result[0]);
             const roadAddress = result[0].road_address?.address_name || '도로명 주소 없음';
             setAddress(roadAddress);
-            console.log(result[0]);
           }
         });
       });
