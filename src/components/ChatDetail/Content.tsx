@@ -53,7 +53,7 @@ const Content = ({ messages }: Props) => {
 
               {message.senderToken === '' ? (
                 <div className="w-full mt-4 flex justify-center items-center">
-                  <div className="text-gray-400 rounded-full px-11 text-sm font-medium">{message.content}</div>
+                  <div className="text-customGray2 rounded-full px-11 text-sm font-medium">{message.content}</div>
                 </div>
               ) : message.senderName === myNickname ? (
                 <div className="w-full flex justify-end mt-4">

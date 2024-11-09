@@ -44,9 +44,9 @@ const Content = ({ boardContent }: Prop) => {
         <div>
           <div className="font-bold text-sm">
             {boardContent?.author.nickname}{' '}
-            <span className="text-gray-400">{`· ${boardContent?.author.univName}`}</span>
+            <span className="text-customGray2">{`· ${boardContent?.author.univName}`}</span>
           </div>
-          <div className="font-semibold text-sm text-gray-400">{`${dayjs(boardContent?.createdAt).format(
+          <div className="font-semibold text-sm text-customGray2">{`${dayjs(boardContent?.createdAt).format(
             'MM/DD A H:mm',
           )} 조회수 ${boardContent?.views}`}</div>
         </div>

@@ -127,15 +127,13 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="center-content flex flex-col bg-white pt-1">
+    <div className="center-content flex flex-col bg-white">
       {isAuthenticated ? (
         <>
-          <header className="flex justify-between items-center p-4">
-            <img src="/Logo.svg" alt="UNION" className="h-8" />
-            <div className="flex space-x-4">
-              <button>
-                <FiBell size={24} onClick={() => navigate('/mynotification')} />
-              </button>
+          <header className="flex justify-between items-center h-[62px] px-5">
+            <img src="/Logo.svg" alt="UNION" className="h-5" />
+            <div className="flex">
+              <FiBell size={24} />
             </div>
           </header>
 
@@ -172,7 +170,7 @@ const Home: React.FC = () => {
             )}
           </main>
 
-          <footer className="h-14 w-full flex justify-center">
+          <footer className="h-20 w-full flex justify-center">
             <div className="w-[90%]">
               <SideBar />
             </div>

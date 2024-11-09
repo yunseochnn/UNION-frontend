@@ -221,7 +221,7 @@ const Post = ({ setOpen, setAddress }: Prop) => {
                   onClick={() => onClick(marker)}
                 >
                   <div className="font-semibold">{marker.content}</div>
-                  <div className="text-sm text-gray-400">{marker.roadAddressName}</div>
+                  <div className="text-sm text-customGray2">{marker.roadAddressName}</div>
                   <div className="text-xs mt-2" style={{ color: '#ff4a4d' }}>
                     {marker.phone}
                   </div>
