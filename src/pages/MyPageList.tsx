@@ -26,8 +26,6 @@ export default function MyPageList({ posts, pageTitle, lastPostRef }: MyPageList
     switch (pageTitle) {
       case '내가 작성한 게시물':
         return '작성한 게시물이 없습니다';
-      case '내가 작성한 모임글':
-        return '작성한 모임글이 없습니다';
       case '내가 댓글 단 글':
         return '댓글 단 글이 없습니다';
       default:
@@ -44,7 +42,7 @@ export default function MyPageList({ posts, pageTitle, lastPostRef }: MyPageList
         {posts.length > 0 ? (
           <PostList posts={posts} lastPostRef={lastPostRef} />
         ) : (
-          <div className="flex flex-col items-center mt-[50%] text-customGray2  text-[18px] flex-grow flex-1">
+          <div className="flex flex-col items-center mt-[50%] text-customGray2 text-[18px] flex-grow flex-1">
             <HiOutlinePencilSquare size={50} className="mb-1" />
             {emptyMessage}
           </div>
