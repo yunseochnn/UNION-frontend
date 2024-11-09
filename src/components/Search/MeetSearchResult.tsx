@@ -80,6 +80,7 @@ const MeetSearchResult: React.FC<MeetSearchResultProps> = ({ sortBy }) => {
     } finally {
       setIsLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortBy, keyword, page]);
 
   useEffect(() => {
