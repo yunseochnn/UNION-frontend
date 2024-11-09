@@ -24,11 +24,10 @@ export default function Post({
   likes,
   comments,
   thumbnail,
-  isLast,
 }: PostProps) {
   return (
     <button className="w-full bg-white px-[23px] text-left">
-      <div className={`py-[15px] ${!isLast ? 'border-b-[1.5px] border-[#F2F3F6]' : ''}`}>
+      <div className="py-[15px] border-b-[1.5px] border-[#F2F3F6]">
         <div className="flex justify-between items-center mx-[5px]">
           <div className="flex flex-col flex-grow mr-3">
             <div className="flex items-center text-[12px]">
@@ -39,7 +38,7 @@ export default function Post({
                 <span className="text-customGray2 truncate ">{university}</span>
               </div>
             </div>
-            <p className="mt-2 text-[16px] text-customBlack font-semibold truncate max-w-[200px] lg:max-w-[240px]">
+            <p className="mt-2 text-[17px] text-customBlack font-semibold truncate max-w-[200px] lg:max-w-[240px]">
               {title}
             </p>
 
@@ -47,11 +46,11 @@ export default function Post({
 
             <div className="mt-1 flex space-x-2 text-customBlack text-[11px]">
               <span className="flex items-center space-x-1">
-                <LuHeart className="text-customGray2" />
+                <LuHeart size={12} className="text-customGray2" />
                 <span>{likes}</span>
               </span>
               <span className="flex items-center space-x-1">
-                <BiComment className="text-customGray2" />
+                <BiComment size={12} className="text-customGray2" />
                 <span>{comments}</span>
               </span>
             </div>

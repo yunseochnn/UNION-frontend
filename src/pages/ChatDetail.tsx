@@ -45,7 +45,6 @@ export default function ChatDetail() {
   const userToken = localStorage.getItem('userToken');
   const [outMeet, setOutMeet] = useState(false);
   const [outChat, setOutChat] = useState(false);
-  console.log(myNickname);
 
   const getUserInfo = async () => {
     try {
@@ -54,7 +53,6 @@ export default function ChatDetail() {
           Authorization: Cookies.get('Authorization'),
         },
       });
-      console.log(response.data);
       const data = response.data;
       localStorage.setItem('nickname', data.nickname);
       setMyNickname(data.nickname);
@@ -79,7 +77,6 @@ export default function ChatDetail() {
       });
 
       if (response.data) {
-        console.log(response.data);
         setChatroomId(response.data.chatroomId);
         const ChatInfos = response.data.messageInfoList;
         const formattedMessages = ChatInfos.map((message: IFMessageInfo) => ({
@@ -89,7 +86,6 @@ export default function ChatDetail() {
           senderProfileImage: message.senderProfileImage,
           createdAt: message.createdAt,
         }));
-        console.log(formattedMessages);
         setMessages(formattedMessages);
       }
     } catch {
@@ -101,8 +97,6 @@ export default function ChatDetail() {
     privateChatHistory();
   }, [privateChatHistory]);
 
-  console.log(chatroomId);
-
   //소켓 연결
   useEffect(() => {
     client.current = new Client({
@@ -112,7 +106,6 @@ export default function ChatDetail() {
         //개인 메시지 구독
         client.current?.subscribe(`/topic/${option}/${chatroomId}`, message => {
           const chatResponse = JSON.parse(message.body);
-          console.log(message.body);
           setMessages(prevMessages => [...prevMessages, chatResponse]);
         });
       },

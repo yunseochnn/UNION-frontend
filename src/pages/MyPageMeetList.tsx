@@ -1,35 +1,33 @@
 import { HiOutlinePencilSquare } from 'react-icons/hi2';
 import Header from '../common/Header';
-import PostList from '../common/PostList';
+import MeetPostList from '../common/MeetPostList';
 
-interface Post {
-  profileImage: string;
-  nickname: string;
-  university: string;
-  title: string;
-  content: string;
-  likes: number;
-  comments: number;
-  thumbnail: string;
-  type: string;
+interface Meeting {
   id: number;
+  profileImage?: string;
+  nickname: string;
+  eupMyeonDong?: string;
+  title: string;
+  gatheringDateTime: string;
+  currentMember: number;
+  maxMember: number;
+  views: number;
+  thumbnail?: string;
 }
 
-interface MyPageListProps {
-  posts: Post[];
+interface MyPageMeetListProps {
+  meetings: Meeting[];
   pageTitle: string;
-  lastPostRef?: (node: HTMLDivElement | null) => void;
+  lastMeetingRef?: (node: HTMLDivElement | null) => void;
 }
 
-export default function MyPageList({ posts, pageTitle, lastPostRef }: MyPageListProps) {
+export default function MyPageMeetList({ meetings, pageTitle, lastMeetingRef }: MyPageMeetListProps) {
   const emptyMessage = (() => {
     switch (pageTitle) {
-      case '내가 작성한 게시물':
-        return '작성한 게시물이 없습니다';
-      case '내가 댓글 단 글':
-        return '댓글 단 글이 없습니다';
+      case '내가 작성한 모임글':
+        return '작성한 모임글이 없습니다';
       default:
-        return '게시물이 없습니다';
+        return '모임글이 없습니다';
     }
   })();
 
@@ -39,8 +37,8 @@ export default function MyPageList({ posts, pageTitle, lastPostRef }: MyPageList
         <Header title={pageTitle} />
       </div>
       <div className="flex-grow overflow-y-auto hidden-scrollbar">
-        {posts.length > 0 ? (
-          <PostList posts={posts} lastPostRef={lastPostRef} />
+        {meetings.length > 0 ? (
+          <MeetPostList meetings={meetings} lastMeetingRef={lastMeetingRef} />
         ) : (
           <div className="flex flex-col items-center mt-[50%] text-customGray2 text-[18px] flex-grow flex-1">
             <HiOutlinePencilSquare size={50} className="mb-1" />

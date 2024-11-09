@@ -30,7 +30,7 @@ const MeetModal = ({ modalContent }: Prop) => {
             </div>
           </div>
           <div>
-            <div className="font-bold mt-3 text-base">{modalContent.title}</div>
+            <div className="font-bold mt-[9px] text-[17px]">{modalContent.title}</div>
             <div className="font-semibold text-sm" style={{ color: '#868B94' }}>
               {dayjs(modalContent.gatheringDateTime).format('MM월 DD일 A H:mm')}
             </div>

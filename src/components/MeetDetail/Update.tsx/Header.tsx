@@ -13,7 +13,7 @@ const Header = ({ success, onUpdateMeet, setModify }: Prop) => {
     }
   };
   return (
-    <div className="flex items-center justify-between w-[90%] h-[60px] border-b border-gray-200 ">
+    <div className="flex items-center justify-between w-full h-[62px] border-b border-gray-200 ">
       <div className="cursor-pointer font-black" onClick={() => setModify(false)}>
         <IoIosArrowBack size={32} />
       </div>

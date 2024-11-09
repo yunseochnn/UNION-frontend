@@ -11,10 +11,10 @@ import { useParams } from 'react-router-dom';
 import RemoveBoard from '../components/BoardDetail/RemoveBoard';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import apiClient from '../api/apiClient';
-import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 import { HiOutlineChatBubbleOvalLeft } from 'react-icons/hi2';
 import Cookies from 'js-cookie';
 import More from '../components/BoardDetail/More';
+import { IoIosHeartEmpty, IoMdHeart } from 'react-icons/io';
 
 export interface IFComment {
   id: number;
@@ -30,7 +30,8 @@ export interface IFComment {
     profileImage: string | null;
     univName: string;
   };
-  children: IFComment[];
+  children?: IFComment[];
+  liked: boolean;
 }
 
 export interface CommentData {
@@ -68,6 +69,7 @@ interface Like {
 export interface ParentInfo {
   id: number | null;
   nickname: string | null;
+  token: string | null;
 }
 
 export default function BoardDetail() {
@@ -75,7 +77,7 @@ export default function BoardDetail() {
   const [userBlock, setUserBlock] = useState(false);
   const [modify, setModify] = useState(false);
   const [remove, setRemove] = useState(false);
-  const [parent, setParent] = useState<ParentInfo>({ id: null, nickname: null });
+  const [parent, setParent] = useState<ParentInfo>({ id: null, nickname: null, token: null });
   const [updateComment, setUpdateComment] = useState<UpComment | null>(null);
   const { type, id } = useParams();
   const Type = type?.toUpperCase() || '';
@@ -95,7 +97,6 @@ export default function BoardDetail() {
           Authorization: Cookies.get('Authorization'),
         },
       });
-      console.log(response.data);
       const data = response.data;
       localStorage.setItem('nickname', data.nickname);
       setMyNickname(data.nickname);
@@ -130,13 +131,12 @@ export default function BoardDetail() {
     retry: false,
   });
 
-  console.log(boardInfo);
-
   //댓글 목록 read
   const {
     data: commentData,
     isError: isCommentError,
     error: commentError,
+    refetch: refetchComment,
   } = useQuery<CommentData>({
     queryKey: ['commentDetail', BoardId],
     queryFn: async () => {
@@ -146,14 +146,11 @@ export default function BoardDetail() {
           Authorization: Cookies.get('Authorization'),
         },
       });
-      console.log(response.data);
       console.log('댓글불러오기 성공');
       return response.data;
     },
     retry: false,
   });
-
-  console.log(commentData);
 
   //게시글 좋아요 데이터 읽기
   const {
@@ -170,16 +167,63 @@ export default function BoardDetail() {
           Authorization: Cookies.get('Authorization'),
         },
       });
-      console.log(response.data);
       return response.data;
     },
     retry: false,
   });
 
+  //게시글에 댓글 생성 시 알람 create
+  const CommentAlarm = async (commentId: number) => {
+    try {
+      const response = await apiClient.post(
+        '/notification/post',
+        {
+          type_id: BoardId,
+          comment_id: commentId,
+        },
+        {
+          headers: {
+            Authorization: Cookies.get('Authorization'),
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      console.log('댓글 알람 완료');
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //내 댓글에 타인이 대댓글 입력시 알람
+  const putCommentAlarm = async (commentId: number) => {
+    try {
+      const response = await apiClient.post(
+        '/notification/comment',
+        {
+          type_id: parent.id,
+          comment_id: commentId,
+        },
+        {
+          headers: {
+            Authorization: Cookies.get('Authorization'),
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      console.log('대댓글 알람 완료');
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // 댓글 또는 대댓글 추가 mutation
   const addCommentMutation = useMutation({
-    mutationFn: (newComment: string) =>
-      apiClient.post(
+    mutationFn: async (newComment: string) => {
+      const response = await apiClient.post(
         `/comment`,
         { postId: BoardId, content: newComment, parentId: parent.id, parentNickname: parent.nickname },
         {
@@ -188,14 +232,21 @@ export default function BoardDetail() {
             Authorization: Cookies.get('Authorization'),
           },
         },
-      ),
-    onSuccess: () => {
+      );
+      return response.data;
+    },
+    onSuccess: data => {
+      const commentId = Number(data.id);
+      if (parent.id) {
+        CommentAlarm(commentId);
+      } else {
+        putCommentAlarm(commentId);
+      }
       console.log('댓글 추가 완료');
-      setParent({ id: null, nickname: null });
+      setParent({ id: null, nickname: null, token: null });
       queryClient.invalidateQueries({
         queryKey: ['commentDetail', BoardId],
       }); //리패칭하여 댓글 목록 최신화
-
       commentListRef.current?.scrollIntoView({ behavior: 'smooth' });
     },
     onError: (error: Error) => {
@@ -282,7 +333,7 @@ export default function BoardDetail() {
 
   const onClickLike = async () => {
     try {
-      const response = await apiClient.post(
+      await apiClient.post(
         `/board/like/${BoardId}`,
         {},
         {
@@ -293,7 +344,6 @@ export default function BoardDetail() {
         },
       );
 
-      console.log(response.data);
       refetchLike();
     } catch (error) {
       console.log(error);
@@ -329,9 +379,9 @@ export default function BoardDetail() {
       <div className="flex flex-col overflow-y-auto flex-1 hidden-scrollbar relative w-full items-center">
         <Content boardContent={boardInfo} />
 
-        <div className="flex gap-3 my-3 w-[85%] border-b border-gray-300 pb-3">
+        <div className="flex gap-3 w-[85%] border-b border-gray-300 pb-3 items-center mt-2">
           <div className="flex items-center gap-1 font-semibold cursor-pointer" onClick={onClickLike}>
-            {Like?.liked ? <FaHeart size={18} color="#ff4a4d" /> : <FaRegHeart size={18} />}{' '}
+            {Like?.liked ? <IoMdHeart size={20} color="#ff4a4d" /> : <IoIosHeartEmpty size={20} />}{' '}
             <span className="text-xs">{Like?.postLikes || 0}</span>
           </div>
           <div className="flex items-center gap-1 font-semibold">
@@ -348,10 +398,11 @@ export default function BoardDetail() {
           setParent={setParent}
           footerRef={footerRef}
           inputRef={inputRef}
+          refetchComment={refetchComment}
         />
       </div>
 
-      <div className="w-[90%]" ref={footerRef}>
+      <div className="w-[90%] pb-1" ref={footerRef}>
         <Footer
           inputRef={inputRef}
           handleAddComment={handleAddComment}

@@ -9,6 +9,7 @@ import { Response } from '../../pages/MeetDetail';
 import dayjs from 'dayjs';
 import { useSetRecoilState } from 'recoil';
 import { selectedUserState } from '../../recoil/selectedUserState';
+import { useEffect, useState } from 'react';
 
 interface Prop {
   gatheringData: Response | null;
@@ -18,9 +19,18 @@ interface Prop {
 }
 
 const Content = ({ gatheringData }: Prop) => {
+  const fullMember = gatheringData?.maxMember === gatheringData?.currentMember;
   const setUser = useSetRecoilState(selectedUserState);
+  const [isPassDate, setIsPassDate] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
+  const myNickname = localStorage.getItem('nickname');
+
+  useEffect(() => {
+    if (gatheringData) {
+      setIsPassDate(new Date() > new Date(gatheringData.gatheringDateTime));
+    }
+  }, [gatheringData, isPassDate]);
 
   const onClickProfile = () => {
     if (gatheringData?.author.token) {
@@ -47,20 +57,25 @@ const Content = ({ gatheringData }: Prop) => {
       </div>
 
       <div className="flex items-center mt-[30px] gap-3">
-        <div className="h-10 w-10 bg-gray-300 rounded-full cursor-pointer overflow-hidden" onClick={onClickProfile}>
+        <div
+          className={`h-10 w-10 bg-gray-300 rounded-full overflow-hidden ${
+            gatheringData?.author.nickname === myNickname ? 'cursor-default' : 'cursor-pointer'
+          }`}
+          onClick={gatheringData?.author.nickname === myNickname ? undefined : onClickProfile}
+        >
           <img src={gatheringData?.author.profileImage} />
         </div>
         <div>
           <div className="font-semibold text-sm">{gatheringData?.author.nickname}</div>
           <div className="font-semibold text-sm text-gray-400">
-            {dayjs(gatheringData?.createdAt).format('YYYY년 MM월 DD일 H:mm')}
+            {dayjs(gatheringData?.createdAt).format('MM월 DD일 H:mm')}
           </div>
         </div>
       </div>
 
       <div className="mt-5 text-[22px]">
-        {gatheringData?.recruited ? (
-          <span className="font-bold text-customGray1">모집완료</span>
+        {gatheringData?.recruited || fullMember || isPassDate ? (
+          <span className="font-bold text-customGray2">모집완료</span>
         ) : (
           <span className="font-bold" style={{ color: '#FF4A4D' }}>
             모집중
@@ -75,7 +90,7 @@ const Content = ({ gatheringData }: Prop) => {
           <FaRegCalendarCheck size={22} />
         </span>
         <span className="text-[18px] font-semibold">
-          {dayjs(gatheringData?.gatheringDateTime).format('YYYY년 MM월 DD일 H:mm')}
+          {dayjs(gatheringData?.gatheringDateTime).format('MM/DD H:mm')}
         </span>
       </div>
 
@@ -101,14 +116,17 @@ const Content = ({ gatheringData }: Prop) => {
         <div className="font-semibold text-gray-500 text-sm">{`관심 ${gatheringData?.likes} · 조회 ${gatheringData?.views}`}</div>
       </div>
 
-      <div className="mt-5 border-t border-gray-150 pt-6 mb-2 flex justify-between items-center">
+      <div className="mt-3 border-t border-gray-150 pt-4 mb-2 flex justify-between items-center">
         <div className="font-bold text-xl">
           <span>{`참여 중인 이웃 `}</span>
           <span style={{ color: '#FF4A4D' }}>{gatheringData?.currentMember}</span>
           <span>{`/${gatheringData?.maxMember}`}</span>
         </div>
 
-        <div onClick={() => navigate(`/meet/participants/${id}`)} className="cursor-pointer">
+        <div
+          onClick={() => navigate(`/meet/participants/${id}?ownerNic=${gatheringData?.author.nickname}`)}
+          className="cursor-pointer"
+        >
           <IoIosArrowForward size={24} />
         </div>
       </div>

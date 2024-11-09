@@ -4,91 +4,89 @@ import { IoMap } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 
 interface MeetHeaderProps {
- sortBy: 'LATEST' | 'DISTANCE' | 'GATHERING_DATE';
- setSortBy: (value: 'LATEST' | 'DISTANCE' | 'GATHERING_DATE') => void;
+  sortBy: 'LATEST' | 'DISTANCE' | 'GATHERING_DATE';
+  setSortBy: (value: 'LATEST' | 'DISTANCE' | 'GATHERING_DATE') => void;
 }
 
 const sortByText = {
- 'LATEST': '최신순',
- 'DISTANCE': '가까운거리순',
- 'GATHERING_DATE': '모임순'
+  LATEST: '최신순',
+  DISTANCE: '가까운거리순',
+  GATHERING_DATE: '모임순',
 };
 
 const MeetHeader: React.FC<MeetHeaderProps> = ({ sortBy, setSortBy }) => {
- const navigate = useNavigate();
- const [showSortOptions, setShowSortOptions] = useState(false);
+  const navigate = useNavigate();
+  const [showSortOptions, setShowSortOptions] = useState(false);
 
- return (
-  <>
-    <header className="flex justify-between items-center p-4">
-      <div className="flex-1"></div>
-      <h1 className="text-xl font-semibold flex-1 text-center">모임 찾기</h1>
-      <div className="flex space-x-4 flex-1 justify-end">
-        <FiSearch className="text-2xl" />
-        <FiBell className="text-2xl" />
-      </div>
-    </header>
+  return (
+    <>
+      <header className="flex justify-between items-center p-4">
+        <div className="flex-1"></div>
+        <h1 className="text-xl font-semibold flex-1 text-center">모임 찾기</h1>
+        <div className="flex space-x-4 flex-1 justify-end">
+          <FiSearch className="text-2xl cursor-pointer" onClick={() => navigate('/search/meet')} />
+          <FiBell className="text-2xl" />
+        </div>
+      </header>
 
-    {/* 전체 컨테이너 */}
-    <div className="flex flex-wrap items-center gap-4 px-4 py-2 text-sm text-gray-600 border-b relative">
-      {/* 정렬 버튼과 드롭다운을 위한 컨테이너 */}
-      <div className="relative">
+      {/* 전체 컨테이너 */}
+      <div className="flex flex-wrap items-center gap-4 px-4 py-2 text-sm text-gray-600 border-b relative">
+        {/* 정렬 버튼과 드롭다운을 위한 컨테이너 */}
+        <div className="relative">
+          <button
+            className="w-30 flex items-center justify-center gap-2 border border-gray-300 rounded-full px-3 py-1"
+            onClick={() => setShowSortOptions(!showSortOptions)}
+          >
+            <span>{sortByText[sortBy]}</span>
+            <span>▼</span>
+          </button>
+
+          {/* 드롭다운 메뉴 */}
+          {showSortOptions && (
+            <div className="absolute top-[calc(100%+1px)] left-0 z-10 w-28 bg-white border border-gray-300 rounded-md shadow-lg">
+              <button
+                className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                onClick={() => {
+                  setSortBy('DISTANCE');
+                  setShowSortOptions(false);
+                }}
+              >
+                거리순
+              </button>
+              <button
+                className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                onClick={() => {
+                  setSortBy('LATEST');
+                  setShowSortOptions(false);
+                }}
+              >
+                최신순
+              </button>
+              <button
+                className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                onClick={() => {
+                  setSortBy('GATHERING_DATE');
+                  setShowSortOptions(false);
+                }}
+              >
+                모임순
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* 다른 버튼들은 컨테이너 밖으로 이동 */}
+        <button className="border border-gray-300 rounded-full px-3 py-1">모집 완료 글 보기</button>
+
         <button
-          className="w-30 flex items-center justify-center gap-2 border border-gray-300 rounded-full px-3 py-1"
-          onClick={() => setShowSortOptions(!showSortOptions)}
+          className="border border-gray-300 rounded-full px-3 py-1 flex items-center"
+          onClick={() => navigate('/Map')}
         >
-          <span>{sortByText[sortBy]}</span>
-          <span>▼</span>
+          <IoMap className="w-4 h-4 mr-1" />
+          지도 뷰
         </button>
-
-        {/* 드롭다운 메뉴 */}
-        {showSortOptions && (
-          <div className="absolute top-[calc(100%+1px)] left-0 z-10 w-28 bg-white border border-gray-300 rounded-md shadow-lg">
-            <button
-              className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-              onClick={() => {
-                setSortBy('DISTANCE');
-                setShowSortOptions(false);
-              }}
-            >
-              거리순
-            </button>
-            <button
-              className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-              onClick={() => {
-                setSortBy('LATEST');
-                setShowSortOptions(false);
-              }}
-            >
-              최신순
-            </button>
-            <button
-              className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-              onClick={() => {
-                setSortBy('GATHERING_DATE');
-                setShowSortOptions(false);
-              }}
-            >
-              모임순
-            </button>
-          </div>
-        )}
       </div>
-
-      {/* 다른 버튼들은 컨테이너 밖으로 이동 */}
-      <button className="border border-gray-300 rounded-full px-3 py-1">
-        모집 완료 글 보기
-      </button>
-
-      <button
-        className="border border-gray-300 rounded-full px-3 py-1 flex items-center"
-        onClick={() => navigate('/Map')}
-      >
-        <IoMap className="w-4 h-4 mr-1" />
-        지도 뷰
-      </button>
-    </div>
-  </>
-);
+    </>
+  );
 };
 export default MeetHeader;

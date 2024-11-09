@@ -1,24 +1,55 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Calendar, { CalendarProps } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './MyCalendar.css';
 
+import Cookies from 'js-cookie';
+import apiClient from '../../api/apiClient';
+
 interface Meeting {
+  id: number;
   title: string;
   date: Date;
   time: string;
 }
 
 export default function MyCalendar() {
+  const [meetings, setMeetings] = useState<Meeting[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
 
-  const meetings: Meeting[] = [
-    { title: '코딩 스터디', date: new Date(2024, 9, 22), time: '14:00' },
-    { title: '알고리즘 스터디', date: new Date(2024, 9, 23), time: '18:00' },
-    { title: '알고리즘 스터디', date: new Date(2024, 9, 23), time: '18:00' },
-    { title: '알고리즘 스터디', date: new Date(2024, 9, 23), time: '18:00' },
-  ];
+  useEffect(() => {
+    const fetchMeetings = async () => {
+      try {
+        const response = await apiClient.get('/gatherings/my/participated', {
+          headers: {
+            Authorization: Cookies.get('Authorization'),
+            'Content-Type': 'application/json',
+          },
+        });
+        console.log(response.data);
+
+        const fetchedMeetings = response.data.map((meeting: any) => {
+          const dateTime = new Date(meeting.gatheringDateTime);
+          return {
+            id: meeting.id,
+            title: meeting.title,
+            date: dateTime,
+            time: `${dateTime.getHours().toString().padStart(2, '0')}:${dateTime
+              .getMinutes()
+              .toString()
+              .padStart(2, '0')}`,
+          };
+        });
+
+        setMeetings(fetchedMeetings);
+      } catch (error) {
+        console.error('Error fetching meetings:', error);
+      }
+    };
+
+    fetchMeetings();
+  }, []);
 
   const handleDateChange: CalendarProps['onChange'] = value => {
     if (value instanceof Date) {

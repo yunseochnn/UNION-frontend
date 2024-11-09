@@ -47,7 +47,7 @@ const Content = ({
   }, [content, setSuccess, title]);
 
   return (
-    <div className="flex flex-col flex-1 overflow-y-auto hidden-scrollbar mt-4">
+    <div className="flex flex-col flex-1 overflow-y-auto hidden-scrollbar mt-4 px-[30px]">
       <div>
         <Policy />
       </div>

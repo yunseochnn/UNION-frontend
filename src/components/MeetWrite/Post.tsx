@@ -90,7 +90,6 @@ const Post = ({ setOpen, setAddress }: Prop) => {
 
     if (keyword !== '') {
       ps.keywordSearch(keyword, (data: any, status: any) => {
-        console.log(data);
         if (status === kakao.maps.services.Status.OK) {
           //검색된 장소 위치를 기준으로 지도 범위를 재설정하기 위해
           //LatLngBounds 객체에 좌표 추가
@@ -183,10 +182,6 @@ const Post = ({ setOpen, setAddress }: Prop) => {
       marker.infowindow = overlay;
     });
   }, [map, markers, onClick]);
-
-  console.log(map);
-  console.log(markers);
-  console.log(keyword);
 
   return (
     <div className="absolute inset-0 bg-white  z-20 flex flex-col pt-3">

@@ -30,8 +30,6 @@ const Update = ({ updateData, setModify, onSuccessfulUpdate }: Prop) => {
         console.log('네트워크 오류입니다.');
       }
 
-      console.log(response);
-
       const { status } = response;
       if (status === 200) {
         console.log('수정 완료');
@@ -59,10 +57,12 @@ const Update = ({ updateData, setModify, onSuccessfulUpdate }: Prop) => {
     }
   }, [click, onUpdateBoard]);
   return (
-    <div className="absolute z-30 bg-white inset-0 px-[30px] flex flex-col">
-      <Header success={success} setModify={setModify} setClick={setClick} />
+    <div className="absolute z-30 bg-white inset-0 flex flex-col">
+      <div className="w-full px-5">
+        <Header success={success} setModify={setModify} setClick={setClick} />
+      </div>
+
       <Content title={title} content={content} setTitle={setTitle} setContent={setContent} />
-      {/* <Footer /> */}
     </div>
   );
 };

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FiSearch, FiBell } from 'react-icons/fi';
+import { FiBell } from 'react-icons/fi';
 import SideBar from '../common/SideBar';
 import PostList from '../common/PostList';
 import '../style.css';
 import Cookies from 'js-cookie';
 import apiClient from '../api/apiClient';
+import { PopularPost, getPopularPosts } from '../api/HomePopularBoard';
 
 interface Post {
   profileImage: string;
@@ -15,7 +16,7 @@ interface Post {
   content: string;
   likes: number;
   comments: number;
-  thumbnail: string;
+  thumbnail?: string;
   type: string;
   id: number;
 }
@@ -25,62 +26,15 @@ const Home: React.FC = () => {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState<'posts' | 'meetings'>('posts');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  //유저 상세정보
-  const getUserInfo = async () => {
-    try {
-      const response = await apiClient.get('/user/my', {
-        headers: {
-          Authorization: Cookies.get('Authorization'),
-        },
-      });
-      console.log(response.data);
-      const data = response.data;
-      localStorage.setItem('nickname', data.nickname);
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  };
-
-  const posts: Post[] = [
-    {
-      profileImage: '/path/to/profile',
-      nickname: '닉네임',
-      university: '대학교명',
-      title: '제목을 입력하세요',
-      content: '간단하게 오늘의 내용이 포시됩니다. 아주 간..',
-      likes: 155,
-      comments: 3,
-      thumbnail: '/path/to/image',
-      type: 'FREE',
-      id: 2,
-    },
-    {
-      profileImage: '/path/to/profile',
-      nickname: '닉네임',
-      university: '대학교명',
-      title: '제목을 입력하세요',
-      content: '간단하게 오늘의 내용이 포시됩니다. 아주 간..',
-      likes: 155,
-      comments: 3,
-      thumbnail: '/path/to/image',
-      type: 'FREE',
-      id: 2,
-    },
-    {
-      profileImage: '/path/to/profile',
-      nickname: '닉네임',
-      university: '대학교명',
-      title: '제목을 입력하세요',
-      content: '간단하게 오늘의 내용이 포시됩니다. 아주 간..',
-      likes: 155,
-      comments: 3,
-      thumbnail: '/path/to/image',
-      type: 'FREE',
-      id: 2,
-    },
-  ];
+  const [popularPosts, setPopularPosts] = useState<PopularPost[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [pageInfo, setPageInfo] = useState({
+    pageNumber: 0,
+    pageSize: 3,
+    totalElements: 0,
+    totalPages: 0,
+    last: false,
+  });
 
   const meetings: Post[] = [
     {
@@ -95,31 +49,44 @@ const Home: React.FC = () => {
       type: 'FREE',
       id: 2,
     },
-    {
-      profileImage: '/path/to/profile',
-      nickname: '스터디장',
-      university: '연세대학교',
-      title: '알고리즘 스터디원 모집',
-      content: '매주 화요일 저녁 8시에 모임을 가집니다...',
-      likes: 76,
-      comments: 8,
-      thumbnail: '/path/to/image',
-      type: 'FREE',
-      id: 2,
-    },
-    {
-      profileImage: '/path/to/profile',
-      nickname: '프로젝트장',
-      university: '고려대학교',
-      title: '사이드 프로젝트 팀원 모집',
-      content: '6개월간 진행할 웹 프로젝트 팀원을 모집합니다...',
-      likes: 122,
-      comments: 15,
-      thumbnail: '/path/to/image',
-      type: 'FREE',
-      id: 2,
-    },
   ];
+
+  const fetchPopularPosts = React.useCallback(
+    async (page: number = 0) => {
+      try {
+        setLoading(true);
+        const response = await getPopularPosts(page, pageInfo.pageSize);
+        
+        setPopularPosts(response.content);
+        setPageInfo({
+          pageNumber: response.number,
+          pageSize: response.size,
+          totalElements: response.totalElements,
+          totalPages: response.totalPages,
+          last: response.last,
+        });
+      } catch (error) {
+        console.error('인기 게시글 로딩 중 오류 발생:', error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [pageInfo.pageSize],
+  );
+
+  const getUserInfo = async () => {
+    try {
+      const response = await apiClient.get('/user/my', {
+        headers: {
+          Authorization: Cookies.get('Authorization'),
+        },
+      });
+      localStorage.setItem('nickname', response.data.nickname);
+    } catch (error) {
+      console.error('유저 정보 로딩 중 오류 발생:', error);
+      throw error;
+    }
+  };
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -138,6 +105,27 @@ const Home: React.FC = () => {
     }
   }, [location, navigate]);
 
+  useEffect(() => {
+    if (isAuthenticated && activeTab === 'posts') {
+      fetchPopularPosts();
+    }
+  }, [isAuthenticated, activeTab, fetchPopularPosts]);
+
+  const transformPosts = (posts: PopularPost[]): Post[] => {
+    return posts.map(post => ({
+      id: post.id,
+      profileImage: post.author.profileImage,
+      nickname: post.author.nickname,
+      university: post.author.univName,
+      title: post.title,
+      content: post.contentPreview,
+      likes: post.postLikes,
+      comments: post.commentCount,
+      thumbnail: post.thumbnail,
+      type: post.type,
+    }));
+  };
+
   return (
     <div className="center-content flex flex-col bg-white pt-1">
       {isAuthenticated ? (
@@ -145,7 +133,6 @@ const Home: React.FC = () => {
           <header className="flex justify-between items-center p-4">
             <img src="/Logo.svg" alt="UNION" className="h-8" />
             <div className="flex space-x-4">
-              <FiSearch size={24} />
               <FiBell size={24} />
             </div>
           </header>
@@ -176,9 +163,13 @@ const Home: React.FC = () => {
           </div>
 
           <main className="flex-1 overflow-y-auto hidden-scrollbar">
-            <div onClick={() => navigate(activeTab === 'posts' ? '/boarddetail' : '/meetdetail')}>
-              <PostList posts={activeTab === 'posts' ? posts : meetings} />
-            </div>
+            {loading ? (
+              <div className="flex justify-center items-center h-32">로딩 중...</div>
+            ) : (
+              <PostList 
+                posts={activeTab === 'posts' ? transformPosts(popularPosts) : meetings}
+              />
+            )}
           </main>
 
           <footer className="h-14 w-full flex justify-center">

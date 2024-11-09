@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { TbPhoto } from 'react-icons/tb';
 import apiClient from '../api/apiClient';
 import Cookies from 'js-cookie';
@@ -8,12 +7,9 @@ interface Prop {
 }
 
 const PlusImage = ({ setImages }: Prop) => {
-  const [selectedFile, setSelectedFile] = useState<File[]>([]);
   const onImageInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     const filesArray = Array.from(e.target.files);
-    setSelectedFile(filesArray);
-    console.log(selectedFile);
 
     try {
       const formData = new FormData();
@@ -27,7 +23,6 @@ const PlusImage = ({ setImages }: Prop) => {
         },
       });
 
-      console.log(response);
       setImages(prev => [...prev, response.data[0]]);
     } catch (error) {
       console.log(error);

@@ -41,10 +41,10 @@ export default function PostList({ posts, lastPostRef }: PostListProps) {
             thumbnail={post.thumbnail}
             type={post.type}
             id={post.id}
-            isLast={index === posts.length - 1}
           />
         </div>
       ))}
+      {posts.length > 0 && <div className="h-7" />}
     </div>
   );
 }
