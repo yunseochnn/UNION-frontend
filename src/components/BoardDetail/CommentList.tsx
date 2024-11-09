@@ -57,11 +57,7 @@ const CommentList = ({
   }, [getBestComment]);
   return (
     <div className="min-h-80 w-[90%]">
-      {bestComment && bestComment.commentLikes > 0 && !bestComment.deleted ? (
-        <BestComment comment={bestComment} />
-      ) : (
-        <DeleteComment />
-      )}
+      {bestComment && !bestComment.deleted ? <BestComment comment={bestComment} /> : <DeleteComment />}
       {comments?.length !== 0 ? (
         comments?.map((comment, index) =>
           !comment.deleted ? (
@@ -79,7 +75,9 @@ const CommentList = ({
               />
             </div>
           ) : (
-            <DeleteComment />
+            <div key={index}>
+              <DeleteComment />
+            </div>
           ),
         )
       ) : (
