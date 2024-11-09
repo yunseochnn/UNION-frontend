@@ -114,8 +114,8 @@ const Footer = ({ gatheringData, onReadMeet }: Props) => {
   };
 
   return (
-    <div className="h-[70px] border-t border-gray-150 flex items-center justify-between mt-4 cursor-pointer">
-      <div className="ml-2" onClick={onClickLikeHandler}>
+    <div className="h-auto border-t border-gray-150 flex items-center justify-between cursor-pointer pb-3 pt-3">
+      <div className="ml-4" onClick={onClickLikeHandler}>
         {gatheringData?.liked ? (
           <IoIosHeart size={24} style={{ color: '#ff4a4d' }} />
         ) : (

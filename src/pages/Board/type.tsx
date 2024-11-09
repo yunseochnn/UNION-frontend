@@ -28,7 +28,6 @@ const BOARD_TITLES = {
   ENGINEERING: '공학',
   ARTS: '예체능',
   MEDICINE: '의학',
-  EMPLOYMENT: '추후 생각',
 } as const;
 
 const BoardList: React.FC = () => {

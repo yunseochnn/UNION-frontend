@@ -32,7 +32,7 @@ const Board: React.FC = () => {
     <div className="center-content flex flex-col bg-white h-screen">
       <header className="flex justify-between items-center p-4">
         <div className="flex-1"></div>
-        <h1 className="text-xl font-semibold flex-1 text-center">게시판</h1>
+        <h1 className="text-lg font-semibold flex-1 text-center">게시판</h1>
         <div className="flex space-x-4 flex-1 justify-end">
           <button onClick={handleSearchClick} className="cursor-pointer" aria-label="검색">
             <FiSearch size={24} />
@@ -92,14 +92,6 @@ const Board: React.FC = () => {
           onClick={() => handleBoardClick('INFO')}
         >
           <span>정보 게시판</span>
-          <FiChevronRight />
-        </div>
-
-        <div
-          className="p-4 border-b cursor-pointer flex justify-between items-center hover:bg-gray-50"
-          onClick={() => handleBoardClick('EMPLOYMENT')}
-        >
-          <span>추후 생각</span>
           <FiChevronRight />
         </div>
       </div>

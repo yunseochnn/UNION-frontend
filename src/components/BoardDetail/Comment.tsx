@@ -171,7 +171,7 @@ const Comment = ({
                 <div className="text-sm font-semibold flex mt-1">
                   {comment.parentNickname && comment.parentNickname !== comment.commenter.nickname ? (
                     <span className="">
-                      <span className="font-bold" style={{ color: '#ff4a4d' }}>
+                      <span className="font-bold mr-1" style={{ color: '#ff4a4d' }}>
                         @{comment.parentNickname}
                       </span>
                       {comment.content}

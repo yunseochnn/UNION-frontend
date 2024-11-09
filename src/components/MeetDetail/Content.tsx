@@ -48,7 +48,7 @@ const Content = ({ gatheringData }: Prop) => {
     <div className="flex flex-col">
       <div>
         <div
-          className="rounded-full h-[30px] w-[74px] flex items-center justify-center gap-2 text-sm font-bold"
+          className="rounded-full h-[30px] w-[74px] flex items-center justify-center gap-2 text-sm font-bold mt-3"
           style={{ backgroundColor: '#F2F3F6' }}
         >
           <span>
