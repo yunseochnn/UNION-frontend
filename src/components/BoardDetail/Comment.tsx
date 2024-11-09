@@ -68,6 +68,7 @@ const Comment = ({
 
   const onAddComment = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
+    setUpdateComment(null);
     setParent({ id: comment.id, nickname: comment.commenter.nickname, token: comment.commenter.token });
     inputRef.current?.focus();
     setMore(false);
@@ -81,12 +82,14 @@ const Comment = ({
 
   const onDeleteComment = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
+    setUpdateComment(null);
     handleDeleteComment(comment.id);
     setMore(false);
   };
 
   const onClickCommentProfile = () => {
     if (comment.commenter.profileImage) {
+      setUpdateComment(null);
       setUser(comment.commenter.token);
       localStorage.setItem('userToken', comment.commenter.token);
       navigate('/userinfo');
@@ -95,6 +98,7 @@ const Comment = ({
 
   const onClickPrivateChat = (token: string, name: string) => {
     localStorage.setItem('userToken', token);
+    setUpdateComment(null);
     navigate(`/chat/private?title=${name}`);
   };
 
