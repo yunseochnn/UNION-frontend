@@ -64,7 +64,7 @@ export default function MeetDetail() {
 
   return (
     <>
-      <div className="h-full w-full flex flex-col items-center pt-1 pb-2 relative">
+      <div className="h-full w-full flex flex-col items-center relative">
         {Modal &&
           (gatheringData?.owner ? (
             <UserMore setModal={setModal} setModify={setModify} setRemove={setRemove} />

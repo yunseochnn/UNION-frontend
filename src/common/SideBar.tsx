@@ -10,10 +10,10 @@ const SideBar = () => {
   const navigate = useNavigate();
   const pathname = window.location.pathname;
   return (
-    <div className="border-t">
-      <div className="flex justify-between w-full mt-2">
+    <div className="border-t h-full items-center">
+      <div className="flex justify-between w-full mt-[14px]">
         <div
-          className="flex flex-col justify-center items-center cursor-pointer ml-3"
+          className="flex flex-col justify-center items-center cursor-pointer ml-3 gap-1"
           onClick={() => navigate('/home')}
         >
           {' '}
@@ -27,26 +27,35 @@ const SideBar = () => {
           <div className="text-xs">홈</div>
         </div>
 
-        <div className="flex flex-col justify-center items-center cursor-pointer" onClick={() => navigate('/board')}>
+        <div
+          className="flex flex-col justify-center items-center cursor-pointer gap-1"
+          onClick={() => navigate('/board')}
+        >
           {' '}
           <div>{pathname.includes('board') ? <HiPencilSquare size={20} /> : <HiOutlinePencilSquare size={20} />}</div>
           <div className="text-xs">게시판</div>
         </div>
 
-        <div className="flex flex-col justify-center items-center cursor-pointer" onClick={() => navigate('/meet')}>
+        <div
+          className="flex flex-col justify-center items-center cursor-pointer gap-1"
+          onClick={() => navigate('/meet')}
+        >
           <div>{pathname.includes('meet') ? <PiMapPinFill size={22} /> : <PiMapPin size={22} />}</div>
           <div className="text-xs">모임</div>
         </div>
 
         <div
-          className="flex flex-col justify-center items-center ml-2 cursor-pointer "
+          className="flex flex-col justify-center items-center ml-2 cursor-pointer gap-1"
           onClick={() => navigate('/chatList')}
         >
           <div>{pathname.includes('chatList') ? <IoChatbubbles size={20} /> : <IoChatbubblesOutline size={20} />}</div>
           <div className="text-xs">채팅</div>
         </div>
 
-        <div className="flex flex-col justify-center items-center cursor-pointer " onClick={() => navigate('/myPage')}>
+        <div
+          className="flex flex-col justify-center items-center cursor-pointer gap-1"
+          onClick={() => navigate('/myPage')}
+        >
           <div>
             <div>
               {pathname.includes('myPage') ? (

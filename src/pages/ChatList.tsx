@@ -6,7 +6,7 @@ import '../style.css';
 export default function ChatList() {
   return (
     <div className="h-full w-full flex flex-col items-center pt-4">
-      <div className="w-[90%]">
+      <div className="h-[62px] w-full">
         <Header />
       </div>
 

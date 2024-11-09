@@ -110,8 +110,8 @@ const Meet: React.FC = () => {
         <FloatingActionButton onClick={() => navigate('/meet/write')} />
       </div>
 
-      <footer className="h-14 w-full flex justify-center">
-        <div className="w-[90%]">
+      <footer className="h-20 w-full flex justify-center items-center">
+        <div className="w-[90%] items-center h-full">
           <SideBar />
         </div>
       </footer>

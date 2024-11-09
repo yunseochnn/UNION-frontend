@@ -56,7 +56,7 @@ const Home: React.FC = () => {
       try {
         setLoading(true);
         const response = await getPopularPosts(page, pageInfo.pageSize);
-        
+
         setPopularPosts(response.content);
         setPageInfo({
           pageNumber: response.number,
@@ -127,12 +127,12 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="center-content flex flex-col bg-white pt-1">
+    <div className="center-content flex flex-col bg-white">
       {isAuthenticated ? (
         <>
-          <header className="flex justify-between items-center p-4">
-            <img src="/Logo.svg" alt="UNION" className="h-8" />
-            <div className="flex space-x-4">
+          <header className="flex justify-between items-center h-[62px] px-5">
+            <img src="/Logo.svg" alt="UNION" className="h-5" />
+            <div className="flex">
               <FiBell size={24} />
             </div>
           </header>
@@ -166,13 +166,11 @@ const Home: React.FC = () => {
             {loading ? (
               <div className="flex justify-center items-center h-32">로딩 중...</div>
             ) : (
-              <PostList 
-                posts={activeTab === 'posts' ? transformPosts(popularPosts) : meetings}
-              />
+              <PostList posts={activeTab === 'posts' ? transformPosts(popularPosts) : meetings} />
             )}
           </main>
 
-          <footer className="h-14 w-full flex justify-center">
+          <footer className="h-20 w-full flex justify-center">
             <div className="w-[90%]">
               <SideBar />
             </div>

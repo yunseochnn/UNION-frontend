@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { IoIosArrowDown } from 'react-icons/io';
 
 interface SortOptionsProps {
   sortBy: 'LATEST' | 'DISTANCE' | 'GATHERING_DATE';
@@ -22,7 +23,9 @@ const SortOptions: React.FC<SortOptionsProps> = ({ sortBy, setSortBy }) => {
           onClick={() => setShowSortOptions(!showSortOptions)}
         >
           <span>{sortByText[sortBy]}</span>
-          <span>▼</span>
+          <span>
+            <IoIosArrowDown size={15} />
+          </span>
         </button>
 
         {showSortOptions && (

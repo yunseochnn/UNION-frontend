@@ -28,7 +28,6 @@ const BOARD_TITLES = {
   ENGINEERING: '공학',
   ARTS: '예체능',
   MEDICINE: '의학',
-  EMPLOYMENT: '추후 생각',
 } as const;
 
 const BoardList: React.FC = () => {
@@ -84,7 +83,7 @@ const BoardList: React.FC = () => {
       <div className="right-8 bottom-24 absolute">
         <FloatingActionButton onClick={() => navigate(`/Board/write/${type}`)} />
       </div>
-      <footer className="h-14 flex justify-center">
+      <footer className="h-20 flex justify-center">
         <div className="w-[90%]">
           <SideBar />
         </div>
