@@ -39,7 +39,7 @@ const MeetPostList: React.FC<MeetPostListProps> = ({ meetings, lastMeetingRef })
           <MeetPost meeting={meeting} /> {/* sortType 전달 */}
         </div>
       ))}
-      {meetings.length > 0 && <div className="h-7" />}
+      {meetings.length > 0 && <div className="h-3" />}
     </div>
   );
 };
