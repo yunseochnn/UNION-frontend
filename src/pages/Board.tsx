@@ -30,7 +30,7 @@ const Board: React.FC = () => {
 
   return (
     <div className="center-content flex flex-col bg-white h-screen">
-      <header className="flex justify-between items-center p-4">
+      <header className="flex justify-between items-center h-[62px] px-5">
         <div className="flex-1"></div>
         <h1 className="text-lg font-semibold flex-1 text-center">게시판</h1>
         <div className="flex space-x-4 flex-1 justify-end">
@@ -96,7 +96,7 @@ const Board: React.FC = () => {
         </div>
       </div>
 
-      <footer className="h-14 w-full flex justify-center">
+      <footer className="h-20 w-full flex justify-center">
         <div className="w-[90%]">
           <SideBar />
         </div>

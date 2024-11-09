@@ -65,7 +65,7 @@ export default function Mypage() {
         <MyCalendar />
         <LogoutBtn />
       </div>
-      <footer className="h-14 w-full flex justify-center">
+      <footer className="h-20 w-full flex justify-center">
         <div className="w-[90%]">
           <SideBar />
         </div>

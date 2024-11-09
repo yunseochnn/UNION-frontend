@@ -138,7 +138,7 @@ const Comment = ({
         <DeleteComment comment={comment} />
       ) : (
         <div
-          className={`px-2 mt-2 h-auto flex justify-between items-center ${comment.parentId ? 'pl-12' : ''} ${
+          className={`px-2 py-2 h-auto flex justify-between items-center ${comment.parentId ? 'pl-12' : ''} ${
             parent.id === comment.id ? 'bg-red-100' : ''
           }`}
           ref={commentRef}
@@ -187,30 +187,39 @@ const Comment = ({
           <div className="flex flex-col items-end gap-2">
             <div className="flex relative cursor-pointer" onClick={onClickMoreHandler} ref={ref}>
               {more && (
-                <div className="bg-white font-medium shadow-lg rounded-md absolute w-28 h-auto right-1 bottom-4 py-1 z-40">
-                  <div className="border-b border-gray-300 px-2 text-center" onClick={onAddComment}>
+                <div className="bg-white font-medium shadow-lg rounded-lg absolute w-32 h-auto right-1 bottom-4 z-50 border border-gray-200">
+                  <div
+                    className="border-b border-gray-300 px-3 py-1 text-center cursor-pointer hover:bg-gray-100 transition-all duration-200 rounded-t-lg"
+                    onClick={onAddComment}
+                  >
                     대댓글 달기
                   </div>
-                  {comment.commenter.nickname === myNickname && (
+                  {comment.commenter.nickname === myNickname ? (
                     <>
-                      <div className="border-b border-gray-300 px-2 text-center" onClick={onUpdateComment}>
+                      <div
+                        className="border-b border-gray-300 px-3 py-1 text-center cursor-pointer hover:bg-gray-100 transition-all duration-200"
+                        onClick={onUpdateComment}
+                      >
                         수정하기
                       </div>
-                      <div className=" border-gray-300 px-2 text-center" onClick={onDeleteComment}>
+                      <div
+                        className="px-3 py-1 text-center cursor-pointer text-red-500 hover:bg-red-100 transition-all duration-200 rounded-b-lg"
+                        onClick={onDeleteComment}
+                      >
                         삭제하기
                       </div>
                     </>
-                  )}
-                  {comment.commenter.nickname !== myNickname && (
+                  ) : (
                     <div
-                      className="px-2 text-center"
+                      className="px-3 py-2 text-center cursor-pointer hover:bg-gray-100 transition-all duration-200 rounded-b-lg"
                       onClick={() => onClickPrivateChat(comment.commenter.token, comment.commenter.nickname)}
                     >
-                      채팅보내기
+                      채팅 보내기
                     </div>
                   )}
                 </div>
               )}
+
               <MdOutlineMoreHoriz size={25} />
             </div>
 

@@ -43,16 +43,16 @@ const Lists = () => {
   }
 
   return (
-    <div className="flex flex-col mt-5">
+    <div className="flex flex-col mt-1">
       <div className="flex gap-3 font-semibold">
         <span
-          className={`cursor-pointer ${filter === 'gathering' ? 'text-gray-400' : 'text-black'}`}
+          className={`cursor-pointer ${filter === 'gathering' ? 'text-customGray2' : 'text-black'}`}
           onClick={() => setFilter('private')}
         >
           개인
         </span>
         <span
-          className={`cursor-pointer ${filter === 'gathering' ? 'text-black' : 'text-gray-400'}`}
+          className={`cursor-pointer ${filter === 'gathering' ? 'text-black' : 'text-customGray2'}`}
           onClick={() => setFilter('gathering')}
         >
           모임

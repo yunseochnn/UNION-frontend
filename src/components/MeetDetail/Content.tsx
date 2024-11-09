@@ -58,7 +58,7 @@ const Content = ({ gatheringData }: Prop) => {
         </div>
       </div>
 
-      <div className="flex items-center mt-[30px] gap-3">
+      <div className="flex items-center mt-[20px] gap-3">
         <div
           className={`h-10 w-10 bg-gray-300 rounded-full overflow-hidden ${
             gatheringData?.author.nickname === myNickname ? 'cursor-default' : 'cursor-pointer'
@@ -75,7 +75,7 @@ const Content = ({ gatheringData }: Prop) => {
         </div>
       </div>
 
-      <div className="mt-5 text-[22px]">
+      <div className="mt-3 text-[22px]">
         {gatheringData?.recruited || fullMember || isPassDate ? (
           <span className="font-bold text-customGray2">모집완료</span>
         ) : (
@@ -87,7 +87,7 @@ const Content = ({ gatheringData }: Prop) => {
         <span className="font-bold ml-2">{gatheringData?.title}</span>
       </div>
 
-      <div className="flex items-center gap-2 mt-5">
+      <div className="flex items-center gap-2 mt-3">
         <span>
           <FaRegCalendarCheck size={22} />
         </span>
@@ -96,7 +96,7 @@ const Content = ({ gatheringData }: Prop) => {
         </span>
       </div>
 
-      <div className="mt-5 text-base">
+      <div className="mt-3 text-base">
         <div>{gatheringData?.content}</div>
       </div>
 
