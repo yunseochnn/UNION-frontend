@@ -20,6 +20,7 @@ const Footer = ({ handleAddComment, handleUpdateComment, updateComment, setUpdat
       inputRef.current?.focus(); // updateComment가 있을 때 포커스 설정
     } else {
       setComment('');
+      inputRef.current?.focus();
     }
   }, [inputRef, updateComment]);
 
