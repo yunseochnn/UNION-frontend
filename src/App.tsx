@@ -26,6 +26,7 @@ import MyPosts from './pages/MyPagePost/MyPosts';
 import MyMeetings from './pages/MyPagePost/MyMeetings';
 import MyComments from './pages/MyPagePost/MyComments';
 import MeetSearch from './pages/MeetSearch';
+import MyNotification from './pages/MyNotification';
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
         <Route path="/myposts" element={<MyPosts />} />
         <Route path="/mymeetings" element={<MyMeetings />} />
         <Route path="/mycomments" element={<MyComments />} />
+        <Route path="/mynotification" element={<MyNotification />} />
       </Routes>
     </RecoilRoot>
   );

@@ -56,7 +56,7 @@ const Home: React.FC = () => {
       try {
         setLoading(true);
         const response = await getPopularPosts(page, pageInfo.pageSize);
-        
+
         setPopularPosts(response.content);
         setPageInfo({
           pageNumber: response.number,
@@ -133,7 +133,9 @@ const Home: React.FC = () => {
           <header className="flex justify-between items-center p-4">
             <img src="/Logo.svg" alt="UNION" className="h-8" />
             <div className="flex space-x-4">
-              <FiBell size={24} />
+              <button>
+                <FiBell size={24} onClick={() => navigate('/mynotification')} />
+              </button>
             </div>
           </header>
 
@@ -166,9 +168,7 @@ const Home: React.FC = () => {
             {loading ? (
               <div className="flex justify-center items-center h-32">로딩 중...</div>
             ) : (
-              <PostList 
-                posts={activeTab === 'posts' ? transformPosts(popularPosts) : meetings}
-              />
+              <PostList posts={activeTab === 'posts' ? transformPosts(popularPosts) : meetings} />
             )}
           </main>
 
