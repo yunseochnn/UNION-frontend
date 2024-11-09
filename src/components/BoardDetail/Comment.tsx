@@ -211,7 +211,7 @@ const Comment = ({
                     </>
                   ) : (
                     <div
-                      className="px-3 py-2 text-center cursor-pointer hover:bg-gray-100 transition-all duration-200 rounded-b-lg"
+                      className="px-3 py-1 text-center cursor-pointer hover:bg-gray-100 transition-all duration-200 rounded-b-lg"
                       onClick={() => onClickPrivateChat(comment.commenter.token, comment.commenter.nickname)}
                     >
                       채팅 보내기
