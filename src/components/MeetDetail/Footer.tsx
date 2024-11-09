@@ -51,7 +51,7 @@ const Footer = ({ gatheringData, onReadMeet }: Props) => {
       const response = await apiClient.post(
         '/notification/gathering',
         {
-          type_id: MeetId,
+          typeId: MeetId,
         },
         {
           headers: {

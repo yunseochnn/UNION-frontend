@@ -217,7 +217,7 @@ const Post = ({ setOpen, setAddress }: Prop) => {
               return (
                 <div
                   key={index}
-                  className="flex flex-col border-b border-gray-300 cursor-pointer"
+                  className="flex flex-col border-b border-gray-300 cursor-pointer min-h-[70px]"
                   onClick={() => onClick(marker)}
                 >
                   <div className="font-semibold">{marker.content}</div>

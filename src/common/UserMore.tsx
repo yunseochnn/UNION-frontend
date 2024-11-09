@@ -32,7 +32,7 @@ const UserMore = ({ setModal, setModify, setRemove }: Prop) => {
             </span>
             <span>{`${name} 수정하기`}</span>
           </div>
-          <div className="flex border-b border-gray-200 items-center gap-2 h-14 cursor-pointer" onClick={onDelete}>
+          <div className="flex  items-center gap-2 h-14 cursor-pointer" onClick={onDelete}>
             <span>
               <MdDeleteOutline size={20} />
             </span>
