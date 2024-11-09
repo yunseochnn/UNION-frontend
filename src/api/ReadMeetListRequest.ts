@@ -18,7 +18,7 @@ export interface Meeting {
     profileImage: string; // 추가된 부분
     univName: string;
   };
-  thumbnail: string;
+  thumbnail?: string;
 }
 
 export const ReadMeetListRequest = {
