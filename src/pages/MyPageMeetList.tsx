@@ -12,8 +12,10 @@ export interface Meeting {
   views: number;
   thumbnail?: string;
   author: {
+    token: string;
     profileImage: string;
     nickname: string;
+    univName: string;
   };
 }
 
