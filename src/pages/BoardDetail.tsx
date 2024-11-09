@@ -179,8 +179,8 @@ export default function BoardDetail() {
       const response = await apiClient.post(
         '/notification/post',
         {
-          type_id: BoardId,
-          comment_id: commentId,
+          typeId: BoardId,
+          commentId: commentId,
         },
         {
           headers: {
@@ -203,8 +203,8 @@ export default function BoardDetail() {
       const response = await apiClient.post(
         '/notification/comment',
         {
-          type_id: parent.id,
-          comment_id: commentId,
+          typeId: parent.id,
+          commentId: commentId,
         },
         {
           headers: {
@@ -238,11 +238,16 @@ export default function BoardDetail() {
     },
     onSuccess: data => {
       const commentId = Number(data.id);
-      if (parent.id) {
-        CommentAlarm(commentId);
-      } else {
-        putCommentAlarm(commentId);
+      console.log(BoardId);
+      console.log(commentId);
+      if (BoardId && commentId) {
+        if (parent.id) {
+          putCommentAlarm(commentId);
+        } else {
+          CommentAlarm(commentId);
+        }
       }
+
       console.log('댓글 추가 완료');
       setParent({ id: null, nickname: null, token: null });
       queryClient.invalidateQueries({

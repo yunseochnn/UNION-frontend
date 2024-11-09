@@ -71,7 +71,7 @@ const Content = ({ messages }: Props) => {
               ) : (
                 <div className="flex mt-4 w-full">
                   <div
-                    className="h-10 w-10 rounded-full bg-gray-300"
+                    className="h-10 w-10 rounded-full bg-gray-300 flex-shrink-0 overflow-hidden"
                     onClick={() => onClickChatProfile(message.senderToken)}
                   >
                     <img src={message.senderProfileImage} />

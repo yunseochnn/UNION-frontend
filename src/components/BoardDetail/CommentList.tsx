@@ -57,29 +57,27 @@ const CommentList = ({
   }, [getBestComment]);
   return (
     <div className="min-h-80 w-[90%]">
-      {bestComment && !bestComment.deleted ? <BestComment comment={bestComment} /> : <DeleteComment />}
+      {bestComment && !bestComment.deleted ? (
+        <BestComment comment={bestComment} />
+      ) : (
+        <DeleteComment comment={bestComment} />
+      )}
       {comments?.length !== 0 ? (
-        comments?.map((comment, index) =>
-          !comment.deleted ? (
-            <div key={index}>
-              <Comment
-                comment={comment}
-                setUpdateComment={setUpdateComment}
-                setParent={setParent}
-                handleDeleteComment={handleDeleteComment}
-                parent={parent}
-                footerRef={footerRef}
-                inputRef={inputRef}
-                refetchComment={refetchComment}
-                getBestComment={getBestComment}
-              />
-            </div>
-          ) : (
-            <div key={index}>
-              <DeleteComment />
-            </div>
-          ),
-        )
+        comments?.map((comment, index) => (
+          <div key={index}>
+            <Comment
+              comment={comment}
+              setUpdateComment={setUpdateComment}
+              setParent={setParent}
+              handleDeleteComment={handleDeleteComment}
+              parent={parent}
+              footerRef={footerRef}
+              inputRef={inputRef}
+              refetchComment={refetchComment}
+              getBestComment={getBestComment}
+            />
+          </div>
+        ))
       ) : (
         <div className="h-full flex items-center justify-center">
           <EmptyComment />
