@@ -1,23 +1,7 @@
 import { HiOutlinePencilSquare } from 'react-icons/hi2';
 import Header from '../common/Header';
 import MeetPostList from '../common/MeetPostList';
-
-export interface Meeting {
-  id: number;
-  title: string;
-  eupMyeonDong: string;
-  gatheringDateTime: string;
-  currentMember: number;
-  maxMember: number;
-  views: number;
-  thumbnail?: string;
-  author: {
-    token: string;
-    profileImage: string;
-    nickname: string;
-    univName: string;
-  };
-}
+import { Meeting } from '../common/meettypes';
 
 interface MyPageMeetListProps {
   meetings: Meeting[];

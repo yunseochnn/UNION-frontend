@@ -2,19 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import Cookies from 'js-cookie';
 import apiClient from '../../api/apiClient';
 import MyPageMeetList from '../MyPageMeetList';
-
-interface Meeting {
-  id: number;
-  profileImage?: string;
-  nickname: string;
-  eupMyeonDong?: string;
-  title: string;
-  gatheringDateTime: string;
-  currentMember: number;
-  maxMember: number;
-  views: number;
-  thumbnail?: string;
-}
+import { Meeting } from '../../common/meettypes';
 
 export default function MyMeetings() {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
@@ -55,17 +43,20 @@ export default function MyMeetings() {
 
       const content = response.data?.content;
       if (content && Array.isArray(content)) {
-        const newMeetings = content.map((item: any) => ({
+        const newMeetings: Meeting[] = content.map((item: any) => ({
           id: item.id,
           title: item.title,
           maxMember: item.maxMember,
           currentMember: item.currentMember,
-          eupMyeonDong: item.eupMyeonDong,
+          eupMyeonDong: item.eupMyeonDong ?? '위치 미정',
           gatheringDateTime: item.gatheringDateTime,
           views: item.views,
-          profileImage: item.author?.profileImage,
-          nickname: item.author?.nickname,
           thumbnail: item.thumbnail,
+          author: {
+            // 정확한 author 필드를 추가하여 Meeting 타입과 일치하게 함
+            profileImage: item.author?.profileImage ?? '',
+            nickname: item.author?.nickname ?? '',
+          },
         }));
 
         setMeetings(prevMeetings => [...prevMeetings, ...newMeetings]);
