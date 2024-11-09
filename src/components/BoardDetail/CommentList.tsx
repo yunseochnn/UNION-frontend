@@ -6,6 +6,7 @@ import EmptyComment from './EmptyComment';
 import Cookies from 'js-cookie';
 import { useCallback, useEffect, useState } from 'react';
 import BestComment from './BestComment';
+import DeleteComment from './DeleteComment';
 
 interface Props {
   comments: IFComment[] | undefined;
@@ -56,23 +57,31 @@ const CommentList = ({
   }, [getBestComment]);
   return (
     <div className="min-h-80 w-[90%]">
-      {bestComment && bestComment.commentLikes > 0 && <BestComment comment={bestComment} />}
+      {bestComment && bestComment.commentLikes > 0 && !bestComment.deleted ? (
+        <BestComment comment={bestComment} />
+      ) : (
+        <DeleteComment />
+      )}
       {comments?.length !== 0 ? (
-        comments?.map((comment, index) => (
-          <div key={index}>
-            <Comment
-              comment={comment}
-              setUpdateComment={setUpdateComment}
-              setParent={setParent}
-              handleDeleteComment={handleDeleteComment}
-              parent={parent}
-              footerRef={footerRef}
-              inputRef={inputRef}
-              refetchComment={refetchComment}
-              getBestComment={getBestComment}
-            />
-          </div>
-        ))
+        comments?.map((comment, index) =>
+          !comment.deleted ? (
+            <div key={index}>
+              <Comment
+                comment={comment}
+                setUpdateComment={setUpdateComment}
+                setParent={setParent}
+                handleDeleteComment={handleDeleteComment}
+                parent={parent}
+                footerRef={footerRef}
+                inputRef={inputRef}
+                refetchComment={refetchComment}
+                getBestComment={getBestComment}
+              />
+            </div>
+          ) : (
+            <DeleteComment />
+          ),
+        )
       ) : (
         <div className="h-full flex items-center justify-center">
           <EmptyComment />

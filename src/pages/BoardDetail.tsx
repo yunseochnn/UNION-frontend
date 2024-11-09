@@ -24,6 +24,7 @@ export interface IFComment {
   parentNickname: string | null;
   createdAt: string;
   commentLikes: number;
+  deleted: boolean;
   commenter: {
     token: string;
     nickname: string;
