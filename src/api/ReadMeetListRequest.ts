@@ -7,7 +7,7 @@ export interface Meeting {
   title: string;
   maxMember: number;
   currentMember: number;
-  eupMyeonDong: string | null;
+  eupMyeonDong: string;
   gatheringDateTime: string;
   views: number;
   latitude: number;
@@ -15,10 +15,10 @@ export interface Meeting {
   author: {
     token: string;
     nickname: string;
-    profileImage: string;  // 추가된 부분
+    profileImage: string; // 추가된 부분
     univName: string;
   };
-  thumbnail: string | null;
+  thumbnail: string;
 }
 
 export const ReadMeetListRequest = {

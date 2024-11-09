@@ -44,7 +44,7 @@ export default function PostList({ posts, lastPostRef }: PostListProps) {
           />
         </div>
       ))}
-      {posts.length > 0 && <div className="h-7" />}
+      {posts.length > 0 && <div className="h-3" />}
     </div>
   );
 }
