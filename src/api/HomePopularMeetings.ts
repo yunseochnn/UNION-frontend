@@ -1,4 +1,3 @@
-// HomePopularMeetings.ts
 import apiClient from './apiClient';
 import Cookies from 'js-cookie';
 
@@ -30,10 +29,31 @@ export interface PopularMeetingResponse {
   pageable: {
     pageNumber: number;
     pageSize: number;
+    sort: {
+      empty: boolean;
+      unsorted: boolean;
+      sorted: boolean;
+    };
+    offset: number;
+    paged: boolean;
+    unpaged: boolean;
   };
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  first: boolean;
+  size: number;
+  number: number;
+  sort: {
+    empty: boolean;
+    unsorted: boolean;
+    sorted: boolean;
+  };
+  numberOfElements: number;
+  empty: boolean;
 }
 
-export const getPopularMeetings = async (page: number = 0, size: number = 5): Promise<PopularMeetingResponse> => {
+export const getPopularMeetings = async (page: number = 0, size: number = 3): Promise<PopularMeetingResponse> => {
   const response = await apiClient.get(`/gatherings/hot?page=${page}&size=${size}`, {
     headers: {
       Authorization: Cookies.get('Authorization'),
