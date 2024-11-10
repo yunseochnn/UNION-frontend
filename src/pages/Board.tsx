@@ -43,8 +43,11 @@ const Board: React.FC = () => {
         </div>
       </header>
 
-      <div className="w-full aspect-video bg-gray-200 flex items-center justify-center">
-        <div className="w-20 h-20 bg-white" />
+      <div className="w-full aspect-video flex items-center justify-center">
+        <img
+          src={'https://union-image-bucket.s3.ap-northeast-2.amazonaws.com/banner/ad_banner.png'}
+          className="h-full w-full"
+        />
       </div>
 
       <div className="flex flex-col flex-grow px-[15px] overflow-y-auto hidden-scrollbar flex-1">
