@@ -16,7 +16,7 @@ const SortOptions: React.FC<SortOptionsProps> = ({ sortBy, setSortBy }) => {
   const [showSortOptions, setShowSortOptions] = useState(false);
 
   return (
-    <div className="flex flex-wrap items-center gap-4 px-4 py-2 text-sm text-gray-600 border-b relative">
+    <div className="flex flex-wrap items-center gap-4 px-4 pb-2 text-sm text-gray-600 border-b relative">
       <div className="relative">
         <button
           className="w-30 flex items-center justify-center gap-2 border border-gray-300 rounded-full px-3 py-1"
