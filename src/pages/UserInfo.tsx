@@ -118,6 +118,8 @@ export default function UserInfo() {
           const response = await apiClient.get(`/user/${userToken}/comments`, { headers, params });
           setComments(
             response.data.content.map((comment: any) => ({
+              id: comment.id,
+              type: comment.type,
               profileImage: comment.author.profileImage,
               nickname: comment.author.nickname,
               university: comment.author.univName,
