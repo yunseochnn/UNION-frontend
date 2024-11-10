@@ -5,15 +5,19 @@ import MyPageMeetList from '../MyPageMeetList';
 
 interface Meeting {
   id: number;
-  profileImage?: string;
-  nickname: string;
-  eupMyeonDong?: string;
   title: string;
+  eupMyeonDong?: string;
   gatheringDateTime: string;
   currentMember: number;
   maxMember: number;
   views: number;
   thumbnail?: string;
+  author: {
+    token: string;
+    profileImage: string;
+    nickname: string;
+    univName: string;
+  };
 }
 
 export default function MyMeetings() {
@@ -41,7 +45,6 @@ export default function MyMeetings() {
     [isLoading, hasMore],
   );
 
-  // 모임글 불러오기
   const fetchMeetings = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -60,12 +63,16 @@ export default function MyMeetings() {
           title: item.title,
           maxMember: item.maxMember,
           currentMember: item.currentMember,
-          eupMyeonDong: item.eupMyeonDong,
+          eupMyeonDong: item.eupMyeonDong ?? '알 수 없음',
           gatheringDateTime: item.gatheringDateTime,
           views: item.views,
-          profileImage: item.author?.profileImage,
-          nickname: item.author?.nickname,
           thumbnail: item.thumbnail,
+          author: {
+            token: item.author?.token ?? '',
+            profileImage: item.author?.profileImage ?? '',
+            nickname: item.author?.nickname ?? '',
+            univName: item.author?.univName ?? '',
+          },
         }));
 
         setMeetings(prevMeetings => [...prevMeetings, ...newMeetings]);

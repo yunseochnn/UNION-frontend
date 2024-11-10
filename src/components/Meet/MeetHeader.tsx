@@ -26,7 +26,9 @@ const MeetHeader: React.FC<MeetHeaderProps> = ({ sortBy, setSortBy }) => {
         <h1 className="text-lg font-semibold flex-1 text-center">모임 찾기</h1>
         <div className="flex space-x-4 flex-1 justify-end">
           <FiSearch className="text-2xl cursor-pointer" onClick={() => navigate('/search/meet')} />
-          <FiBell className="text-2xl" />
+          <button>
+            <FiBell size={24} onClick={() => navigate('/mynotification')} />
+          </button>
         </div>
       </header>
 
