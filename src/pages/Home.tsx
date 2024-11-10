@@ -133,7 +133,7 @@ const Home: React.FC = () => {
           <header className="flex justify-between items-center h-[62px] px-5">
             <img src="/Logo.svg" alt="UNION" className="h-5" />
             <div className="flex">
-              <FiBell size={24} />
+              <FiBell size={24} onClick={() => navigate('/mynotification')} />
             </div>
           </header>
 
