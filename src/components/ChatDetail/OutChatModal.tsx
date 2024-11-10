@@ -11,17 +11,12 @@ const OutChatModal = ({ setOutChat, chatroomId }: Prop) => {
   const navigate = useNavigate();
   const onClickYes = async () => {
     try {
-      const response = await apiClient.delete(`/chat/private/${chatroomId}`, {
+      await apiClient.delete(`/chat/private/${chatroomId}`, {
         headers: {
           Authorization: Cookies.get('Authorization'),
         },
       });
 
-      if (!response) {
-        console.log('네트워크 이상입니다.');
-      }
-
-      console.log('채팅방 나가기 성공');
       navigate('/chatList');
     } catch (error) {
       console.log(error);

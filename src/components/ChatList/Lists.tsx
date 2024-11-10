@@ -32,7 +32,6 @@ const Lists = () => {
         },
       });
 
-      console.log('목록 조회 완료');
       return response.data;
     },
     retry: false,

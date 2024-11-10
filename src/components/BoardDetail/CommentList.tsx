@@ -41,7 +41,6 @@ const CommentList = ({
           Authorization: Cookies.get('Authorization'),
         },
       });
-      console.log('베스트 댓글 불러오기 성공');
       if (response.data === '') {
         setBestComment(null);
       } else {
