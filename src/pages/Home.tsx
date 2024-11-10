@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FiBell } from 'react-icons/fi';
 import SideBar from '../common/SideBar';
@@ -10,7 +10,6 @@ import { PopularMeeting, getPopularMeetings } from '../api/HomePopularMeetings';
 import Slide from '../common/Slide';
 import MeetPostList from '../common/MeetPostList';
 import apiClient from '../api/apiClient';
-
 interface Post {
   profileImage: string;
   nickname: string;
@@ -23,7 +22,6 @@ interface Post {
   type: string;
   id: number;
 }
-
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,38 +29,92 @@ const Home: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [popularPosts, setPopularPosts] = useState<PopularPost[]>([]);
   const [popularMeetings, setPopularMeetings] = useState<PopularMeeting[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [postLoading, setPostLoading] = useState(false);
+  const [meetingLoading, setMeetingLoading] = useState(false);
+  const [postPage, setPostPage] = useState(0);
+  const [meetingPage, setMeetingPage] = useState(0);
+  const [postHasMore, setPostHasMore] = useState(true);
+  const [meetingHasMore, setMeetingHasMore] = useState(true);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const postObserver = useRef<IntersectionObserver | null>(null);
+  const meetingObserver = useRef<IntersectionObserver | null>(null);
 
   const banner = [
     'https://union-image-bucket.s3.ap-northeast-2.amazonaws.com/banner/carrot_banner.png',
     'https://union-image-bucket.s3.ap-northeast-2.amazonaws.com/banner/jab_banner.png',
     'https://union-image-bucket.s3.ap-northeast-2.amazonaws.com/banner/naver_banner.png',
   ];
-
-  // Fetch popular posts
+  const transformPosts = (posts: PopularPost[]): Post[] => {
+    return posts.map(post => ({
+      id: post.id,
+      profileImage: post.author.profileImage,
+      nickname: post.author.nickname,
+      university: post.author.univName,
+      title: post.title,
+      content: post.contentPreview,
+      likes: post.postLikes,
+      comments: post.commentCount,
+      thumbnail: post.thumbnail,
+      type: post.type,
+    }));
+  };
   const fetchPopularPosts = async () => {
+    setPostLoading(true);
     try {
-      setLoading(true);
-      const response = await getPopularPosts(0, 5); // 첫 페이지의 5개 항목만 가져옴
-      setPopularPosts(response.content);
+      const response = await getPopularPosts(postPage, 5);
+      setPopularPosts(prevPosts => [...prevPosts, ...response.content]);
+      setPostHasMore(response.content.length > 0);
     } catch (error) {
       console.error('인기 게시글 로딩 중 오류 발생:', error);
     } finally {
-      setLoading(false);
+      setPostLoading(false);
     }
   };
 
   const fetchPopularMeetings = async () => {
+    setMeetingLoading(true);
     try {
-      setLoading(true);
-      const response = await getPopularMeetings(0, 5); // 첫 페이지의 5개 항목만 가져옴
-      setPopularMeetings(response.content);
+      const response = await getPopularMeetings(meetingPage, 5);
+      setPopularMeetings(prevMeetings => [...prevMeetings, ...response.content]);
+      setMeetingHasMore(response.content.length > 0);
     } catch (error) {
       console.error('인기 모임 로딩 중 오류 발생:', error);
     } finally {
-      setLoading(false);
+      setMeetingLoading(false);
     }
   };
+
+  const lastPostRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (postLoading || !postHasMore) return;
+      if (postObserver.current) postObserver.current.disconnect();
+
+      postObserver.current = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting && postHasMore) {
+          setPostPage(prevPage => prevPage + 1);
+        }
+      });
+
+      if (node) postObserver.current.observe(node);
+    },
+    [postLoading, postHasMore],
+  );
+
+  const lastMeetingRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (meetingLoading || !meetingHasMore) return;
+      if (meetingObserver.current) meetingObserver.current.disconnect();
+
+      meetingObserver.current = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting && meetingHasMore) {
+          setMeetingPage(prevPage => prevPage + 1);
+        }
+      });
+
+      if (node) meetingObserver.current.observe(node);
+    },
+    [meetingLoading, meetingHasMore],
+  );
 
   const getUserInfo = async () => {
     try {
@@ -72,7 +124,6 @@ const Home: React.FC = () => {
       localStorage.setItem('nickname', response.data.nickname);
     } catch (error) {
       console.error('유저 정보 로딩 중 오류 발생:', error);
-      throw error;
     }
   };
 
@@ -93,33 +144,24 @@ const Home: React.FC = () => {
     }
   }, [location, navigate]);
 
+  // 데이터가 로드될 때마다 이전 스크롤 위치 유지
   useEffect(() => {
-    if (isAuthenticated) {
-      if (activeTab === 'posts') {
-        fetchPopularPosts();
-      } else if (activeTab === 'meetings') {
-        fetchPopularMeetings();
-      }
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [isAuthenticated, activeTab]);
+  }, [popularPosts, popularMeetings]);
 
-  const transformPosts = (posts: PopularPost[]): Post[] => {
-    return posts.map(post => ({
-      id: post.id,
-      profileImage: post.author.profileImage,
-      nickname: post.author.nickname,
-      university: post.author.univName,
-      title: post.title,
-      content: post.contentPreview,
-      likes: post.postLikes,
-      comments: post.commentCount,
-      thumbnail: post.thumbnail,
-      type: post.type,
-    }));
-  };
+  useEffect(() => {
+    if (isAuthenticated && activeTab === 'posts') {
+      fetchPopularPosts();
+    } else if (isAuthenticated && activeTab === 'meetings') {
+      fetchPopularMeetings();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, activeTab, postPage, meetingPage]);
 
   return (
-    <div className="center-content flex flex-col bg-white">
+    <div className="center-content flex flex-col bg-white" ref={scrollRef}>
       {isAuthenticated ? (
         <>
           <header className="flex justify-between items-center h-[62px] px-5">
@@ -151,12 +193,12 @@ const Home: React.FC = () => {
           </div>
 
           <main className="flex-1 overflow-y-auto hidden-scrollbar">
-            {loading ? (
+            {(postLoading && postPage === 0) || (meetingLoading && meetingPage === 0) ? (
               <div className="flex justify-center items-center h-32">로딩 중...</div>
             ) : activeTab === 'posts' ? (
-              <PostList posts={transformPosts(popularPosts)} />
+              <PostList posts={transformPosts(popularPosts)} lastPostRef={lastPostRef} />
             ) : (
-              <MeetPostList meetings={popularMeetings} />
+              <MeetPostList meetings={popularMeetings} lastMeetingRef={lastMeetingRef} />
             )}
           </main>
 

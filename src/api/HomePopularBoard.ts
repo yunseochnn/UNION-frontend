@@ -1,12 +1,6 @@
 import apiClient from './apiClient';
 import Cookies from 'js-cookie';
 
-export interface Author {
-  nickname: string;
-  profileImage: string;
-  univName: string;
-}
-
 export interface PopularPost {
   id: number;
   type: string;
@@ -14,7 +8,11 @@ export interface PopularPost {
   contentPreview: string;
   thumbnail: string;
   createdAt: string;
-  author: Author;
+  author: {
+    nickname: string;
+    profileImage: string;
+    univName: string;
+  };
   views: number;
   postLikes: number;
   commentCount: number;
