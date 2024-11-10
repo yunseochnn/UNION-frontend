@@ -7,7 +7,9 @@ import '../style.css';
 import Cookies from 'js-cookie';
 import apiClient from '../api/apiClient';
 import { PopularPost, getPopularPosts } from '../api/HomePopularBoard';
+import { PopularMeeting, getPopularMeetings } from '../api/HomePopularMeetings';
 import Slide from '../common/Slide';
+import MeetPostList from '../common/MeetPostList';
 
 interface Post {
   profileImage: string;
@@ -28,6 +30,7 @@ const Home: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'posts' | 'meetings'>('posts');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [popularPosts, setPopularPosts] = useState<PopularPost[]>([]);
+  const [popularMeetings, setPopularMeetings] = useState<PopularMeeting[]>([]);
   const [loading, setLoading] = useState(false);
   const [pageInfo, setPageInfo] = useState({
     pageNumber: 0,
@@ -42,27 +45,12 @@ const Home: React.FC = () => {
     'https://union-image-bucket.s3.ap-northeast-2.amazonaws.com/banner/naver_banner.png',
   ];
 
-  const meetings: Post[] = [
-    {
-      profileImage: '/path/to/profile',
-      nickname: '모임장',
-      university: '서울대학교',
-      title: '코딩 스터디 모집합니다',
-      content: '매주 토요일 2시간씩 모각코 진행합니다...',
-      likes: 89,
-      comments: 12,
-      thumbnail: '/path/to/image',
-      type: 'FREE',
-      id: 2,
-    },
-  ];
-
   const fetchPopularPosts = React.useCallback(
     async (page: number = 0) => {
       try {
         setLoading(true);
         const response = await getPopularPosts(page, pageInfo.pageSize);
-
+        console.log(response);
         setPopularPosts(response.content);
         setPageInfo({
           pageNumber: response.number,
@@ -79,6 +67,20 @@ const Home: React.FC = () => {
     },
     [pageInfo.pageSize],
   );
+
+  // 인기 모임 불러오기
+  const fetchPopularMeetings = async (page: number = 0, size: number = 5) => {
+    setLoading(true);
+    try {
+      const response = await getPopularMeetings(page, size);
+      console.log('인기 모임 데이터:', response);
+      setPopularMeetings(response.content);
+    } catch (error) {
+      console.error('인기 모임 로딩 중 오류 발생:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getUserInfo = async () => {
     try {
@@ -111,9 +113,14 @@ const Home: React.FC = () => {
     }
   }, [location, navigate]);
 
+  // 탭 변경 시 인기 게시글 또는 모임 불러오기
   useEffect(() => {
-    if (isAuthenticated && activeTab === 'posts') {
-      fetchPopularPosts();
+    if (isAuthenticated) {
+      if (activeTab === 'posts') {
+        fetchPopularPosts();
+      } else if (activeTab === 'meetings') {
+        fetchPopularMeetings();
+      }
     }
   }, [isAuthenticated, activeTab, fetchPopularPosts]);
 
@@ -139,7 +146,7 @@ const Home: React.FC = () => {
           <header className="flex justify-between items-center h-[62px] px-5">
             <img src="/Logo.svg" alt="UNION" className="h-5" />
             <div className="flex">
-              <FiBell size={24} onClick={() => navigate('/mynotification')} />
+              <FiBell size={24} />
             </div>
           </header>
 
@@ -167,12 +174,13 @@ const Home: React.FC = () => {
               </button>
             </div>
           </div>
-
           <main className="flex-1 overflow-y-auto hidden-scrollbar">
             {loading ? (
               <div className="flex justify-center items-center h-32">로딩 중...</div>
+            ) : activeTab === 'posts' ? (
+              <PostList posts={transformPosts(popularPosts)} />
             ) : (
-              <PostList posts={activeTab === 'posts' ? transformPosts(popularPosts) : meetings} />
+              <MeetPostList meetings={popularMeetings} />
             )}
           </main>
 
