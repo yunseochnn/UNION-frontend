@@ -7,6 +7,7 @@ import '../style.css';
 import Cookies from 'js-cookie';
 import apiClient from '../api/apiClient';
 import { PopularPost, getPopularPosts } from '../api/HomePopularBoard';
+import Slide from '../common/Slide';
 
 interface Post {
   profileImage: string;
@@ -35,6 +36,11 @@ const Home: React.FC = () => {
     totalPages: 0,
     last: false,
   });
+  const banner = [
+    'https://union-image-bucket.s3.ap-northeast-2.amazonaws.com/banner/carrot_banner.png',
+    'https://union-image-bucket.s3.ap-northeast-2.amazonaws.com/banner/jab_banner.png',
+    'https://union-image-bucket.s3.ap-northeast-2.amazonaws.com/banner/naver_banner.png',
+  ];
 
   const meetings: Post[] = [
     {
@@ -137,8 +143,8 @@ const Home: React.FC = () => {
             </div>
           </header>
 
-          <div className="w-full aspect-video bg-gray-200 flex items-center justify-center mb-6">
-            <div className="w-20 h-20 bg-white" />
+          <div className="w-full aspect-video flex items-center justify-center mb-6">
+            <Slide images={banner} />
           </div>
 
           <div className="flex px-8">
