@@ -23,7 +23,6 @@ const OutMeet = ({ setOutMeet, onReadMeet }: Props) => {
           Authorization: Cookies.get('Authorization'),
         },
       });
-      console.log('모임 삭제 완료');
       navigate('/chatList');
     } catch (error) {
       console.log(error);
@@ -41,7 +40,6 @@ const OutMeet = ({ setOutMeet, onReadMeet }: Props) => {
       if (response) {
         const { status } = response;
         if (status === 200) {
-          console.log('모임 나가기 성공');
           if (pathname.includes('chat')) {
             setOutMeet(false);
             navigate('/chatList');

@@ -29,7 +29,6 @@ const Footer = ({ handleAddComment, handleUpdateComment, updateComment, setUpdat
     if (comment !== '') {
       handleAddComment(comment);
       setComment('');
-      console.log('댓글달기');
     }
   };
 

@@ -36,11 +36,7 @@ export default function MeetWrite() {
   const onSaveImage = useCallback(
     async (id: number) => {
       try {
-        const response = await SaveImageRequest(id, 'GATHERING', images);
-        if (!response) {
-          alert('네트워크 이상입니다!');
-          return;
-        }
+        await SaveImageRequest(id, 'GATHERING', images);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.log(error.response);
@@ -87,10 +83,6 @@ export default function MeetWrite() {
         },
       });
 
-      if (!response) {
-        alert('네트워크 이상입니다!');
-        return;
-      }
       const id = response.data;
 
       if (images.length > 0) {

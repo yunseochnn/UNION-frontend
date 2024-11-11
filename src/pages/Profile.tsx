@@ -8,6 +8,8 @@ import Cookies from 'js-cookie';
 import apiClient from '../api/apiClient';
 import { useNavigate } from 'react-router-dom';
 import OauthImg from '../common/OauthImg';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SIGNUP_URL = '/user/signup';
 
@@ -55,16 +57,17 @@ export default function Profile() {
         univName: data.univName,
       }));
 
-      console.log('회원가입 성공:', data);
+      toast.success('회원가입이 완료되었습니다.');
       navigate('/home');
     } catch (error) {
       console.error('회원가입 중 오류 발생:', error);
-      alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
+      toast.error('회원가입에 실패했습니다. 다시 시도해 주세요.');
     }
   };
 
   return (
     <div className="h-full w-full flex flex-col relative">
+      <ToastContainer position="top-right" autoClose={3000} />
       <Header title="" />
       <div className="px-[36px] flex-grow">
         <OauthImg profileImage={user.profileImage} />

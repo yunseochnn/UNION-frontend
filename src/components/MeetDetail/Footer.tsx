@@ -48,7 +48,7 @@ const Footer = ({ gatheringData, onReadMeet }: Props) => {
   //모임글 참여 시 알람 create
   const MeetAlarm = async () => {
     try {
-      const response = await apiClient.post(
+      await apiClient.post(
         '/notification/gathering',
         {
           typeId: MeetId,
@@ -60,9 +60,6 @@ const Footer = ({ gatheringData, onReadMeet }: Props) => {
           },
         },
       );
-
-      console.log(response.data);
-      console.log('모임 알림 보내기 완료');
     } catch (error) {
       console.log(error);
     }
@@ -71,14 +68,8 @@ const Footer = ({ gatheringData, onReadMeet }: Props) => {
   const onClickParticipationHandler = async () => {
     if (!gatheringData?.joined && !fullMember && !isPassDate && !gatheringData?.recruited) {
       try {
-        const response = await JoinMeetRequest(MeetId);
+        await JoinMeetRequest(MeetId);
 
-        if (!response) {
-          alert('네트워크 이상입니다.');
-          return;
-        }
-
-        console.log('모임 참여 완료');
         await MeetAlarm();
         onReadMeet();
       } catch (error) {
@@ -104,7 +95,6 @@ const Footer = ({ gatheringData, onReadMeet }: Props) => {
             },
           },
         );
-        console.log('모집 마감 변경 성공');
         onReadMeet();
         setRecruited(response.data.recruited);
       } catch (error) {
