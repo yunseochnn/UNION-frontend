@@ -148,7 +148,7 @@ export default function ChatDetail() {
   };
 
   return (
-    <div className="flex flex-col w-full h-full pb-2 pt-1 relative items-center">
+    <div className="flex flex-col w-full h-full pb-2 relative items-center">
       {outMeet && <OutMeet setOutMeet={setOutMeet} />}
       {outChat && <OutChatModal setOutChat={setOutChat} chatroomId={chatroomId} />}
       {modal &&
@@ -158,7 +158,7 @@ export default function ChatDetail() {
           <MeetMore setModal={setModal} setOutMeet={setOutMeet} />
         ))}
       {userBlock && <UserBlock setUserBlock={setUserBlock} token={uid || ''} />}
-      <div className="w-[85%]">
+      <div className="w-full">
         <Header setModal={setModal} title={title} />
       </div>
 

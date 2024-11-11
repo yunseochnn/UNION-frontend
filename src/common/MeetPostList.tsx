@@ -6,7 +6,7 @@ interface MeetPostListProps {
   meetings: {
     id: number;
     title: string;
-    eupMyeonDong: string;
+    eupMyeonDong?: string;
     gatheringDateTime: string;
     currentMember: number;
     maxMember: number;

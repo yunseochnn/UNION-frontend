@@ -1,7 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { IFComment } from '../../pages/BoardDetail';
-import { FaHeart, FaRegHeart } from 'react-icons/fa6';
+import { FaRegHeart } from 'react-icons/fa6';
 import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+dayjs.locale('ko');
 
 interface Prop {
   comment: IFComment;
@@ -52,14 +54,14 @@ const BestComment = ({ comment }: Prop) => {
               </div>
 
               <div className="text-[10px] text-customGray2 font-medium">{`${dayjs(comment.createdAt).format(
-                'MM/DD H:mm',
+                'MM/DD A H:mm',
               )}`}</div>
             </div>
 
             <div className="text-sm font-semibold flex mt-1">
               {comment.parentNickname && comment.parentNickname !== comment.commenter.nickname ? (
                 <span className="">
-                  <span className="font-bold" style={{ color: '#ff4a4d' }}>
+                  <span className="font-bold mr-1" style={{ color: '#ff4a4d' }}>
                     @{comment.parentNickname}
                   </span>
                   {comment.content}
@@ -74,8 +76,8 @@ const BestComment = ({ comment }: Prop) => {
 
       <div className="flex flex-col items-end gap-2">
         <div className={`flex items-center gap-1 ${comment.parentId ? 'pl-1' : ''}`}>
-          <span>{comment.liked ? <FaHeart size={14} color="#ff4a4d" /> : <FaRegHeart size={14} />} </span>
-          <span className="text-sm font-semibold">{comment.commentLikes}</span>
+          <span>{<FaRegHeart size={14} color="#ff4a4d" />} </span>
+          <span className="text-sm font-semibold w-2">{comment.commentLikes}</span>
         </div>
       </div>
     </div>

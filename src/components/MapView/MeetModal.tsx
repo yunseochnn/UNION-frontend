@@ -3,6 +3,8 @@ import { IoMdEye } from 'react-icons/io';
 import { List } from '../../pages/MapView';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
+import 'dayjs/locale/ko';
+dayjs.locale('ko');
 
 interface Prop {
   modalContent: List;

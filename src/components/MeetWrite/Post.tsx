@@ -217,11 +217,11 @@ const Post = ({ setOpen, setAddress }: Prop) => {
               return (
                 <div
                   key={index}
-                  className="flex flex-col border-b border-gray-300 cursor-pointer"
+                  className="flex flex-col border-b border-gray-300 cursor-pointer min-h-[70px]"
                   onClick={() => onClick(marker)}
                 >
                   <div className="font-semibold">{marker.content}</div>
-                  <div className="text-sm text-gray-400">{marker.roadAddressName}</div>
+                  <div className="text-sm text-customGray2">{marker.roadAddressName}</div>
                   <div className="text-xs mt-2" style={{ color: '#ff4a4d' }}>
                     {marker.phone}
                   </div>

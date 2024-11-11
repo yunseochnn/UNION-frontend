@@ -6,6 +6,7 @@ import EmptyComment from './EmptyComment';
 import Cookies from 'js-cookie';
 import { useCallback, useEffect, useState } from 'react';
 import BestComment from './BestComment';
+import DeleteComment from './DeleteComment';
 
 interface Props {
   comments: IFComment[] | undefined;
@@ -56,7 +57,8 @@ const CommentList = ({
   }, [getBestComment]);
   return (
     <div className="min-h-80 w-[90%]">
-      {bestComment && bestComment.commentLikes > 0 && <BestComment comment={bestComment} />}
+      {bestComment &&
+        (!bestComment.deleted ? <BestComment comment={bestComment} /> : <DeleteComment comment={bestComment} />)}
       {comments?.length !== 0 ? (
         comments?.map((comment, index) => (
           <div key={index}>

@@ -2,7 +2,23 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import Cookies from 'js-cookie';
 import apiClient from '../../api/apiClient';
 import MyPageMeetList from '../MyPageMeetList';
-import { Meeting } from '../../common/meettypes';
+
+interface Meeting {
+  id: number;
+  title: string;
+  eupMyeonDong?: string;
+  gatheringDateTime: string;
+  currentMember: number;
+  maxMember: number;
+  views: number;
+  thumbnail?: string;
+  author: {
+    token: string;
+    profileImage: string;
+    nickname: string;
+    univName: string;
+  };
+}
 
 export default function MyMeetings() {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
@@ -29,7 +45,6 @@ export default function MyMeetings() {
     [isLoading, hasMore],
   );
 
-  // 모임글 불러오기
   const fetchMeetings = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -43,19 +58,20 @@ export default function MyMeetings() {
 
       const content = response.data?.content;
       if (content && Array.isArray(content)) {
-        const newMeetings: Meeting[] = content.map((item: any) => ({
+        const newMeetings = content.map((item: any) => ({
           id: item.id,
           title: item.title,
           maxMember: item.maxMember,
           currentMember: item.currentMember,
-          eupMyeonDong: item.eupMyeonDong ?? '위치 미정',
+          eupMyeonDong: item.eupMyeonDong ?? '알 수 없음',
           gatheringDateTime: item.gatheringDateTime,
           views: item.views,
           thumbnail: item.thumbnail,
           author: {
-            // 정확한 author 필드를 추가하여 Meeting 타입과 일치하게 함
+            token: item.author?.token ?? '',
             profileImage: item.author?.profileImage ?? '',
             nickname: item.author?.nickname ?? '',
+            univName: item.author?.univName ?? '',
           },
         }));
 

@@ -25,8 +25,8 @@ const Header: React.FC<HeaderProps> = ({ title, boardType }) => {
         <button onClick={handleSearchClick} className="cursor-pointer" aria-label="검색">
           <FiSearch size={24} />
         </button>
-        <button className="cursor-pointer" aria-label="알림">
-          <FiBell size={24} />
+        <button>
+          <FiBell size={24} onClick={() => navigate('/mynotification')} />
         </button>
       </div>
     </header>

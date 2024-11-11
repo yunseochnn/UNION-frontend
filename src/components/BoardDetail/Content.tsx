@@ -6,6 +6,8 @@ import { useSetRecoilState } from 'recoil';
 import { selectedUserState } from '../../recoil/selectedUserState';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+dayjs.locale('ko');
 
 interface Prop {
   boardContent: BoardInfo | undefined;
@@ -42,10 +44,10 @@ const Content = ({ boardContent }: Prop) => {
         <div>
           <div className="font-bold text-sm">
             {boardContent?.author.nickname}{' '}
-            <span className="text-gray-400">{`· ${boardContent?.author.univName}`}</span>
+            <span className="text-customGray2">{`· ${boardContent?.author.univName}`}</span>
           </div>
-          <div className="font-semibold text-sm text-gray-400">{`${dayjs(boardContent?.createdAt).format(
-            'MM/DD H:mm',
+          <div className="font-semibold text-sm text-customGray2">{`${dayjs(boardContent?.createdAt).format(
+            'MM/DD A H:mm',
           )} 조회수 ${boardContent?.views}`}</div>
         </div>
       </div>

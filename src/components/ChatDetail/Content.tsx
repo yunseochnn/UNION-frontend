@@ -4,6 +4,8 @@ import { IFMessageInfo } from '../../pages/ChatDetail';
 import dayjs from 'dayjs';
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import 'dayjs/locale/ko';
+dayjs.locale('ko');
 interface Props {
   messages: IFMessageInfo[] | undefined;
 }
@@ -51,7 +53,7 @@ const Content = ({ messages }: Props) => {
 
               {message.senderToken === '' ? (
                 <div className="w-full mt-4 flex justify-center items-center">
-                  <div className="text-gray-400 rounded-full px-11 text-sm font-medium">{message.content}</div>
+                  <div className="text-customGray2 rounded-full px-11 text-sm font-medium">{message.content}</div>
                 </div>
               ) : message.senderName === myNickname ? (
                 <div className="w-full flex justify-end mt-4">
@@ -69,7 +71,7 @@ const Content = ({ messages }: Props) => {
               ) : (
                 <div className="flex mt-4 w-full">
                   <div
-                    className="h-10 w-10 rounded-full bg-gray-300"
+                    className="h-10 w-10 rounded-full bg-gray-300 flex-shrink-0 overflow-hidden"
                     onClick={() => onClickChatProfile(message.senderToken)}
                   >
                     <img src={message.senderProfileImage} />
