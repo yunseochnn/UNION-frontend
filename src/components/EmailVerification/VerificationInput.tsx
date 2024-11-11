@@ -85,7 +85,6 @@ export default function VerificationInput({ onVerificationComplete }: Verificati
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          toast.success(`인증번호가 재전송되었습니다`);
           handleVerificationRequest();
         } else {
           toast.error('실패했습니다.');
@@ -187,7 +186,7 @@ export default function VerificationInput({ onVerificationComplete }: Verificati
                   value={searchTerm}
                   onChange={handleInputChange}
                   placeholder="대학교 이름을 검색 후 선택하세요"
-                  className="font-normal text-[15px] border-b-[1.3px] border-customGray placeholder-gray-400 focus:outline-none p-2 w-full mt-2"
+                  className="font-normal text-[15px] border-b-[1.3px] border-customGray placeholder-customGray2 focus:outline-none p-2 w-full mt-2"
                   autoComplete="off"
                 />
                 {filteredUniversities.length > 0 && (
@@ -229,7 +228,7 @@ export default function VerificationInput({ onVerificationComplete }: Verificati
                 placeholder="학교 이메일을 입력해주세요"
                 value={email}
                 onChange={handleEmailChange}
-                className="font-normal text-[15px] border-b-[1.3px] border-customGray placeholder-gray-400 focus:outline-none p-2 w-full mt-2"
+                className="font-normal text-[15px] border-b-[1.3px] border-customGray placeholder-customGray2 focus:outline-none p-2 w-full mt-2"
               />
               <button
                 className="cursor-pointer text-[14px] px-3 py-2 ml-2 bg-mainColor text-white rounded-md whitespace-nowrap"
@@ -253,7 +252,7 @@ export default function VerificationInput({ onVerificationComplete }: Verificati
                   placeholder="인증번호를 입력해주세요"
                   value={verificationCode}
                   onChange={handleCodeChange}
-                  className="font-normal text-[15px] border-b-[1.3px] border-customGray placeholder-gray-400 focus:outline-none p-2 w-full pr-16 mt-2"
+                  className="font-normal text-[15px] border-b-[1.3px] border-customGray placeholder-customGray2 focus:outline-none p-2 w-full pr-16 mt-2"
                 />
               </div>
               <button

@@ -24,7 +24,7 @@ export default function MyMeetings() {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const observer = useRef<IntersectionObserver | null>(null);
 
@@ -91,8 +91,12 @@ export default function MyMeetings() {
 
   return (
     <div>
-      <MyPageMeetList meetings={meetings} pageTitle="내가 작성한 모임글" lastMeetingRef={lastMeetingRef} />
-      {isLoading && <div></div>}
+      {isLoading && page === 0 ? (
+        <p></p>
+      ) : (
+        <MyPageMeetList meetings={meetings} pageTitle="내가 작성한 모임글" lastMeetingRef={lastMeetingRef} />
+      )}
+      {isLoading && page > 0 && <p></p>}
     </div>
   );
 }

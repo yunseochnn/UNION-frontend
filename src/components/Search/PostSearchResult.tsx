@@ -87,13 +87,13 @@ export default function PostSearchResult() {
   return (
     <div className="flex-grow overflow-y-auto hidden-scrollbar">
       {isLoading && page === 0 ? (
-        <div className="text-center py-4">로딩 중...</div>
+        <div></div>
       ) : posts.length > 0 ? (
         <PostList posts={posts} lastPostRef={lastPostRef} />
       ) : (
         <p className="text-center mt-4 text-gray-500">검색 결과가 없습니다.</p>
       )}
-      {isLoading && page > 0 && <div className="text-center py-4">로딩 중...</div>}
+      {isLoading && page > 0 && <div></div>}
     </div>
   );
 }

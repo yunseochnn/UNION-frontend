@@ -90,7 +90,7 @@ const MeetSearchResult: React.FC<MeetSearchResultProps> = ({ sortBy }) => {
   return (
     <div className="flex-grow overflow-y-auto hidden-scrollbar">
       {isLoading && page === 0 ? (
-        <div className="text-center py-4">로딩 중...</div>
+        <div></div>
       ) : meetings.length > 0 ? (
         <MeetPostList meetings={meetings} lastMeetingRef={lastMeetingRef} />
       ) : (
