@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import MyPageList from '../../pages/MyPageList';
-
 import Cookies from 'js-cookie';
 import apiClient from '../../api/apiClient';
 
@@ -70,9 +69,9 @@ export default function MyComments() {
 
         setComments(prevComments => [...prevComments, ...fetchedComments]);
         setHasMore(response.data.content.length > 0);
-        setIsLoading(false);
       } catch (error) {
         console.error('댓글 단 글 불러오기 실패:', error);
+      } finally {
         setIsLoading(false);
       }
     };
@@ -82,8 +81,7 @@ export default function MyComments() {
 
   return (
     <div>
-      <MyPageList posts={comments} pageTitle="내가 댓글 단 글" lastPostRef={lastCommentRef} />
-      {isLoading && <p></p>}
+      {isLoading ? <p></p> : <MyPageList posts={comments} pageTitle="내가 댓글 단 글" lastPostRef={lastCommentRef} />}
     </div>
   );
 }

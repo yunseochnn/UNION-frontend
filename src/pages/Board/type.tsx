@@ -78,7 +78,7 @@ const BoardList: React.FC = () => {
       <Header title={BOARD_TITLES[type as keyof typeof BOARD_TITLES]} boardType={type} />
       <main className="overflow-y-auto hidden-scrollbar flex-1">
         <PostList posts={posts} lastPostRef={lastPostRef} />
-        {isLoading && <div>로딩 중...</div>}
+        {isLoading && <div></div>}
       </main>
       <div className="right-8 bottom-24 absolute">
         <FloatingActionButton onClick={() => navigate(`/Board/write/${type}`)} />

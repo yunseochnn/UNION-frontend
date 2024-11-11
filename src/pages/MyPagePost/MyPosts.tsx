@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import MyPageList from '../../pages/MyPageList';
-
 import Cookies from 'js-cookie';
 import apiClient from '../../api/apiClient';
 
@@ -82,8 +81,7 @@ export default function MyPosts() {
 
   return (
     <div>
-      <MyPageList posts={posts} pageTitle="내가 작성한 게시물" lastPostRef={lastPostRef} />
-      {isLoading && <p></p>}
+      {isLoading ? <p></p> : <MyPageList posts={posts} pageTitle="내가 작성한 게시물" lastPostRef={lastPostRef} />}
     </div>
   );
 }
