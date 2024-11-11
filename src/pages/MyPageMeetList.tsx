@@ -11,6 +11,7 @@ export interface Meeting {
   maxMember: number;
   views: number;
   thumbnail?: string;
+  createdAt: string;
   author: {
     token: string;
     profileImage: string;
