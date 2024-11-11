@@ -52,7 +52,7 @@ const Board: React.FC = () => {
 
       <div className="flex flex-col flex-grow px-[15px] overflow-y-auto hidden-scrollbar flex-1">
         <div
-          className="p-4 border-b cursor-pointer flex justify-between items-center hover:bg-gray-50"
+          className="p-4 border-b cursor-pointer flex justify-between items-center"
           onClick={() => handleBoardClick('FREE')}
         >
           <span>자유 게시판</span>
@@ -60,7 +60,7 @@ const Board: React.FC = () => {
         </div>
 
         <div
-          className="p-4 border-b cursor-pointer flex justify-between items-center hover:bg-gray-50"
+          className="p-4 border-b cursor-pointer flex justify-between items-center "
           onClick={() => setIsAcademicOpen(!isAcademicOpen)}
         >
           <span>학과 게시판</span>
@@ -72,7 +72,7 @@ const Board: React.FC = () => {
             {Object.entries(departments).map(([key, value]) => (
               <div
                 key={key}
-                className="pl-8 py-3 cursor-pointer hover:bg-gray-100 flex justify-between items-center"
+                className="pl-8 py-3 cursor-pointer flex justify-between items-center"
                 onClick={() => handleBoardClick(key)}
               >
                 <span>{value}</span>
@@ -83,7 +83,7 @@ const Board: React.FC = () => {
         )}
 
         <div
-          className="p-4 border-b cursor-pointer flex justify-between items-center hover:bg-gray-50"
+          className="p-4 border-b cursor-pointer flex justify-between items-center "
           onClick={() => handleBoardClick('MARKET')}
         >
           <span>장터 게시판</span>
@@ -91,7 +91,7 @@ const Board: React.FC = () => {
         </div>
 
         <div
-          className="p-4 border-b cursor-pointer flex justify-between items-center hover:bg-gray-50"
+          className="p-4 border-b cursor-pointer flex justify-between items-center "
           onClick={() => handleBoardClick('INFO')}
         >
           <span>정보 게시판</span>

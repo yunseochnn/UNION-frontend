@@ -7,6 +7,8 @@ import Title from '../components/EmailVerification/Title';
 import { userState } from '../recoil/userAtoms';
 import { useEffect, useState } from 'react';
 import apiClient from '../api/apiClient';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const PHOTO_URL = '/oauth/photo';
 
@@ -37,10 +39,10 @@ export default function EmailVerification() {
         })
         .catch(error => {
           console.error('Failed to fetch profile image:', error);
-          alert('프로필 이미지를 가져오지 못했습니다.');
+          toast.error('프로필 이미지를 가져오지 못했습니다.');
         });
     } else {
-      alert('유효한 인증 토큰이 없습니다.');
+      toast.error('유효한 인증 토큰이 없습니다.');
       navigate('/');
     }
   }, [location, setUser, navigate]);
@@ -67,21 +69,22 @@ export default function EmailVerification() {
         .then(response => response.json())
         .then(data => {
           if (data.success) {
-            alert('이메일 인증이 초기화되었습니다.');
+            toast.success('이메일 인증이 초기화되었습니다.');
             navigate('/profile');
           } else {
-            alert('이메일 인증 초기화에 실패했습니다.');
+            toast.error('이메일 인증 초기화에 실패했습니다.');
           }
         })
         .catch(error => {
           console.error('인증 초기화 오류:', error);
-          alert('서버와의 통신 중 오류가 발생했습니다.');
+          toast.error('서버와의 통신 중 오류가 발생했습니다.');
         });
     }
   };
 
   return (
     <div className="h-full w-full flex flex-col relative">
+      <ToastContainer position="top-right" autoClose={3000} />
       <Header title="" />
       <div className="px-[36px] flex-grow">
         <Title />
