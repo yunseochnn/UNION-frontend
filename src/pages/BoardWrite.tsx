@@ -24,11 +24,7 @@ export default function BoardWrite() {
   const onSaveImage = useCallback(
     async (id: number) => {
       try {
-        const response = await SaveImageRequest(id, 'POST', images);
-        if (!response) {
-          alert('네트워크 이상입니다!');
-          return;
-        }
+        await SaveImageRequest(id, 'POST', images);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.log(error.response);
@@ -48,11 +44,6 @@ export default function BoardWrite() {
           thumbnail: images[0] || '',
         },
       });
-
-      if (!response) {
-        alert('네트워크 이상입니다!');
-        return;
-      }
 
       const { id } = response.data;
 

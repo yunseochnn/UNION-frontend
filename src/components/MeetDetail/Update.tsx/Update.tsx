@@ -75,7 +75,7 @@ export default function Update({ updateData, setModify, onReadMeet }: Props) {
 
   const onUpdateMeet = useCallback(async () => {
     try {
-      const response = await UpdateMeetRequest({
+      await UpdateMeetRequest({
         info: {
           title: title,
           text: text,
@@ -90,11 +90,6 @@ export default function Update({ updateData, setModify, onReadMeet }: Props) {
         },
         id: MeetId,
       });
-
-      if (!response) {
-        alert('네트워크 이상입니다!');
-        return;
-      }
 
       setModify(false);
       onReadMeet();
