@@ -55,7 +55,7 @@ const Content = ({ boardContent }: Prop) => {
       <div className="mt-5 font-semibold text-xl">{boardContent?.title}</div>
 
       <div>
-        <div className="mt-5 text-base">{boardContent?.content}</div>
+        <div className="mt-5 text-base whitespace-pre-line">{boardContent?.content}</div>
       </div>
 
       {boardContent?.photos && boardContent?.photos.length > 0 && (

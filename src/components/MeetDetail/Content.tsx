@@ -96,7 +96,7 @@ const Content = ({ gatheringData }: Prop) => {
         </span>
       </div>
 
-      <div className="mt-3 text-base">
+      <div className="mt-3 text-base whitespace-pre-line">
         <div>{gatheringData?.content}</div>
       </div>
 
