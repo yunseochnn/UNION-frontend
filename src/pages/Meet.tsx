@@ -103,7 +103,7 @@ const Meet: React.FC = () => {
 
       <main className="flex-1 overflow-y-auto relative flex flex-col hidden-scrollbar">
         <MeetPostList meetings={meetings} lastMeetingRef={lastMeetingRef} />
-        {isLoading && <div className="text-center py-4">Loading...</div>}
+        {isLoading && <div></div>}
       </main>
 
       <div className="right-8 bottom-24 absolute">

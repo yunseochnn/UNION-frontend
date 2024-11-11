@@ -194,7 +194,7 @@ const Home: React.FC = () => {
 
           <main className="flex-1 overflow-y-auto hidden-scrollbar">
             {(postLoading && postPage === 0) || (meetingLoading && meetingPage === 0) ? (
-              <div className="flex justify-center items-center h-32">로딩 중...</div>
+              <div></div>
             ) : activeTab === 'posts' ? (
               <PostList posts={transformPosts(popularPosts)} lastPostRef={lastPostRef} />
             ) : (
