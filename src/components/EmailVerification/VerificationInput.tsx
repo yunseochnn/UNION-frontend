@@ -85,7 +85,6 @@ export default function VerificationInput({ onVerificationComplete }: Verificati
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          toast.success(`인증번호가 재전송되었습니다`);
           handleVerificationRequest();
         } else {
           toast.error('실패했습니다.');
