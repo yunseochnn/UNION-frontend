@@ -12,6 +12,7 @@ interface MeetPostListProps {
     maxMember: number;
     views: number;
     thumbnail?: string;
+    createdAt: string;
     author: {
       profileImage: string;
       nickname: string;
