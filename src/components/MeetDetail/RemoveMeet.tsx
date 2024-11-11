@@ -17,11 +17,6 @@ const RemoveMeet = ({ setRemove }: Prop) => {
     try {
       const response = await RemoveMeetRequest(BoardId);
 
-      if (!response) {
-        alert('네트워크 이상입니다.');
-        return;
-      }
-
       const { status } = response;
       if (status === 204) {
         if (from === 'write') {
