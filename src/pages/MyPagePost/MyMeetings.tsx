@@ -12,6 +12,7 @@ interface Meeting {
   maxMember: number;
   views: number;
   thumbnail?: string;
+  createdAt: string;
   author: {
     token: string;
     profileImage: string;
@@ -67,6 +68,7 @@ export default function MyMeetings() {
           gatheringDateTime: item.gatheringDateTime,
           views: item.views,
           thumbnail: item.thumbnail,
+          createdAt: item.createdAt,
           author: {
             token: item.author?.token ?? '',
             profileImage: item.author?.profileImage ?? '',

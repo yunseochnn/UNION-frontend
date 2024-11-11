@@ -21,6 +21,7 @@ export interface PopularMeeting {
   longitude: number;
   author: Author;
   thumbnail: string;
+  createdAt: string;
   likes: number;
 }
 
