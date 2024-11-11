@@ -8,6 +8,8 @@ import { useEffect, useState, useCallback } from 'react';
 import { userState } from '../recoil/userAtoms';
 import apiClient from '../api/apiClient';
 import Cookies from 'js-cookie';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function EditProfile() {
   const [user, setUser] = useRecoilState(userState);
@@ -30,7 +32,7 @@ export default function EditProfile() {
       setDescription(data.description);
     } catch (error) {
       console.error('유저 정보 불러오기 오류:', error);
-      alert('유저 정보를 불러오는 데 실패했습니다.');
+      toast.error('유저 정보를 불러오는 데 실패했습니다.');
     }
   }, [setUser]);
 
@@ -40,12 +42,12 @@ export default function EditProfile() {
 
   const handleSave = async () => {
     if (nickname === user.nickname && description === user.description && !croppedImage) {
-      alert('변경된 사항이 없습니다.');
+      toast.info('변경된 사항이 없습니다.');
       return;
     }
 
     if (!nickname.trim()) {
-      alert('닉네임을 입력해 주세요.');
+      toast.warn('닉네임을 입력해 주세요.');
       return;
     }
 
@@ -88,19 +90,20 @@ export default function EditProfile() {
 
       setProfileImage(profileImageUrl);
       setCroppedImage(null);
-      alert('프로필이 성공적으로 업데이트되었습니다.');
+      toast.success('프로필이 업데이트되었습니다.');
     } catch (error) {
       if (error instanceof Error) {
         console.error('프로필 업데이트 중 오류 발생:', error.message);
       } else {
         console.error('알 수 없는 오류 발생:', error);
       }
-      alert('프로필 업데이트에 실패했습니다. 다시 시도해 주세요.');
+      toast.error('프로필 업데이트에 실패했습니다. 다시 시도해 주세요.');
     }
   };
 
   return (
     <div className="h-full w-full flex flex-col">
+      <ToastContainer position="top-right" autoClose={3000} />
       <Header title="프로필 수정" />
       <div className="px-[36px] flex-grow">
         <ProfileImg profileImage={profileImage || ''} onImageChange={setCroppedImage} />
