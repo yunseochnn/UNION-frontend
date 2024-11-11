@@ -18,14 +18,8 @@ const RemoveBoard = ({ setRemove }: Prop) => {
     try {
       const response = await RemoveBoardRequest(Type, BoardId);
 
-      if (!response) {
-        alert('네트워크 이상입니다.');
-        return;
-      }
-
       const { status } = response;
       if (status === 204) {
-        console.log('게시물 삭제 성공');
         if (from === 'write') {
           navigate(`/board/${type}`);
         } else {

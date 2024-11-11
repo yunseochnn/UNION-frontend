@@ -147,7 +147,6 @@ export default function BoardDetail() {
           Authorization: Cookies.get('Authorization'),
         },
       });
-      console.log('댓글불러오기 성공');
       return response.data;
     },
     retry: false,
@@ -176,7 +175,7 @@ export default function BoardDetail() {
   //게시글에 댓글 생성 시 알람 create
   const CommentAlarm = async (commentId: number) => {
     try {
-      const response = await apiClient.post(
+      await apiClient.post(
         '/notification/post',
         {
           typeId: BoardId,
@@ -189,9 +188,6 @@ export default function BoardDetail() {
           },
         },
       );
-
-      console.log('댓글 알람 완료');
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -200,7 +196,7 @@ export default function BoardDetail() {
   //내 댓글에 타인이 대댓글 입력시 알람
   const putCommentAlarm = async (commentId: number) => {
     try {
-      const response = await apiClient.post(
+      await apiClient.post(
         '/notification/comment',
         {
           typeId: parent.id,
@@ -213,9 +209,6 @@ export default function BoardDetail() {
           },
         },
       );
-
-      console.log('대댓글 알람 완료');
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -238,8 +231,6 @@ export default function BoardDetail() {
     },
     onSuccess: data => {
       const commentId = Number(data.id);
-      console.log(BoardId);
-      console.log(commentId);
       if (BoardId && commentId) {
         if (parent.id) {
           putCommentAlarm(commentId);
@@ -248,7 +239,6 @@ export default function BoardDetail() {
         }
       }
 
-      console.log('댓글 추가 완료');
       setParent({ id: null, nickname: null, token: null });
       queryClient.invalidateQueries({
         queryKey: ['commentDetail', BoardId],
@@ -281,7 +271,6 @@ export default function BoardDetail() {
       queryClient.invalidateQueries({
         queryKey: ['commentDetail', BoardId],
       });
-      console.log('댓글 수정 완료');
       commentListRef.current?.scrollIntoView({ behavior: 'smooth' });
     },
     onError: (error: Error) => {
@@ -302,7 +291,6 @@ export default function BoardDetail() {
       queryClient.invalidateQueries({
         queryKey: ['commentDetail', BoardId],
       });
-      console.log('댓글 삭제 완료');
       commentListRef.current?.scrollIntoView({ behavior: 'smooth' });
     },
     onError: (error: Error) => {

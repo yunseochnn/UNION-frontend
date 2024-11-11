@@ -26,13 +26,9 @@ const Update = ({ updateData, setModify, onSuccessfulUpdate }: Prop) => {
   const onUpdateBoard = useCallback(async () => {
     try {
       const response = await UpdateBoardRequest(title, content, Type, BoardId);
-      if (!response) {
-        console.log('네트워크 오류입니다.');
-      }
 
       const { status } = response;
       if (status === 200) {
-        console.log('수정 완료');
         onSuccessfulUpdate(); // 수정 성공 후 리패칭
         setModify(false);
       }
