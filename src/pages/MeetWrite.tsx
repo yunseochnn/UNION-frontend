@@ -74,6 +74,7 @@ export default function MeetWrite() {
           text: text,
           maxMember: maxMember?.value ?? 0,
           selectedDate: selectedDate ? toCustomISOString(selectedDate) : '',
+          thumbnail: images[0] || '',
           ...(address && {
             address: address.address,
             latitude: address.positionY,
@@ -95,7 +96,7 @@ export default function MeetWrite() {
         console.log(error.response);
       }
     }
-  }, [address, eupMyeonDong, images.length, maxMember?.value, navigate, onSaveImage, selectedDate, text, title]);
+  }, [address, eupMyeonDong, images, maxMember?.value, navigate, onSaveImage, selectedDate, text, title]);
 
   useEffect(() => {
     if (click) {

@@ -12,6 +12,7 @@ export interface Meeting {
   views: number;
   latitude: number;
   longitude: number;
+  createdAt: string;
   author: {
     token: string;
     nickname: string;

@@ -6,6 +6,7 @@ interface Info {
   text: string;
   maxMember: number;
   selectedDate: string;
+  thumbnail: string;
   address?: string;
   latitude?: number;
   longitude?: number;
@@ -25,6 +26,7 @@ const CreateMeetRequest = async ({ info }: Prop) => {
         content: info.text,
         maxMember: info.maxMember,
         gatheringDateTime: info.selectedDate,
+        thumbnail: info.thumbnail,
         ...(info.address && { address: info.address }),
         ...(info.latitude && { latitude: info.latitude }),
         ...(info.longitude && { longitude: info.longitude }),
