@@ -1,6 +1,8 @@
+import dayjs from 'dayjs';
 import React from 'react';
 import { BsFillPeopleFill } from 'react-icons/bs';
 import { IoMdEye } from 'react-icons/io';
+dayjs.locale('ko');
 
 interface MeetPostProps {
   meeting: {
@@ -41,7 +43,9 @@ const MeetPost: React.FC<MeetPostProps> = ({ meeting }) => {
             <h2 className="mt-2 text-[17px] text-customBlack font-semibold truncate max-w-[200px] lg:max-w-[240px]">
               {meeting.title}
             </h2>
-            <div className="text-[14px] text-customGray2">{new Date(meeting.gatheringDateTime).toLocaleString()}</div>
+            <div className="text-[14px] text-customGray2">
+              {dayjs(meeting.gatheringDateTime).format('MM월 DD일 A H:mm')}
+            </div>
 
             <div className="mt-1 flex space-x-2 text-customBlack text-[11px]">
               <span className="flex items-center space-x-1">
