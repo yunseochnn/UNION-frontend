@@ -152,30 +152,6 @@ export default function VerificationInput({ onVerificationComplete }: Verificati
     }
   };
 
-  const clearCertifiedUsers = () => {
-    fetch('https://univcert.com/api/v1/clear', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        key: API_KEY,
-      }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          alert('인증된 유저 목록이 초기화되었습니다.');
-        } else {
-          alert('초기화에 실패했습니다. 서버 응답: ' + data.message);
-        }
-      })
-      .catch(error => {
-        console.error('목록 초기화 중 오류 발생:', error);
-        alert('서버와의 통신 중 오류가 발생했습니다.');
-      });
-  };
-
   const handleUniversitySelect = (university: string) => {
     setSearchTerm(university);
     setFilteredUniversities([]);
@@ -287,7 +263,6 @@ export default function VerificationInput({ onVerificationComplete }: Verificati
                 인증 완료
               </button>
             </div>
-            <button onClick={clearCertifiedUsers}>인증 리스트 초기화</button>
           </div>
         </div>
       </div>
