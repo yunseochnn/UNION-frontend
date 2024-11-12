@@ -5,10 +5,13 @@ import { userState } from '../../recoil/userAtoms';
 import Cookies from 'js-cookie';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useState } from 'react';
+import WithdrawConfirmModal from './WithdrawConfirmModal';
 
 export default function WithdrawBtn() {
   const setUser = useSetRecoilState(userState);
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
 
   const handleWithdraw = async () => {
     try {
@@ -42,9 +45,19 @@ export default function WithdrawBtn() {
   return (
     <div>
       <ToastContainer position="top-right" autoClose={3000} />
-      <button className="font-semibold text-[16px] text-mainColor mt-[22px]" onClick={handleWithdraw}>
+      <button className="font-semibold text-[16px] text-mainColor mt-[22px]" onClick={() => setShowModal(true)}>
         탈퇴하기
       </button>
+
+      {showModal && (
+        <WithdrawConfirmModal
+          onConfirm={() => {
+            setShowModal(false);
+            handleWithdraw();
+          }}
+          onCancel={() => setShowModal(false)}
+        />
+      )}
     </div>
   );
 }
